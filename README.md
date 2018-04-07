@@ -1,4 +1,4 @@
-# ![TMS570 BSP]
+# TMS570 BSP
 
 Bare Metal Board Support Package for Texas Instruments Cortex-R4F/R5F TMS570
 MCUs.
@@ -10,10 +10,11 @@ The TMS570 family integrates dual Cortex-R4F and Cortex-R5F processors in lock-s
 
 ### Getting started
 
-[x] Xargo v0.3.10
-[x] armeb-none-eabi 7.2.x
-[x] rust nightly as default toolchain
-[x] JTAG programmer: Lautherbach Trace32 Powerview for ARM or OpenOCD
+1. Xargo v0.3.10
+2. armeb-none-eabi 7.2.x
+3. rust nightly as default toolchain
+4. JTAG programmer: Lautherbach Trace32 Powerview for ARM or OpenOCD
 
-### Develop
+### Build
 
+`cd ti-hercules-bsp/boards/ti_tms570; make`
