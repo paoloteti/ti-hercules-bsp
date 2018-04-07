@@ -1,0 +1,91 @@
+# Remove built-in rules and variables
+# n.b. no-op for make --version < 4.0
+MAKEFLAGS += -r
+MAKEFLAGS += -R
+
+TOOLCHAIN ?= armeb-eabi
+XARGO ?= xargo
+RUSTFLAGS_LINK := "-C link-arg=-Tboard.ld"
+
+CC        := $(TOOLCHAIN)-gcc
+AR        := $(TOOLCHAIN)-ar
+SIZE      ?= $(TOOLCHAIN)-size
+OBJCOPY   ?= $(TOOLCHAIN)-objcopy
+OBJDUMP   ?= $(TOOLCHAIN)-objdump
+OBJDUMP_FLAGS += --disassemble-all --source -C --section-headers
+CFLAGS    := -O2 -mthumb -march=armv7-r
+
+export CARGO_INCREMENTAL=0
+
+# Configure Xargo to use native compiler if needed
+# Used mainly to build compiler-builtins
+US:= _
+DASH:= -
+TARGET_UN := $(subst $(DASH),$(US),$(TARGET))
+export CC_$(TARGET_UN) = $(CC)
+export LD_$(TARGET_UN) = $(CC)
+export AR_$(TARGET_UN) = $(AR)
+ifdef SOFTFLOAT
+export CFLAGS_$(TARGET_UN) = $(CFLAGS)
+else
+export CFLAGS_$(TARGET_UN) = $(CFLAGS) -mfpu=vfpv3-d16
+endif
+
+export RUST_TARGET_PATH = $(PWD)
+
+ifndef PLATFORM
+$(error Required make vairable PLATFORM is not defined)
+endif
+
+# If environment variable V is non-empty, be verbose
+ifneq ($(V),)
+Q=
+VERBOSE = --verbose
+else
+Q=@
+VERBOSE =
+endif
+
+
+
+.PHONY: all
+all:	target/$(TARGET)/release/$(PLATFORM).elf
+
+.PHONY: lst
+lst:	target/$(TARGET)/release/$(PLATFORM).lst
+
+.PHONY: debug
+debug: target/$(TARGET)/debug/$(PLATFORM).elf
+
+target:
+	@mkdir -p target
+
+target/$(TARGET)/release/$(PLATFORM).elf: target/$(TARGET)/release/$(PLATFORM)
+	$(Q)cp target/$(TARGET)/release/$(PLATFORM) target/$(TARGET)/release/$(PLATFORM).elf
+
+target/$(TARGET)/release/$(PLATFORM).lst: target/$(TARGET)/release/$(PLATFORM).elf
+	$(Q)$(OBJDUMP) $(OBJDUMP_FLAGS) $< > target/$(TARGET)/release/$(PLATFORM).lst
+
+.PHONY: target/$(TARGET)/release/$(PLATFORM)
+target/$(TARGET)/release/$(PLATFORM):
+	$(Q)RUSTFLAGS=$(RUSTFLAGS_LINK) $(XARGO) build --target=$(TARGET) $(VERBOSE) --release
+	$(Q)$(SIZE) $@
+
+target/$(TARGET)/debug/$(PLATFORM).elf: target/$(TARGET)/debug/$(PLATFORM)
+	$(Q)cp target/$(TARGET)/debug/$(PLATFORM) target/$(TARGET)/debug/$(PLATFORM).elf
+
+.PHONY: target/$(TARGET)/debug/$(PLATFORM)
+target/$(TARGET)/debug/$(PLATFORM):
+	$(Q)RUSTFLAGS=$(RUSTFLAGS_LINK) $(XARGO) build $(VERBOSE) --target=$(TARGET)
+	$(Q)$(OBJDUMP) $(OBJDUMP_FLAGS) $@ > target/$(TARGET)/debug/$(PLATFORM).lst
+	$(Q)$(SIZE) $@
+
+.PHONY: check
+check:
+	$(Q)RUSTFLAGS=$(RUSTFLAGS_LINK) $(XARGO) check --target=$(TARGET) $(VERBOSE) --release
+
+.PHONY: clean
+clean::
+	$(Q)$(XARGO) clean $(VERBOSE)
+
+

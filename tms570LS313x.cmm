@@ -1,0 +1,39 @@
+;
+; Program TMS570LS313x internal flash with auto ECC generation
+;
+
+
+  SYStem.RESet
+  MAP.RESet
+  SYStem.CPU TMS570LS3137-PGE
+  SYStem.Up  
+ 
+  FLASH.RESet
+
+  ; Program flash
+  FLASH.Create  1. 0x00000000--0x0001FFFF  0x8000 TARGET Byte 0.  ; Bank 0
+  FLASH.Create  1. 0x00020000--0x0017FFFF 0x20000 TARGET Byte 0.  ; Bank 0
+  FLASH.Create  2. 0x00180000--0x002FFFFF 0x20000 TARGET Byte 1.  ; Bank 1
+  
+  ; EEPROM emulation flash
+  FLASH.Create  8. 0xF0200000--0xF020FFFF  0x4000 TARGET Byte 7.  ; Bank 7
+  FLASH.TARGET 0x08000000 0x08001000 0x4000 ~~/demo/arm/flash/byte_be/f021r4.bin
+
+  FLASH.CLocK.AUTO
+
+  MAP.BUS16 0xF0400000--0xF045FFFF
+  MAP.BUS16 0xF0100000--0xF0101FFF
+  MAP.BUS16 0xF0040000--0xF0041FFF
+
+  FLASH.ERASE ALL
+  FLASH.Program ALL	
+
+
+  ;Data.LOAD.auto boards/ti_tms570/target/armebv7r-none-eabihf/release/ti_tms570.elf
+ 
+  Data.LOAD.auto boards/ti_tms570/target/armebv7r-none-eabihf/debug/ti_tms570.elf
+ 
+  FLASH.Program OFF
+
+  ENDDO
+

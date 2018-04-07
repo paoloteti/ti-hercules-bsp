@@ -1,0 +1,23 @@
+[package]
+name = "ti_tms570"
+version = "0.1.0"
+authors = ["Paolo Teti <paolo.teti@gmail.com>"]
+build = "build.rs"
+
+[profile.dev]
+panic = "abort"
+lto = true
+opt-level = 0
+debug = true
+debug-assertions = true
+
+[profile.release]
+panic = "abort"
+lto = true
+opt-level = 3
+debug = false
+debug-assertions = false
+
+[dependencies]
+cortexr4 = { path = "../../arch/cortex-r4" }
+tms570 = { path = "../../chips/tms570" }

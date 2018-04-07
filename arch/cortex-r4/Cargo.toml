@@ -1,0 +1,7 @@
+[package]
+name = "cortexr4"
+version = "0.1.0"
+authors = ["Paolo Teti <paolo.teti@gmail.com>"]
+description = "Common support routines for ARM Cortex-R CPUs"
+
+[dependencies]
