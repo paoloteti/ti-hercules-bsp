@@ -1,9 +1,7 @@
 #![no_std]
 #![feature(lang_items)]
-#![feature(compiler_builtins_lib)]
 #![feature(naked_functions)]
 
-extern crate compiler_builtins;
 extern crate tms570;
 
 use tms570::serial::{SerialLine, Parity, StopBits, DataBits};
