@@ -11,7 +11,7 @@ The TMS570 family integrates dual Cortex-R4F and Cortex-R5F processors in lock-s
 ### Getting started
 
 1. Xargo v0.3.10
-2. armeb-none-eabi 7.2.x
+2. Linaro Toolchain [armeb-none-eabi v7.2.x](https://releases.linaro.org/components/toolchain/binaries/latest/armeb-eabi/)
 3. rust nightly as default toolchain
 4. JTAG programmer: Lautherbach Trace32 Powerview for ARM or OpenOCD
 
