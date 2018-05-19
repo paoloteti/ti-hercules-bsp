@@ -23,7 +23,7 @@
     "target-endian": "big",
     "target-pointer-width": "32",
     "target-c-int-width": "32",
-    "features": "+v7,+thumb2,+vfp3,+d16,+fp-only-sp",
+    "features": "+v7,+vfp3,+d16,+fp-only-sp",
     "vendor": "unknown",
     "pre-link-args": {
         "gcc": ["-nostartfiles", "-Wl,--build-id=none"]
