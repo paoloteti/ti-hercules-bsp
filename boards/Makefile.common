@@ -13,7 +13,7 @@ SIZE      ?= $(TOOLCHAIN)-size
 OBJCOPY   ?= $(TOOLCHAIN)-objcopy
 OBJDUMP   ?= $(TOOLCHAIN)-objdump
 OBJDUMP_FLAGS += --disassemble-all --source -C --section-headers
-CFLAGS    := -O2 -mthumb -march=armv7-r
+CFLAGS    := -O2 -march=armv7-r
 
 export CARGO_INCREMENTAL=0
 
