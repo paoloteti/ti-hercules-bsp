@@ -5,7 +5,6 @@ MAKEFLAGS += -R
 
 TOOLCHAIN ?= armeb-eabi
 XARGO ?= xargo
-RUSTFLAGS_LINK := "-C link-arg=-Tboard.ld"
 
 CC        := $(TOOLCHAIN)-gcc
 AR        := $(TOOLCHAIN)-ar
@@ -30,6 +29,8 @@ export CFLAGS_$(TARGET_UN) = $(CFLAGS)
 else
 export CFLAGS_$(TARGET_UN) = $(CFLAGS) -mfpu=vfpv3-d16
 endif
+
+RUSTFLAGS_LINK := "-C linker=$(CC) -C link-arg=-Tboard.ld -C link-arg=-nostartfiles"
 
 export RUST_TARGET_PATH = $(PWD)
 
