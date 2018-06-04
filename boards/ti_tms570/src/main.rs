@@ -1,5 +1,7 @@
 #![no_std]
+#![feature(core_intrinsics)]
 #![feature(lang_items)]
+#![feature(panic_implementation)]
 #![feature(naked_functions)]
 
 extern crate tms570;
@@ -10,6 +12,7 @@ use tms570::gio::{Gio, GioPorts, GioDirection};
 use tms570::iomm::Iomm;
 use tms570::pinmux::PinMux;
 
+pub mod panic;
 pub mod lang_items;
 pub mod handlers;
 

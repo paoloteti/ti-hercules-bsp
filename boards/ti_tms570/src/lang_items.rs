@@ -1,12 +1,3 @@
-/// Default panic handler
-#[lang = "panic_fmt"]
-#[cfg(not(test))]
-#[no_mangle]
-pub extern fn panic_fmt(_args: ::core::fmt::Arguments,
-                        _file: &'static str,
-                        _line: u32) -> ! {
-    loop{}
-}
 
 /// Lang item required to make the normal `main` work in applications
 /// Called by TMS570 crate
