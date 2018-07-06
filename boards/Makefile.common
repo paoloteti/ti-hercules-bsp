@@ -4,7 +4,6 @@ MAKEFLAGS += -r
 MAKEFLAGS += -R
 
 TOOLCHAIN ?= armeb-eabi
-XARGO ?= xargo
 
 CC        := $(TOOLCHAIN)-gcc
 AR        := $(TOOLCHAIN)-ar
@@ -16,7 +15,6 @@ CFLAGS    := -O2 -march=armv7-r
 
 export CARGO_INCREMENTAL=0
 
-# Configure Xargo to use native compiler if needed
 # Used mainly to build compiler-builtins
 US:= _
 DASH:= -
@@ -69,7 +67,7 @@ target/$(TARGET)/release/$(PLATFORM).lst: target/$(TARGET)/release/$(PLATFORM).e
 
 .PHONY: target/$(TARGET)/release/$(PLATFORM)
 target/$(TARGET)/release/$(PLATFORM):
-	$(Q)RUSTFLAGS=$(RUSTFLAGS_LINK) $(XARGO) build --target=$(TARGET) $(VERBOSE) --release
+	$(Q)RUSTFLAGS=$(RUSTFLAGS_LINK) cargo xbuild --target=$(TARGET) $(VERBOSE) --release
 	$(Q)$(SIZE) $@
 
 target/$(TARGET)/debug/$(PLATFORM).elf: target/$(TARGET)/debug/$(PLATFORM)
@@ -77,16 +75,16 @@ target/$(TARGET)/debug/$(PLATFORM).elf: target/$(TARGET)/debug/$(PLATFORM)
 
 .PHONY: target/$(TARGET)/debug/$(PLATFORM)
 target/$(TARGET)/debug/$(PLATFORM):
-	$(Q)RUSTFLAGS=$(RUSTFLAGS_LINK) $(XARGO) build $(VERBOSE) --target=$(TARGET)
+	$(Q)RUSTFLAGS=$(RUSTFLAGS_LINK) cargo xbuild $(VERBOSE) --target=$(TARGET)
 	$(Q)$(OBJDUMP) $(OBJDUMP_FLAGS) $@ > target/$(TARGET)/debug/$(PLATFORM).lst
 	$(Q)$(SIZE) $@
 
 .PHONY: check
 check:
-	$(Q)RUSTFLAGS=$(RUSTFLAGS_LINK) $(XARGO) check --target=$(TARGET) $(VERBOSE) --release
+	$(Q)RUSTFLAGS=$(RUSTFLAGS_LINK) cargo check --target=$(TARGET) $(VERBOSE) --release
 
 .PHONY: clean
 clean::
-	$(Q)$(XARGO) clean $(VERBOSE)
+	$(Q)cargo clean $(VERBOSE)
 
 
