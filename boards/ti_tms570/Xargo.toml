@@ -1,6 +1,0 @@
-[dependencies.core]
-stage = 0
-
-[dependencies.compiler_builtins]
-features = ["c"]
-stage = 1
