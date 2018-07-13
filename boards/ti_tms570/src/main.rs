@@ -15,6 +15,7 @@ use tms570::gio::{Gio, GioPorts, GioDirection};
 use tms570::iomm::Iomm;
 use tms570::pinmux::PinMux;
 use linked_list_allocator::LockedHeap;
+use alloc::vec::Vec;
 
 pub mod panic;
 pub mod lang_items;
@@ -26,8 +27,8 @@ static ALLOCATOR: LockedHeap = LockedHeap::empty();
 pub fn heap_init() {
     unsafe {
         let start = tms570::heap_start() as usize;
-        let eheap = tms570::heap_size() as usize;
-        ALLOCATOR.lock().init(start, eheap);
+        let size = tms570::heap_size() as usize;
+        ALLOCATOR.lock().init(start, size);
     }
 }
 
@@ -51,7 +52,7 @@ fn main() {
 
     ioport.direction(GioPorts::A, 7, GioDirection::Input);
 
-    let mut v = alloc::vec::Vec::new();
+    let mut v = Vec::new();
     let mut click = 0;
     loop {
         let button = ioport.get(GioPorts::A, 7);
