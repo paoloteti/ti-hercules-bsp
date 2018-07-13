@@ -7,10 +7,13 @@ MEMORY
     vimram (rx)  : ORIGIN = VIM_ORIGIN,   LENGTH = VIM_LENGTH
 }
 
-__stack_size__ = DEFINED(STACK_LENGTH);
+__stack_size__ = STACK_LENGTH;
+__heap_size__  = HEAP_LENGTH;
 
 SECTIONS
 {
+    /DISCARD/ : { *(.note.gnu.*) }
+
     /* ARM Cortex-R4 Vector Table */
     .intvecs :
     {
@@ -21,12 +24,12 @@ SECTIONS
     .text :
     {
         . = ALIGN(4);
-            _stext = .;
+        _stext = .;
 
         /*
-            * .gnu.linkonce hold C++ elements with vague linkage
-            *		https://gcc.gnu.org/onlinedocs/gcc/Vague-Linkage.html
-            */
+         * .gnu.linkonce hold C++ elements with vague linkage
+         *		https://gcc.gnu.org/onlinedocs/gcc/Vague-Linkage.html
+         */
         *(.text .text.* .gnu.linkonce.t.*)
         *(.rodata .rodata* .gnu.linkonce.r.*)
 
@@ -34,26 +37,25 @@ SECTIONS
         *(.ARM.extab* .gnu.linkonce.armextab.*)
 
         /*
-            * glue_7 and glue_7t hold helper functions emitted by the compiler to
-            * support interworking (linking between functions in ARM and THUMB
-            *  mode). Note that Cortex-M's do not support ARM mode, but this is left
-            *  here to save someone headache if they ever attempt to port Tock to a
-            *  Cortex-A core.
-            */
+         * glue_7 and glue_7t hold helper functions emitted by the compiler to
+         * support interworking (linking between functions in ARM and THUMB
+         *  mode). Note that Cortex-M's do not support ARM mode, but this is left
+         *  here to save someone headache if they ever attempt to port Tock to a
+         *  Cortex-A core.
+         */
         *(.glue_7t) *(.glue_7)
 
-
         /*
-            * Constructor and destructor sections:
-            *
-            *  - init/fini
-            *	  Defined by ELF as sections that hold `process
-            *	  initialization/termination code`
-            *  - {pre}{init/fini}_array_{start/end}
-            *	  Symbols used by the C runtime for initialization / termination
-            *  - ctors/dtors
-            *	  Symbols used by the C++ runtime for initialization / termination
-            */
+         * Constructor and destructor sections:
+         *
+         *  - init/fini
+         *	  Defined by ELF as sections that hold `process
+         *	  initialization/termination code`
+         *  - {pre}{init/fini}_array_{start/end}
+         *	  Symbols used by the C runtime for initialization / termination
+         *  - ctors/dtors
+         *	  Symbols used by the C++ runtime for initialization / termination
+         */
         . = ALIGN(4);
         KEEP(*(.init))
         . = ALIGN(4);
@@ -89,14 +91,14 @@ SECTIONS
     } > rom
 
     /* ARM Exception support
-        *
-        * This contains compiler-generated support for unwinding the stack,
-        * consisting of key-value pairs of function addresses and information on
-        * how to unwind stack frames.
-        * https://wiki.linaro.org/KenWerner/Sandbox/libunwind?action=AttachFile&do=get&target=libunwind-LDS.pdf
-        *
-        * .ARM.exidx is sorted, so has to go in its own output section.
-        */
+     *
+     * This contains compiler-generated support for unwinding the stack,
+     * consisting of key-value pairs of function addresses and information on
+     * how to unwind stack frames.
+     * https://wiki.linaro.org/KenWerner/Sandbox/libunwind?action=AttachFile&do=get&target=libunwind-LDS.pdf
+     *
+     * .ARM.exidx is sorted, so has to go in its own output section.
+     */
     PROVIDE_HIDDEN (__exidx_start = .);
     .ARM.exidx :
     {
@@ -121,7 +123,7 @@ SECTIONS
     .stack (NOLOAD) :
     {
         . = ALIGN(8);
-            _sstack = .;
+        _sstack = .;
         . = . + __stack_size__;
         . = ALIGN(8);
         _estack = .;
@@ -139,10 +141,22 @@ SECTIONS
         . = ALIGN(MPU_MIN_ALIGN);
     } > ram
 
+    .heap :
+    {
+        _sheap = .;
+		. = . + __heap_size__;
+		_eheap = .;
+	} > ram
+
     .vim (NOLOAD) :
     {
         . = ALIGN(4);
-            KEEP(*(.vim_table .vim_table.*))
+        KEEP(*(.vim_table .vim_table.*))
         . = ALIGN(4);
     } > vimram
 }
+
+PROVIDE(_heap_start = _sheap);
+PROVIDE(_heapsize = __heap_size__);
+PROVIDE(_ram_start = ORIGIN(ram));
+PROVIDE(_ram_end = ORIGIN(ram) + LENGTH(ram));

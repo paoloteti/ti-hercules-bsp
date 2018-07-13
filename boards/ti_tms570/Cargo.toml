@@ -21,3 +21,7 @@ debug-assertions = false
 [dependencies]
 cortexr4 = { path = "../../arch/cortex-r4" }
 tms570 = { path = "../../chips/tms570" }
+
+[dependencies.linked_list_allocator]
+default-features = true
+version = "0.6.3"

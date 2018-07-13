@@ -51,6 +51,8 @@ extern "C" {
     static mut _sdata: u32;
     static mut _edata: u32;
     static mut _sidata: u32;
+    static mut _heap_start: u32;
+    static mut _heapsize: u32;
 }
 
 #[no_mangle]
@@ -175,4 +177,10 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
     }
 }
 
+pub fn heap_start() -> *mut u32 {
+    unsafe { &mut _heap_start }
+}
 
+pub fn heap_size() -> *mut u32 {
+    unsafe { &mut _heapsize }
+}

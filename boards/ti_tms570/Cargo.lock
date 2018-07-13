@@ -8,8 +8,21 @@ name = "cortexr4"
 version = "0.1.0"
 
 [[package]]
+name = "linked_list_allocator"
+version = "0.6.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "spin 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "r0"
 version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "spin"
+version = "0.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -17,6 +30,7 @@ name = "ti_tms570"
 version = "0.1.0"
 dependencies = [
  "cortexr4 0.1.0",
+ "linked_list_allocator 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "tms570 0.1.0",
 ]
 
@@ -37,5 +51,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [metadata]
 "checksum cc 1.0.17 (registry+https://github.com/rust-lang/crates.io-index)" = "49ec142f5768efb5b7622aebc3fdbdbb8950a4b9ba996393cb76ef7466e8747d"
+"checksum linked_list_allocator 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)" = "655d57c71827fe0891ce72231b6aa5e14033dae3f604609e6a6f807267c1678d"
 "checksum r0 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "e2a38df5b15c8d5c7e8654189744d8e396bddc18ad48041a500ce52d6948941f"
+"checksum spin 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)" = "14db77c5b914df6d6173dda9a3b3f5937bd802934fa5edaf934df06a3491e56f"
 "checksum vcell 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "45c297f0afb6928cd08ab1ff9d95e99392595ea25ae1b5ecf822ff8764e57a0d"
