@@ -1,0 +1,10 @@
+[build]
+target = "armebv7r-none-eabihf"
+
+[target.armebv7r-none-eabihf]
+rustflags = [
+    "-C", "linker=armeb-eabi-gcc",
+    "-C", "link-arg=-Tboard.ld",
+    "-C", "link-arg=-nostartfiles"
+]
+
