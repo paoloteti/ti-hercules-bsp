@@ -41,7 +41,7 @@ Q=@
 VERBOSE =
 endif
 
-
+.PHONY: all
 all: target/$(TARGET)/release/$(PLATFORM)
 
 debug: target/$(TARGET)/debug/$(PLATFORM)
@@ -49,10 +49,12 @@ debug: target/$(TARGET)/debug/$(PLATFORM)
 target:
 	@mkdir -p target
 
+.PHONY: target/$(TARGET)/release/$(PLATFORM)
 target/$(TARGET)/release/$(PLATFORM):
 	$(Q)cargo xbuild $(VERBOSE) --release
 	$(Q)$(SIZE) $@
 
+.PHONY: target/$(TARGET)/debug/$(PLATFORM)
 target/$(TARGET)/debug/$(PLATFORM):
 	$(Q)cargo xbuild $(VERBOSE)
 	$(Q)$(SIZE) $@
