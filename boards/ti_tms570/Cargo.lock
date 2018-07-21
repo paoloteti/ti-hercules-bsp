@@ -1,11 +1,16 @@
 [[package]]
 name = "cc"
-version = "1.0.17"
+version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "cortexr4"
 version = "0.1.0"
+
+[[package]]
+name = "f021_fapi"
+version = "0.1.0"
+source = "git+https://github.com/paoloteti/f021-flash-api.git#22278d1506824fca4d261d5899f1305454f40887"
 
 [[package]]
 name = "linked_list_allocator"
@@ -30,6 +35,7 @@ name = "ti_tms570"
 version = "0.1.0"
 dependencies = [
  "cortexr4 0.1.0",
+ "f021_fapi 0.1.0 (git+https://github.com/paoloteti/f021-flash-api.git)",
  "linked_list_allocator 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "tms570 0.1.0",
 ]
@@ -38,7 +44,7 @@ dependencies = [
 name = "tms570"
 version = "0.1.0"
 dependencies = [
- "cc 1.0.17 (registry+https://github.com/rust-lang/crates.io-index)",
+ "cc 1.0.18 (registry+https://github.com/rust-lang/crates.io-index)",
  "cortexr4 0.1.0",
  "r0 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "vcell 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -50,7 +56,8 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [metadata]
-"checksum cc 1.0.17 (registry+https://github.com/rust-lang/crates.io-index)" = "49ec142f5768efb5b7622aebc3fdbdbb8950a4b9ba996393cb76ef7466e8747d"
+"checksum cc 1.0.18 (registry+https://github.com/rust-lang/crates.io-index)" = "2119ea4867bd2b8ed3aecab467709720b2d55b1bcfe09f772fd68066eaf15275"
+"checksum f021_fapi 0.1.0 (git+https://github.com/paoloteti/f021-flash-api.git)" = "<none>"
 "checksum linked_list_allocator 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)" = "655d57c71827fe0891ce72231b6aa5e14033dae3f604609e6a6f807267c1678d"
 "checksum r0 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "e2a38df5b15c8d5c7e8654189744d8e396bddc18ad48041a500ce52d6948941f"
 "checksum spin 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)" = "14db77c5b914df6d6173dda9a3b3f5937bd802934fa5edaf934df06a3491e56f"

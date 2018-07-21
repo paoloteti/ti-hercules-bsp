@@ -21,6 +21,7 @@ debug-assertions = false
 [dependencies]
 cortexr4 = { path = "../../arch/cortex-r4" }
 tms570 = { path = "../../chips/tms570" }
+f021_fapi = { git = "https://github.com/paoloteti/f021-flash-api.git" }
 
 [dependencies.linked_list_allocator]
 default-features = true
