@@ -1,0 +1,6 @@
+[package]
+name = "panic_impl"
+version = "0.1.0"
+authors = ["Paolo Teti <paolo.teti@gmail.com>"]
+
+[dependencies]

@@ -1,11 +1,11 @@
 #![no_std]
 #![feature(core_intrinsics)]
 #![feature(lang_items)]
-#![feature(panic_implementation)]
 #![feature(naked_functions)]
 #![feature(alloc)]
 #![feature(allocator_api)]
 
+extern crate panic_impl;
 extern crate tms570;
 extern crate alloc;
 extern crate linked_list_allocator;
@@ -17,7 +17,6 @@ use tms570::pinmux::PinMux;
 use linked_list_allocator::LockedHeap;
 use alloc::vec::Vec;
 
-pub mod panic;
 pub mod lang_items;
 pub mod handlers;
 
