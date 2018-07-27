@@ -1,1 +1,0 @@
-tms570ls31xx.ld

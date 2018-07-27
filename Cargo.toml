@@ -20,8 +20,8 @@ debug-assertions = false
 
 [dependencies]
 panic_impl = { path = "crates/panic_impl" }
-cortexr4 = { path = "../../arch/cortex-r4" }
-tms570 = { path = "../../chips/tms570" }
+cortexr4 = { path = "arch/cortex-r4" }
+tms570 = { path = "chips/tms570" }
 f021_fapi = { git = "https://github.com/paoloteti/f021-flash-api.git" }
 
 [dependencies.linked_list_allocator]

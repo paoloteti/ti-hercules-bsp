@@ -11,4 +11,4 @@ HEAP_LENGTH  = 0x00001500;
 
 MPU_MIN_ALIGN = 8K;
 
-INCLUDE ../bsp.ld
+INCLUDE bsp.ld
