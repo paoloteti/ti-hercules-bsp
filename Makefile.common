@@ -25,9 +25,6 @@ else
 export CFLAGS_$(TARGET_UN) = $(CFLAGS) -mfpu=vfpv3-d16
 endif
 
-
-export RUST_TARGET_PATH = $(PWD)
-
 ifndef PLATFORM
 $(error Required make vairable PLATFORM is not defined)
 endif
