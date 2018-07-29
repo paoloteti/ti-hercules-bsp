@@ -144,9 +144,9 @@ SECTIONS
     .heap :
     {
         _sheap = .;
-		. = . + __heap_size__;
-		_eheap = .;
-	} > ram
+        . = . + __heap_size__;
+        _eheap = .;
+    } > ram
 
     .vim (NOLOAD) :
     {
