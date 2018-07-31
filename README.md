@@ -17,4 +17,4 @@ The TMS570 family integrates dual Cortex-R4F and Cortex-R5F processors in lock-s
 
 ## Build
 
-`cd ti-hercules-bsp/boards/ti_tms570; make`
+Just run `make` or `make debug`
