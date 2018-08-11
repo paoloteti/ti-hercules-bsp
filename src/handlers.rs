@@ -7,6 +7,10 @@ pub unsafe extern "C" fn svc_handler() {}
 #[naked]
 pub unsafe extern "C" fn prefetch_abort() {}
 
+#[no_mangle]
+#[naked]
+pub unsafe extern "C" fn undef_entry() {}
+
 /// User defined function for custom actions on Data Abort events
 /// Function cannot panic
 #[no_mangle]
