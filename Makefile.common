@@ -3,27 +3,10 @@
 MAKEFLAGS += -r
 MAKEFLAGS += -R
 
-TOOLCHAIN ?= armeb-eabi
-
-CC        := $(TOOLCHAIN)-gcc
-AR        := $(TOOLCHAIN)-ar
+TOOLCHAIN ?= arm-none-eabi
 SIZE      ?= $(TOOLCHAIN)-size
-CFLAGS    := -O2 -march=armv7-r
 
 export CARGO_INCREMENTAL=0
-
-# Used mainly to build compiler-builtins
-US:= _
-DASH:= -
-TARGET_UN := $(subst $(DASH),$(US),$(TARGET))
-export CC_$(TARGET_UN) = $(CC)
-export LD_$(TARGET_UN) = $(CC)
-export AR_$(TARGET_UN) = $(AR)
-ifdef SOFTFLOAT
-export CFLAGS_$(TARGET_UN) = $(CFLAGS)
-else
-export CFLAGS_$(TARGET_UN) = $(CFLAGS) -mfpu=vfpv3-d16
-endif
 
 ifndef PLATFORM
 $(error Required make vairable PLATFORM is not defined)
@@ -48,16 +31,16 @@ target:
 
 .PHONY: target/$(TARGET)/release/$(PLATFORM)
 target/$(TARGET)/release/$(PLATFORM):
-	$(Q)cargo xbuild $(VERBOSE) --release
+	$(Q)cargo xbuild $(VERBOSE) --target $(TARGET) --release
 	$(Q)$(SIZE) $@
 
 .PHONY: target/$(TARGET)/debug/$(PLATFORM)
 target/$(TARGET)/debug/$(PLATFORM):
-	$(Q)cargo xbuild $(VERBOSE)
+	$(Q)cargo xbuild $(VERBOSE) --target $(TARGET)
 	$(Q)$(SIZE) $@
 
 check:
-	$(Q)cargo check $(VERBOSE) --release
+	$(Q)cargo check $(VERBOSE) --target $(TARGET) --release
 
 clean::
 	$(Q)cargo clean $(VERBOSE)
