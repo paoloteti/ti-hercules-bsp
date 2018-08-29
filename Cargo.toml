@@ -2,6 +2,7 @@
 name = "ti_tms570"
 version = "0.1.0"
 authors = ["Paolo Teti <paolo.teti@gmail.com>"]
+description = "Board Support Package for TI Cortex-R4F/R5F TMS570"
 build = "build.rs"
 
 [profile.dev]
