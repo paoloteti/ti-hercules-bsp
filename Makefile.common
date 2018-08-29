@@ -31,12 +31,12 @@ target:
 
 .PHONY: target/$(TARGET)/release/$(PLATFORM)
 target/$(TARGET)/release/$(PLATFORM):
-	$(Q)cargo xbuild $(VERBOSE) --target $(TARGET) --release
+	$(Q)cargo build $(VERBOSE) --target $(TARGET) --release
 	$(Q)$(SIZE) $@
 
 .PHONY: target/$(TARGET)/debug/$(PLATFORM)
 target/$(TARGET)/debug/$(PLATFORM):
-	$(Q)cargo xbuild $(VERBOSE) --target $(TARGET)
+	$(Q)cargo build $(VERBOSE) --target $(TARGET)
 	$(Q)$(SIZE) $@
 
 check:
