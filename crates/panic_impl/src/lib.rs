@@ -1,10 +1,10 @@
 #![no_std]
 #![feature(core_intrinsics)]
-#![feature(panic_implementation)]
+#![feature(panic_handler)]
 
 
 #[cfg(not(test))]
-#[panic_implementation]
+#[panic_handler]
 pub extern fn panic(_info: &core::panic::PanicInfo) -> ! {
     unsafe { core::intrinsics::abort() }
 }
