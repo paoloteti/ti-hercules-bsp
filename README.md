@@ -10,9 +10,9 @@ The TMS570 family integrates dual Cortex-R4F and Cortex-R5F processors in lock-s
 
 ## Getting started
 
-1. rust nightly as default toolchain (`rustc 1.30.0-nightly (7061b2775 2018-08-28)` or newer)
-2. Add armebv7r target `rustup target add armebv7r-none-eabihf`
-3. GCC v7.3.2 for ARM: `sudo apt-get install gcc-arm-none-eabi`
+1. Cargo xbuild installed (`cargo install cargo-xbuild`)
+2. Linaro Toolchain [armeb-none-eabi](https://releases.linaro.org/components/toolchain/binaries/latest/armeb-eabi/) v7.2.x or newer
+3. rust nightly as default toolchain (`rustc 1.28.0-nightly (29f48ccf3 2018-06-03)` or newer)
 4. JTAG programmer: Lautherbach Trace32 Powerview for ARM or OpenOCD
 
 ## Build
