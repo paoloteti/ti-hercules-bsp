@@ -1,11 +1,9 @@
-
-
 /// Macro to wait until a bit-mask is set
 #[macro_export]
 macro_rules! wait_until_set {
     ($reg: expr, $mask: expr ) => {
         while $reg & $mask != $mask { /* wait */ }
-    }
+    };
 }
 
 /// Macro to wait until a bit-mask reset
@@ -13,7 +11,7 @@ macro_rules! wait_until_set {
 macro_rules! wait_until_reset {
     ($reg: expr, $mask: expr ) => {
         while $reg & $mask == $mask { /* wait */ }
-    }
+    };
 }
 
 /// Macro to wait until a bit-mask is 0
@@ -21,21 +19,21 @@ macro_rules! wait_until_reset {
 macro_rules! wait_until_zero {
     ($reg: expr, $mask: expr ) => {
         while $reg & $mask == 0x0 { /* wait */ }
-    }
+    };
 }
 
 #[macro_export]
 macro_rules! wait_until_false {
     ($condition: expr ) => {
         while !$condition { /* wait */ }
-    }
+    };
 }
 
 #[macro_export]
 macro_rules! wait_until_true {
     ($condition: expr ) => {
         while $condition { /* wait */ }
-    }
+    };
 }
 
 /// Divide positive or negative dividend by positive or negative divisor
@@ -50,19 +48,22 @@ macro_rules! div_round_closest {
         } else {
             ($x - ($divisor / 2)) / $divisor
         }
-    }
+    };
 }
 
 #[macro_export]
 macro_rules! us2hz {
-    ($us: expr) => { $us * 1000 }
+    ($us: expr) => {
+        $us * 1000
+    };
 }
 
 #[macro_export]
 macro_rules! MHz {
-    ($m: expr) => { $m * 1_000_000 }
+    ($m: expr) => {
+        $m * 1_000_000
+    };
 }
-
 
 #[macro_export]
 macro_rules! wait_cycle {
@@ -72,7 +73,5 @@ macro_rules! wait_cycle {
             cortexr4::asm::nop();
             cortexr4::asm::nop();
         }
-    }
+    };
 }
-
-
