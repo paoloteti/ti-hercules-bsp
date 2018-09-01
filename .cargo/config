@@ -8,3 +8,11 @@ rustflags = [
     "-C", "link-arg=-nostartfiles",
     "-C", "link-arg=-mbig-endian",
 ]
+
+[target.armebv7r-none-eabi]
+rustflags = [
+    "-C", "linker=arm-none-eabi-gcc",
+    "-C", "link-arg=-Ttms570ls31xx.ld",
+    "-C", "link-arg=-nostartfiles",
+    "-C", "link-arg=-mbig-endian",
+]
