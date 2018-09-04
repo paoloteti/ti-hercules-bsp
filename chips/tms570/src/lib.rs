@@ -63,10 +63,10 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
     syscore::event_bus_export(true);
 
     #[cfg(feature = "errata57")]
-    cortexr4::errata57();
+    cortexr4::silicon::errata57();
 
     #[cfg(feature = "errata66")]
-    cortexr4::errata66();
+    cortexr4::silicon::errata66();
 
     let wdog:rti::ChipWatchDog = dwd::DWD::new();
 
