@@ -98,27 +98,28 @@ pub unsafe fn init_core_registers() {
 
 #[naked]
 pub unsafe fn init_stack_pointers() {
-    extern {
-        static __fiq_sp: u32;
-        static __irq_sp: u32;
-        static __svc_sp: u32;
-        static __abort_sp: u32;
-        static __undef_sp: u32;
-        static __user_sp: u32;
-    }
-    macro_rules! load_sp {
-        ($key:expr, $addr:expr) => {
-            asm!(concat!("cps #", stringify!($key)) : : : : "volatile");
-            asm!(concat!("ldr sp, =", stringify!($addr)) : : : : "volatile");
-        }
-    }
+    asm!("
+        cps   #17
+        ldr   sp,   fiq_sp
+        cps   #18
+        ldr   sp,   irq_sp
+        cps   #19
+        ldr   sp,   svc_sp
+        cps   #23
+        ldr   sp,   abort_sp
+        cps   #27
+        ldr   sp,   undef_sp
+        cps   #31
+        ldr   sp,   user_sp
+        bx lr
 
-    load_sp!(17, __fiq_sp);
-    load_sp!(18, __irq_sp);
-    load_sp!(19, __svc_sp);
-    load_sp!(23, __abort_sp);
-    load_sp!(27, __undef_sp);
-    load_sp!(31, __user_sp);
+user_sp:  .word 0x08001000
+svc_sp:   .word 0x08001100
+fiq_sp:   .word 0x08001200
+irq_sp:   .word 0x08001300
+abort_sp: .word 0x08001400
+undef_sp: .word 0x08001500
+    ");
 }
 
 pub unsafe fn flash_ecc(enable:bool) {

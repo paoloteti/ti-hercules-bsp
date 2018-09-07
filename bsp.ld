@@ -2,7 +2,7 @@
 MEMORY
 {
     rom (rx)     : ORIGIN = ROM_ORIGIN,   LENGTH = ROM_LENGTH
-    stack (rw)   : ORIGIN = STACK_ORIGIN, LENGTH = STACK_LENGTH
+    cpustack (rw): ORIGIN = STACK_ORIGIN, LENGTH = STACK_LENGTH
     ram (rwx)    : ORIGIN = RAM_ORIGIN,   LENGTH = RAM_LENGTH
     vimram (rx)  : ORIGIN = VIM_ORIGIN,   LENGTH = VIM_LENGTH
 }
@@ -11,12 +11,12 @@ __stack_size__ = STACK_LENGTH;
 __heap_size__  = HEAP_LENGTH;
 
 /* Stack pointers in all CPU modes */
-__fiq_sp = FIQ_SP;
-__irq_sp = IRQ_SP;
-__svc_sp = SVC_SP;
-__abort_sp = ABORT_SP;
-__undef_sp = UNDEF_SP;
-__user_sp = USER_SP;
+PROVIDE(__fiq_sp = FIQ_SP);
+PROVIDE(__irq_sp = IRQ_SP);
+PROVIDE(__svc_sp = SVC_SP);
+PROVIDE(__abort_sp = ABORT_SP);
+PROVIDE(__undef_sp = UNDEF_SP);
+PROVIDE(__user_sp = USER_SP);
 
 SECTIONS
 {
@@ -128,14 +128,14 @@ SECTIONS
         _edata = .;
     } > ram AT > rom
 
-    .stack (NOLOAD) :
+    .cpustack (NOLOAD) :
     {
         . = ALIGN(8);
         _sstack = .;
         . = . + __stack_size__;
         . = ALIGN(8);
         _estack = .;
-    } > stack
+    } > cpustack
 
     .sram (NOLOAD) :
     {
