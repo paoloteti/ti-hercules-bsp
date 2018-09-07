@@ -10,6 +10,14 @@ MEMORY
 __stack_size__ = STACK_LENGTH;
 __heap_size__  = HEAP_LENGTH;
 
+/* Stack pointers in all CPU modes */
+__fiq_sp = FIQ_SP;
+__irq_sp = IRQ_SP;
+__svc_sp = SVC_SP;
+__abort_sp = ABORT_SP;
+__undef_sp = UNDEF_SP;
+__user_sp = USER_SP;
+
 SECTIONS
 {
     /DISCARD/ : { *(.note.gnu.*) }
