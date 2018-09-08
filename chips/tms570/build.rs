@@ -6,7 +6,8 @@ fn main() {
 
     cc::Build::new()
         .file("src/dabort.s")
-        .compile("dabort");
+        .file("src/cpustack.s")
+        .compile("tms570");
 
     if target.contains("eabihf") {
         println!("cargo:rustc-cfg=vfp");
