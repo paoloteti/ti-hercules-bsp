@@ -5,6 +5,7 @@ MAKEFLAGS += -R
 
 TOOLCHAIN ?= arm-none-eabi
 SIZE      ?= $(TOOLCHAIN)-size
+STRIP     ?= $(TOOLCHAIN)-strip
 
 export CARGO_INCREMENTAL=0
 
@@ -32,6 +33,7 @@ target:
 .PHONY: target/$(TARGET)/release/$(PLATFORM)
 target/$(TARGET)/release/$(PLATFORM):
 	$(Q)cargo build $(VERBOSE) --target $(TARGET) --release
+	$(Q)$(STRIP) $@
 	$(Q)$(SIZE) $@
 
 .PHONY: target/$(TARGET)/debug/$(PLATFORM)
