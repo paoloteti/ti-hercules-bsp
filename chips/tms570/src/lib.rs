@@ -3,7 +3,9 @@
 
 #![crate_name = "tms570"]
 #![crate_type = "rlib"]
-#![feature(asm,global_asm,used,naked_functions)]
+#![feature(asm)]
+#![feature(global_asm)]
+#![feature(naked_functions)]
 #![no_std]
 
 extern crate r0;
