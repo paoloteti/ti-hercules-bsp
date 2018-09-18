@@ -7,7 +7,7 @@ extern "C" {
 /// CPU working modes.
 /// This function is andatory to avoid any lock-step compare
 /// failure at startup or at first mode switch.
-#[naked]
+#[inline(never)]
 pub unsafe fn init_core_registers() {
     asm!("
         /* After reset, the CPU is in the Supervisor mode (M = 10011) */
@@ -99,11 +99,28 @@ pub unsafe fn init_core_registers() {
     ");
 }
 
-#[naked]
+#[inline]
 pub unsafe fn init_stack_pointers() {
-    _cpu_stack()
+    //_cpu_stack()
+    // FIXME: Move back to hard-coded asm due to
+    // issue in _cpu_stack() when in release mode
+    asm!("
+        cps   #17
+        ldr   sp, =0x08001200 /* fiq */
+        cps   #18
+        ldr   sp, =0x08001300 /* irq */
+        cps   #19
+        ldr   sp, =0x08001100 /* svc */
+        cps   #23
+        ldr   sp, =0x08001400 /* abort */
+        cps   #27
+        ldr   sp, =0x08001500 /* undef */
+        cps   #31
+        ldr   sp, =0x08001000 /* user */
+    "::: "memory" : "volatile");
 }
 
+#[inline]
 pub unsafe fn flash_ecc(enable:bool) {
     asm!("mrc p15, #0x00, r0, c1, c0, #0x01");
     if enable {
@@ -113,11 +130,11 @@ pub unsafe fn flash_ecc(enable:bool) {
     }
     asm!("
         mcr p15, #0x00, r0, c1, c0, #0x01
-        bx lr
     ");
 }
 
 /// Enable or disable Event Bus Export
+#[inline]
 pub unsafe fn event_bus_export(enable:bool) {
     asm!("mrc p15, #0x00, r0, c9, c12, #0x00");
     if enable {
@@ -127,11 +144,10 @@ pub unsafe fn event_bus_export(enable:bool) {
     }
     asm!("
         mcr p15, #0x00, r0, c9, c12, #0x00
-        bx lr
     ");
 }
 
-
+#[inline]
 pub unsafe fn ram_ecc(enable:bool) {
     asm!("mrc p15, #0x00, r0, c1, c0, #0x01");
     if enable {
@@ -141,21 +157,21 @@ pub unsafe fn ram_ecc(enable:bool) {
     }
     asm!("
         mcr p15, #0x00, r0, c1, c0, #0x01
-        bx    lr
     ");
 }
 
 /// Enable Offset via Vic controller
+#[inline]
 pub unsafe fn irq_vic_enable() {
     asm!("
         mrc p15, #0, r0, c1, c0, #0;
         orr r0, r0, #0x01000000;
         mcr p15, #0, r0, c1, c0, #0
-        bx  lr
-    ");
+    "::: "memory" : "volatile");
 }
 
 /// Enable Vector Floating Point unit
+#[inline]
 pub unsafe fn vfp_enable() {
     #[cfg(vfp)]
     asm!("
@@ -164,6 +180,5 @@ pub unsafe fn vfp_enable() {
         mcr  p15, #0x00, r0, c1, c0, #0x02
         mov  r0,  #0x40000000
         fmxr fpexc,r0
-        bx   lr
-    ");
+    "::: "memory" : "volatile");
 }
