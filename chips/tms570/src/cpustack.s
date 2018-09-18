@@ -8,6 +8,7 @@
     .type _cpu_stack, %function
 
 _cpu_stack:
+    mov   r0, lr
     cps   #17
     ldr   sp,   fiq_sp
     cps   #18
@@ -20,7 +21,7 @@ _cpu_stack:
     ldr   sp,   undef_sp
     cps   #31
     ldr   sp,   user_sp
-    bx lr
+    bx    r0
 
 user_sp:  .word USER_SP
 svc_sp:   .word SVC_SP

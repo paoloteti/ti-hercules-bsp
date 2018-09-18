@@ -99,25 +99,9 @@ pub unsafe fn init_core_registers() {
     ");
 }
 
-#[inline]
+#[inline(always)]
 pub unsafe fn init_stack_pointers() {
-    //_cpu_stack()
-    // FIXME: Move back to hard-coded asm due to
-    // issue in _cpu_stack() when in release mode
-    asm!("
-        cps   #17
-        ldr   sp, =0x08001200 /* fiq */
-        cps   #18
-        ldr   sp, =0x08001300 /* irq */
-        cps   #19
-        ldr   sp, =0x08001100 /* svc */
-        cps   #23
-        ldr   sp, =0x08001400 /* abort */
-        cps   #27
-        ldr   sp, =0x08001500 /* undef */
-        cps   #31
-        ldr   sp, =0x08001000 /* user */
-    "::: "memory" : "volatile");
+    _cpu_stack()
 }
 
 #[inline]
