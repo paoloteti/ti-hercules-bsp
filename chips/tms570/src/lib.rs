@@ -158,6 +158,7 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
             unimplemented!();
         }
         sys.pbist_stop();
+        syscore::ram_ecc_enable();
     }
 
     sys.init_memory(system::Ram::Internal);
