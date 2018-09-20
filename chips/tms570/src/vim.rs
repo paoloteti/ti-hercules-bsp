@@ -44,7 +44,6 @@ const VIM_PRAM_BASE_ADDR: *const VimParityRam = 0xFFF8_2400 as *const VimParityR
 const TEST_ENABLE:u32 = 0x10;
 
 
-#[naked]
 fn vim_dummy_isr(){}
 
 // .vim.table shall be at 0xFFF8_2000
