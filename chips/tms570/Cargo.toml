@@ -9,7 +9,6 @@ lto = true
 opt-level = 0
 debug = true
 debug-assertions = true
-pbist_startup = true
 
 [profile.release]
 panic = "abort"
@@ -17,7 +16,6 @@ lto = true
 opt-level = 3
 debug = false
 debug-assertions = false
-pbist_startup = true
 
 [dependencies]
 cortexr4 = { path = "../../arch/cortex-r4" }
@@ -28,6 +26,8 @@ r0 = "0.2.2"
 cc = "1.0"
 
 [features]
-default = ["errata57", "errata66"]
+default = ["errata57", "errata66", "pbist_rom"]
 errata57 = []
 errata66 = []
+pbist_rom = []
+pbist_ram = []

@@ -128,12 +128,12 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
     sys.eclk_functional_mode(7, false);
 
     // Parallel Test on PBIST ROM (can't be done in parallel with others)
-    if cfg!(pbist_startup) {
+    if cfg!(feature = "pbist_rom") {
         sys.pbist_run_test(pbist::TRIPLEREADSLOW | pbist::TRIPLEREADFAST,
                            pbist::PBIST_ROM);
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
-            unimplemented!();
+            panic!("PBIST ROM");
         }
         sys.pbist_stop();
 
@@ -142,20 +142,19 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
                            pbist::STC_ROM);
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
-            unimplemented!();
+            panic!("PBIST STC ROM");
         }
         sys.pbist_stop();
     }
 
-
-    if cfg!(pbist_startup) {
+    if cfg!(feature = "pbist_ram") {
         // Disable ECC before test Internal RAM
         syscore::ram_ecc_disable();
         // ESRAM Single Port PBIST
         sys.pbist_run_test(pbist::MARCH13N_SP, pbist::ESRAM1);
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
-            unimplemented!();
+            panic!("PBIST RAM");
         }
         sys.pbist_stop();
         syscore::ram_ecc_enable();
