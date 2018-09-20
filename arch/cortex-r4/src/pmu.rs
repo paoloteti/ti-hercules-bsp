@@ -81,7 +81,6 @@ pub enum Counter {
     Both,
 }
 
-#[naked]
 pub unsafe fn init() {
     asm!("
         /* set control register */
@@ -143,28 +142,28 @@ pub unsafe fn reset_counters(counter:Counter) {
 
 /// Starts selected counters
 /// 'counters' - Counter mask
-#[naked]
+#[inline]
 pub unsafe fn start_counters(counters:u32) {
     asm!("
         mcr p15, #0, r0, c9, c12, #1
         bx  lr"
         :
         : "0"(counters)
-        :
-        :)
+        : "memory"
+        : "volatile")
 }
 
 /// Stops selected counters
 /// 'counters' - Counter mask
-#[naked]
+#[inline]
 pub unsafe fn stop_counters(counters:u32) {
     asm!("
         mcr p15, #0, r0, c9, c12, #1
         bx  lr"
         :
         : "0"(counters)
-        :
-        :)
+        : "memory"
+        : "volatile")
 }
 
 /// Set event counter count event
@@ -178,19 +177,20 @@ pub unsafe fn set_count_event(counter:u32, event:PmuEvent) {
         bx  lr"
         :
         : "0"(counter) "1"(event_code)
-        :
-        :)
+        : "memory"
+        : "volatile")
 }
 
 /// Returns current cycle counter value
+#[inline]
 pub unsafe fn get_cycle_count() -> u32 {
     let cycles: u32;
     asm!("
         mrc p15, #0, r0, c9, c13, #0"
         : "=r"(cycles)
         :
-        :
-        :);
+        : "memory"
+        : "volatile");
     cycles
 }
 
@@ -203,8 +203,8 @@ pub unsafe fn get_event_count(counter:u32) {
         bx  lr"
         :
         : "0"(counter)
-        :
-        :)
+        : "memory"
+        : "volatile")
 }
 
 /// Returns current overflow register and clear flags
