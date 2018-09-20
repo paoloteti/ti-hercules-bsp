@@ -1,4 +1,3 @@
-
 extern "C" {
     pub fn _cpu_stack();
 }
@@ -9,7 +8,8 @@ extern "C" {
 /// failure at startup or at first mode switch.
 #[inline(never)]
 pub unsafe fn init_core_registers() {
-    asm!("
+    asm!(
+        "
         /* After reset, the CPU is in the Supervisor mode (M = 10011) */
         mov r0, lr
         mov r1, #0x0000
@@ -67,10 +67,11 @@ pub unsafe fn init_core_registers() {
         orr   r2,      r2,         #0xF00000
         mcr   p15,     #0x00,      r2,       c1, c0, #0x02
         mov   r2,      #0x40000000
-    ");
+    "::: "memory" : "volatile");
 
     #[cfg(vfp)]
-    asm!("
+    asm!(
+        "
         fmxr  fpexc,   r2
         fmdrr d0, r1, r1
         fmdrr d1, r1, r1
@@ -88,15 +89,16 @@ pub unsafe fn init_core_registers() {
         fmdrr d13, r1, r1
         fmdrr d14, r1, r1
         fmdrr d15, r1, r1
-    ");
+    "::: "memory" : "volatile");
 
-    asm!("
+    asm!(
+        "
         bl    1f
     1:  bl    2f
     2:  bl    3f
     3:  bl    4f
     4:  bx r0
-    ");
+    "::: "memory" : "volatile");
 }
 
 #[inline(always)]
@@ -105,43 +107,59 @@ pub unsafe fn init_stack_pointers() {
 }
 
 #[inline]
-pub unsafe fn flash_ecc(enable:bool) {
-    asm!("mrc p15, #0x00, r0, c1, c0, #0x01");
-    if enable {
-        asm!("orr r0, r0, #0x02000000");
-    } else {
-        asm!("bic r0, r0, #0x02000000");
-    }
+pub unsafe fn flash_ecc_enable() {
     asm!("
+        mrc p15, #0x00, r0, c1, c0, #0x01
+        orr r0, r0, #0x02000000
         mcr p15, #0x00, r0, c1, c0, #0x01
-    ");
+    "::: "memory" : "volatile");
 }
 
-/// Enable or disable Event Bus Export
 #[inline]
-pub unsafe fn event_bus_export(enable:bool) {
-    asm!("mrc p15, #0x00, r0, c9, c12, #0x00");
-    if enable {
-        asm!("orr r0, r0, #0x10");
-    } else {
-        asm!("bic r0, r0, #0x10");
-    }
+pub unsafe fn flash_ecc_disable() {
     asm!("
+        mrc p15, #0x00, r0, c1, c0, #0x01
+        bic r0, r0, #0x02000000
+        mcr p15, #0x00, r0, c1, c0, #0x01
+   "::: "memory" : "volatile");
+}
+
+/// Enable Event Bus Export
+#[inline]
+pub unsafe fn event_bus_export_enable() {
+    asm!("
+        mrc p15, #0x00, r0, c9, c12, #0x00
+        orr r0, r0, #0x10
         mcr p15, #0x00, r0, c9, c12, #0x00
-    ");
+    "::: "memory" : "volatile");
+}
+
+/// Disable Event Bus Export
+#[inline]
+pub unsafe fn event_bus_export_disable() {
+    asm!("
+        mrc p15, #0x00, r0, c9, c12, #0x00
+        bic r0, r0, #0x10
+        mcr p15, #0x00, r0, c9, c12, #0x00
+    "::: "memory" : "volatile");
 }
 
 #[inline]
-pub unsafe fn ram_ecc(enable:bool) {
-    asm!("mrc p15, #0x00, r0, c1, c0, #0x01");
-    if enable {
-        asm!("orr r0, r0, #0x0C000000");
-    } else {
-        asm!("bic r0, r0, #0x0C000000");
-    }
+pub unsafe fn ram_ecc_enable() {
     asm!("
+        mrc p15, #0x00, r0, c1, c0, #0x01
+        orr r0, r0, #0x0C000000
         mcr p15, #0x00, r0, c1, c0, #0x01
-    ");
+    "::: "memory" : "volatile");
+}
+
+#[inline]
+pub unsafe fn ram_ecc_disable() {
+    asm!("
+        mrc p15, #0x00, r0, c1, c0, #0x01
+        bic r0, r0, #0x0C000000
+        mcr p15, #0x00, r0, c1, c0, #0x01
+    "::: "memory" : "volatile");
 }
 
 /// Enable Offset via Vic controller

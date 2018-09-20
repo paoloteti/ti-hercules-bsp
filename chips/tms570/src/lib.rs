@@ -62,7 +62,7 @@ extern "C" {
 pub unsafe extern "C" fn tms570_reset() -> ! {
     syscore::init_core_registers();
     syscore::init_stack_pointers();
-    syscore::event_bus_export(true);
+    syscore::event_bus_export_enable();
 
     #[cfg(feature = "errata57")]
     cortexr4::silicon::errata57();
@@ -150,7 +150,7 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
 
     if cfg!(pbist_startup) {
         // Disable ECC before test Internal RAM
-        syscore::ram_ecc(false);
+        syscore::ram_ecc_disable();
         // ESRAM Single Port PBIST
         sys.pbist_run_test(pbist::MARCH13N_SP, pbist::ESRAM1);
         wait_until_false!(sys.pbist_completed());
