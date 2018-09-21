@@ -162,6 +162,16 @@ SECTIONS
         KEEP(*(.vim_table .vim_table.*))
         . = ALIGN(4);
     } > vimram
+
+    /*
+     * Stack usage metadata emitted by LLVM
+     * The stack size values only include the space allocated in the function prologue.
+     * Functions with dynamic stack allocations are not included.
+     */
+    .stack_sizes (INFO) :
+    {
+        KEEP(*(.stack_sizes));
+    }
 }
 
 PROVIDE(_heap_start = _sheap);
