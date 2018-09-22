@@ -1,66 +1,66 @@
 
 /// TRIPLE_READ_SLOW_READ  for PBIST and STC ROM
-pub const TRIPLEREADSLOW:u32     = 0x00000001;
+pub const TRIPLEREADSLOW:u32     = 0x0000_0001;
 /// TRIPLE_READ_SLOW_READ  for PBIST and STC ROM
-pub const TRIPLEREADFAST:u32     = 0x00000002;
+pub const TRIPLEREADFAST:u32     = 0x0000_0002;
 /// March13 N Algo for 2 Port mem
-pub const MARCH13N_DP:u32        = 0x00000004;
+pub const MARCH13N_DP:u32        = 0x0000_0004;
 /// March13 N Algo for 1 Port mem
-pub const MARCH13N_SP:u32        = 0x00000008;
+pub const MARCH13N_SP:u32        = 0x0000_0008;
 /// Down1a Algor forces the switching fo all data bits & most addr
 /// bits on consecutive read cycles
-pub const DOWN1A_DP:u32          = 0x00000010;
+pub const DOWN1A_DP:u32          = 0x0000_0010;
 /// Down1a Algor forces the switching fo all data bits & most addr
 /// bits on consecutive read cycles
-pub const DOWN1A_SP:u32          = 0x00000020;
+pub const DOWN1A_SP:u32          = 0x0000_0020;
 /// Map Column algo (to identify bit line senstivities) for 2 Port memory
-pub const MAPCOLUMN_DP:u32       = 0x00000040;
+pub const MAPCOLUMN_DP:u32       = 0x0000_0040;
 /// Map Column algo (to identify bit line senstivities) for 1 Port memory
-pub const MAPCOLUMN_SP:u32       = 0x00000080;
+pub const MAPCOLUMN_SP:u32       = 0x0000_0080;
 /// Pre-Charge algo to exercise pre-charge capability for 2 port memory
-pub const PRECHARGE_DP:u32       = 0x00000100;
+pub const PRECHARGE_DP:u32       = 0x0000_0100;
 /// Pre-Charge algo to exercise pre-charge capability for 1 port memory
-pub const PRECHARGE_SP:u32       = 0x00000200;
+pub const PRECHARGE_SP:u32       = 0x0000_0200;
 /// Global column decode logic algo for 2 Port memories
-pub const DTXN2A_DP:u32          = 0x00000400;
+pub const DTXN2A_DP:u32          = 0x0000_0400;
 /// Global column decode logic algo for 1 Port memories
-pub const DTXN2A_SP:u32          = 0x00000800;
+pub const DTXN2A_SP:u32          = 0x0000_0800;
 /// pmos oper algo for 2 port memories
-pub const PMOSOPEN_DP:u32        = 0x00001000;
+pub const PMOSOPEN_DP:u32        = 0x0000_1000;
 /// pmos oper algo for 1 port memories
-pub const PMOSOPEN_SP:u32        = 0x00002000;
+pub const PMOSOPEN_SP:u32        = 0x0000_2000;
 /// pmos open slice1 for 2port memories
-pub const PPMOSOPENSLICE1_DP:u32 = 0x00004000;
+pub const PPMOSOPENSLICE1_DP:u32 = 0x0000_4000;
 /// pmos open slice2 for 2port memories
-pub const PPMOSOPENSLICE2_DP:u32 = 0x00008000;
+pub const PPMOSOPENSLICE2_DP:u32 = 0x0000_8000;
 /// flip10 algo for 2 port memories
-pub const FLIP10_DP:u32          = 0x00010000;
+pub const FLIP10_DP:u32          = 0x0001_0000;
 /// flip10  algo for 1 port memories
-pub const FLIP10_SP:u32          = 0x00020000;
+pub const FLIP10_SP:u32          = 0x0002_0000;
 /// iddq  algo for 2 port memories
-pub const IDDQ_DP:u32            = 0x00040000;
+pub const IDDQ_DP:u32            = 0x0004_0000;
 /// iddq  algo for 1 port memories
-pub const IDDQ_SP:u32            = 0x00080000;
+pub const IDDQ_SP:u32            = 0x0008_0000;
 /// retention  algo for 2 port memories
-pub const RETENTION_DP:u32       = 0x00100000;
+pub const RETENTION_DP:u32       = 0x0010_0000;
 /// retention  algo for 1 port memories
-pub const RETENTION_SP:u32       = 0x00200000;
+pub const RETENTION_SP:u32       = 0x0020_0000;
 /// iddq2 algo for 2 port memories
-pub const IDDQ2_DP:u32           = 0x00400000;
+pub const IDDQ2_DP:u32           = 0x0040_0000;
 /// iddq2 algo for 1 port memories
-pub const IDDQ2_SP:u32           = 0x00800000;
+pub const IDDQ2_SP:u32           = 0x0080_0000;
 /// retention2  algo for 2 port memories
-pub const RETENTION2_DP:u32      = 0x01000000;
+pub const RETENTION2_DP:u32      = 0x0100_0000;
 /// retention2  algo for 1 port memories
-pub const RETENTION2_SP:u32      = 0x02000000;
+pub const RETENTION2_SP:u32      = 0x0200_0000;
 /// iddqwstripe  algo for 2 port memories
-pub const IDDQROWSTRIPE_DP:u32   = 0x04000000;
+pub const IDDQROWSTRIPE_DP:u32   = 0x0400_0000;
 /// iddqwstripe  algo for 1 port memories
-pub const IDDQROWSTRIPE_SP:u32   = 0x08000000;
+pub const IDDQROWSTRIPE_SP:u32   = 0x0800_0000;
 /// iddqwstripe2  algo for 2 port memories
-pub const IDDQROWSTRIPE2_DP:u32  = 0x10000000;
+pub const IDDQROWSTRIPE2_DP:u32  = 0x1000_0000;
 /// iddqwstripe2  algo for 1 port memories
-pub const IDDQROWSTRIPE2_SP:u32  = 0x20000000;
+pub const IDDQROWSTRIPE2_SP:u32  = 0x2000_0000;
 
 
 pub const PBIST_ROM:u32         = 0x1 << (1 - 1);

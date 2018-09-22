@@ -47,9 +47,9 @@ impl Pcr {
     }
 
     pub fn enable_all(&self) {
-        self.PSPWRDWNCLR0.set(0xFFFFFFFF);
-        self.PSPWRDWNCLR1.set(0xFFFFFFFF);
-        self.PSPWRDWNCLR2.set(0xFFFFFFFF);
-        self.PSPWRDWNCLR3.set(0xFFFFFFFF);
+        self.PSPWRDWNCLR0.set(0xFFFF_FFFF);
+        self.PSPWRDWNCLR1.set(0xFFFF_FFFF);
+        self.PSPWRDWNCLR2.set(0xFFFF_FFFF);
+        self.PSPWRDWNCLR3.set(0xFFFF_FFFF);
     }
 }

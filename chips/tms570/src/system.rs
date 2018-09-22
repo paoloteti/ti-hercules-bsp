@@ -112,7 +112,7 @@ struct SysRegister2 {
     dieidl_reg2: VolatileCell<u32>,  // 0x00F8
     diedih_reg3: VolatileCell<u32>   // 0x00FC
 }
-const SYS2_BASE_ADDR: *const SysRegister2 = 0xFFFFE100 as *const SysRegister2;
+const SYS2_BASE_ADDR: *const SysRegister2 = 0xFFFF_E100 as *const SysRegister2;
 
 #[allow(dead_code)]
 #[allow(non_snake_case)]
@@ -231,9 +231,9 @@ impl Sys {
     pub fn enable_pheripherals(&self, enable:bool) {
         let cntl = self.sys1.clkcntl.get();
         if enable {
-            self.sys1.clkcntl.set(cntl | 0x00000100);
+            self.sys1.clkcntl.set(cntl | 0x0000_0100);
         } else {
-            self.sys1.clkcntl.set(cntl & 0xFFFFFEFF);
+            self.sys1.clkcntl.set(cntl & 0xFFFF_FEFF);
         }
     }
 
@@ -465,9 +465,9 @@ impl Sys {
 
     /// Get Wafer and lot number
     pub fn die_id(&self) -> (u32, u32) {
-        let wafer = self.sys2.dieidl_reg0.get() & 0x003FFFFF;
-        let lotnum = (self.sys2.dieidl_reg0.get() & 0xFFC00000 >> 22) |
-                      self.sys2.dieidh_reg1.get() & 0x00003FFF << 10;
+        let wafer = self.sys2.dieidl_reg0.get() & 0x003F_FFFF;
+        let lotnum = (self.sys2.dieidl_reg0.get() & 0xFFC0_0000 >> 22) |
+                      self.sys2.dieidh_reg1.get() & 0x0000_3FFF << 10;
         (wafer, lotnum)
     }
 

@@ -2,19 +2,19 @@
 pub mod event {
     pub type SciEvent = u32;
     /// Framing error
-    pub const FE_INT:SciEvent    = 0x04000000;
+    pub const FE_INT:SciEvent    = 0x0400_0000;
     /// Overrun error
-    pub const OE_INT:SciEvent    = 0x02000000;
+    pub const OE_INT:SciEvent    = 0x0200_0000;
     /// Parity error
-    pub const PE_INT:SciEvent    = 0x01000000;
+    pub const PE_INT:SciEvent    = 0x0100_0000;
     /// Receive buffer ready
-    pub const RX_INT:SciEvent    = 0x00000200;
+    pub const RX_INT:SciEvent    = 0x0000_0200;
     /// Transmit buffer ready
-    pub const TX_INT:SciEvent    = 0x00000100;
+    pub const TX_INT:SciEvent    = 0x0000_0100;
     /// Wakeup
-    pub const WAKE_INT:SciEvent  = 0x00000002;
+    pub const WAKE_INT:SciEvent  = 0x0000_0002;
     /// Break detect
-    pub const BREAK_INT:SciEvent = 0x00000001;
+    pub const BREAK_INT:SciEvent = 0x0000_0001;
 }
 
 pub enum StopBits {

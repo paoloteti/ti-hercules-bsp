@@ -26,17 +26,17 @@ pub struct Efc {
     self_test_sign: VolatileCell<u32>,   // 0x4C SELF TEST SIGNATURE
 }
 
-const EFC_BASE_ADDR: *const Efc = 0xFFF8C000 as *const Efc;
+const EFC_BASE_ADDR: *const Efc = 0xFFF8_C000 as *const Efc;
 
-const EFC_AUTOLOAD_ERROR_EN: u32     = 0x00040000;
-const EFC_INSTRUCTION_ERROR_EN: u32  = 0x00080000;
-const EFC_INSTRUCTION_INFO_EN: u32   = 0x00100000;
-const EFC_SELF_TEST_ERROR_EN: u32    = 0x00200000;
-const INPUT_ENABLE: u32              = 0x0000000F;
-const ECC_SELF_TEST: u32             = 0x00002000;
-const OUTPUT_ENABLE: u32             = 0x0003C000;
-const EFC_SELF_TEST_ERROR: u32       = 0x00004000;
-const EFC_SELF_TEST_DONE: u32        = 0x00008000;
+const EFC_AUTOLOAD_ERROR_EN: u32     = 0x0004_0000;
+const EFC_INSTRUCTION_ERROR_EN: u32  = 0x0008_0000;
+const EFC_INSTRUCTION_INFO_EN: u32   = 0x0010_0000;
+const EFC_SELF_TEST_ERROR_EN: u32    = 0x0020_0000;
+const INPUT_ENABLE: u32              = 0x0000_000F;
+const ECC_SELF_TEST: u32             = 0x0000_2000;
+const OUTPUT_ENABLE: u32             = 0x0003_C000;
+const EFC_SELF_TEST_ERROR: u32       = 0x0000_4000;
+const EFC_SELF_TEST_DONE: u32        = 0x0000_8000;
 
 // No Error
 const EGC_ERROR_NONE: u32 = 0x0;
@@ -75,7 +75,7 @@ impl Efc {
         // configure self-test cycles
         self.self_test_cycles.set(0x258);
         // configure self-test signature
-        self.self_test_sign.set(0x5362F97F);
+        self.self_test_sign.set(0x5362_F97F);
         // configure boundary register to start ECC self-test
         self.boundary.set(INPUT_ENABLE | ECC_SELF_TEST)
     }
@@ -93,9 +93,9 @@ impl Efc {
             },
             EFC_ERROR_SINGLE_BIT => {
                 self.self_test();
-                return EfcError::OnGoing;
+                EfcError::OnGoing
             }
-            _ => return EfcError::Other,
+            _ => EfcError::Other,
         }
     }
 
