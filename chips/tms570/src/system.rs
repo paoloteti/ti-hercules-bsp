@@ -400,11 +400,12 @@ impl Sys {
         // PBIST ROM clock frequency = HCLK frequency /2, so
         // ROM_DIV = ROM clock source is HCLK divided by 2.
         // PBIST will reset for 32 VBUS cycles.
-        match enable {
-            true => self.sys1.mstgcr.set(0x00000100 | 0xA),
-            false => self.sys1.mstgcr.set(0x00000100 | 0x5),
+        if enable {
+            self.sys1.mstgcr.set(0x0000_0100 | 0xA);
+            wait_cycle!(32);
+        } else {
+            self.sys1.mstgcr.set(0x0000_0100 | 0x5);
         }
-        wait_cycle!(32);
     }
 
     /// Enable/Disable Memory Hardware init
@@ -416,11 +417,10 @@ impl Sys {
     }
 
     pub fn init_memory(&self, ram:Ram) {
-        let mem_bit = 0x1 << (ram as u32);
         self.memory_controller_enable(true);
-        self.sys1.msinena.set(mem_bit);
+        self.sys1.msinena.set(ram as u32);
         // Wait until Memory Hardware Initialization complete
-        wait_until_set!(self.sys1.ministat.get(), mem_bit);
+        wait_until_set!(self.sys1.mstcgstat.get(), 0x0000_0100);
         self.memory_controller_enable(false);
     }
 
@@ -472,27 +472,40 @@ impl Sys {
     }
 
     // Based on "PBIST Sequence" from TRM manual
-    pub fn pbist_self_test(&self) -> bool {
+    #[inline(always)]
+    pub fn pbist_self_test(&self) {
         // Disable PBIST and ROM clocks
         self.pbist.PACT.set(0x0);
+        self.memory_self_controller(false);
         self.memory_controller_enable(false);
-        self.memory_self_controller(true);
         self.sys1.mstcgstat.set(0x1); // Clear PBIST Done
         self.sys1.msinena.set(Ram::Internal as u32);
-        self.memory_self_controller(false);
+        self.memory_self_controller(true);
         // Enable PBIST and ROM clocks
         self.pbist.PACT.set(0x3);
         // Let CPU to take control of PBIST */
         self.pbist.DLR.set(0x10);
-
-        false
+        //FIXME(pteti): add always fail algorithm
     }
 
-    pub fn pbist_run_test(&self, algo:u32, memories:u32) {
-        self.pbist.PACT.set(0x0);
+    /// Activate PBIST test on a given memory group using a given algorithm
+    ///
+    /// # Arguments
+    /// - `algo`. PBIST algorithm mask (may select more than one).
+    /// - `memories`. Memories group mask (may select more than one)
+    ///
+    /// # Safety
+    /// - No all algorithms are supported for all memories groups
+    /// - No all algorithms can be executed in parallel with others on
+    ///   some memory group (es. ROM test can't be done in parallel)
+    ///
+    /// Refer to TMS570 Series Technical Reference Manual for details.
+    #[inline(always)]
+    pub fn pbist_run(&self, algo: u32, memories: u32) {
         self.memory_self_controller(false);
+        self.memory_controller_enable(false);
         // Enable PBIST controller
-        self.sys1.msinena.set(0x1);
+        self.sys1.msinena.set(Ram::Internal as u32);
         self.memory_self_controller(true);
         // Enable PBIST clocks and ROM clock
         self.pbist.PACT.set(0x3);

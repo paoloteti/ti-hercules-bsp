@@ -129,8 +129,8 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
 
     // Parallel Test on PBIST ROM (can't be done in parallel with others)
     if cfg!(feature = "pbist_rom") {
-        sys.pbist_run_test(pbist::TRIPLEREADSLOW | pbist::TRIPLEREADFAST,
-                           pbist::PBIST_ROM);
+        sys.pbist_run(pbist::TRIPLEREADSLOW | pbist::TRIPLEREADFAST,
+                      pbist::PBIST_ROM);
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
             panic!("PBIST ROM");
@@ -138,8 +138,8 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
         sys.pbist_stop();
 
         // PBIST test on STC ROM
-        sys.pbist_run_test(pbist::TRIPLEREADSLOW | pbist::TRIPLEREADFAST,
-                           pbist::STC_ROM);
+        sys.pbist_run(pbist::TRIPLEREADSLOW | pbist::TRIPLEREADFAST,
+                      pbist::STC_ROM);
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
             panic!("PBIST STC ROM");
@@ -149,21 +149,22 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
 
     if cfg!(feature = "pbist_ram") {
         // Disable ECC before test Internal RAM
-        syscore::ram_ecc_disable();
+        //FIXME: disable ECC here
+        //syscore::ram_ecc_disable();
         // ESRAM Single Port PBIST
-        sys.pbist_run_test(pbist::MARCH13N_SP, pbist::ESRAM1);
+        sys.pbist_run(pbist::MARCH13N_SP, pbist::ESRAM1);
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
             panic!("PBIST RAM");
         }
         sys.pbist_stop();
-        syscore::ram_ecc_enable();
+        //syscore::ram_ecc_enable();
     }
-
-    sys.init_memory(system::Ram::Internal);
 
     let vim = vim::Vim::new();
     vim.parity_enable(true);
+
+    sys.init_memory(system::Ram::Internal);
     sys.init_memory(system::Ram::Vim);
     syscore::irq_vic_enable();
 
