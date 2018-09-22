@@ -409,10 +409,11 @@ impl Sys {
     }
 
     /// Enable/Disable Memory Hardware init
-    fn memory_controller_enable(&self, enable:bool) {
-        match enable {
-            true => self.sys1.minitgcr.set(0xA),
-            false => self.sys1.minitgcr.set(0x5),
+    fn memory_controller_enable(&self, enable: bool) {
+        if enable {
+            self.sys1.minitgcr.set(0xA)
+        } else {
+            self.sys1.minitgcr.set(0x5)
         }
     }
 
