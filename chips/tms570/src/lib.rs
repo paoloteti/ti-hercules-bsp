@@ -149,16 +149,17 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
 
     if cfg!(feature = "pbist_ram") {
         // Disable ECC before test Internal RAM
-        //FIXME: disable ECC here
-        //syscore::ram_ecc_disable();
+        syscore::ram_ecc_disable();
         // ESRAM Single Port PBIST
-        sys.pbist_run(pbist::MARCH13N_SP, pbist::ESRAM1);
+        sys.pbist_run(pbist::MARCH13N_SP,
+                      pbist::ESRAM1 | pbist::ESRAM5 |
+                      pbist::ESRAM6 | pbist::ESRAM8);
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
             panic!("PBIST RAM");
         }
         sys.pbist_stop();
-        //syscore::ram_ecc_enable();
+        syscore::ram_ecc_enable();
     }
 
     let vim = vim::Vim::new();
