@@ -90,10 +90,11 @@ impl Vim {
         self.regs.fbparerr.set(fb as u32)
     }
 
-    pub fn parity_enable(&self, enable:bool) {
-        match enable {
-            true => self.regs.parflg.set(0xA),
-            false => self.regs.parflg.set(0x5),
+    pub fn parity_enable(&self, enable: bool) {
+        if enable {
+            self.regs.parflg.set(0xA)
+        } else {
+            self.regs.parflg.set(0x5)
         }
     }
 
