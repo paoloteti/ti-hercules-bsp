@@ -71,7 +71,6 @@ macro_rules! wait_cycle {
         for _ in 0..$n {
             use cortexr4;
             cortexr4::asm::nop();
-            cortexr4::asm::nop();
         }
     };
 }
