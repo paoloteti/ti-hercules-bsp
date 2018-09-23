@@ -240,7 +240,7 @@ impl Sys {
     /// Disable PLL1 and PLL2
     pub fn disable_pll(&self) {
         let plls = 0x1 << (SysClockSources::Pll1 as u32) |
-                   0x1 << (SysClockSources::Pll1 as u32);
+                   0x1 << (SysClockSources::Pll2 as u32);
         self.sys1.csdisset.set(plls);
         wait_until_set!(self.sys1.csdis.get(), plls)
     }
@@ -248,7 +248,7 @@ impl Sys {
     /// Enable PLL1 and PLL2
     pub fn enable_pll(&self) {
         let plls = 0x1 << (SysClockSources::Pll1 as u32) |
-                   0x1 << (SysClockSources::Pll1 as u32);
+                   0x1 << (SysClockSources::Pll2 as u32);
         self.sys1.csdisclr.set(plls)
     }
 
