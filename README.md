@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/paoloteti/ti-hercules-bsp.svg?branch=master)](https://travis-ci.org/paoloteti/ti-hercules-bsp)
+
 # TMS570 BSP
 
 Bare Metal Board Support Package for Texas Instruments Cortex-R4F/R5F TMS570

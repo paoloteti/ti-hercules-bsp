@@ -1,0 +1,29 @@
+language: rust
+
+matrix:
+  include:
+    - env: TARGET=armebv7r-none-eabihf
+      rust: nightly
+
+    - env: TARGET=armebv7r-none-eabi
+      rust: nightly
+
+before_install: set -e
+
+install:
+  - bash ci/install.sh
+  - export PATH="$PATH:$PWD/gcc/bin"
+
+script:
+  - bash ci/script.sh
+
+after_script: set +e
+
+cache: cargo
+
+before_cache:
+  - chmod -R a+r $HOME/.cargo;
+
+notifications:
+  email:
+    on_success: never
