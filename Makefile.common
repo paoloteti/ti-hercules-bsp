@@ -7,8 +7,6 @@ TOOLCHAIN ?= arm-none-eabi
 SIZE      ?= $(TOOLCHAIN)-size
 STRIP     ?= $(TOOLCHAIN)-strip
 
-export CARGO_INCREMENTAL=0
-
 ifndef PLATFORM
 $(error Required make vairable PLATFORM is not defined)
 endif

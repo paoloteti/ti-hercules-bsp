@@ -7,6 +7,7 @@ build = "build.rs"
 
 [profile.dev]
 panic = "abort"
+incremental = false
 lto = true
 opt-level = 0
 debug = true
@@ -14,6 +15,7 @@ debug-assertions = true
 
 [profile.release]
 panic = "abort"
+incremental = false
 lto = true
 codegen-units = 1
 debug = false

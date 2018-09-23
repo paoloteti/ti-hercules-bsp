@@ -3,20 +3,6 @@ name = "tms570"
 version = "0.1.0"
 authors = ["Paolo Teti <paolo.teti@gmail.com>"]
 
-[profile.dev]
-panic = "abort"
-lto = true
-opt-level = 0
-debug = true
-debug-assertions = true
-
-[profile.release]
-panic = "abort"
-lto = true
-codegen-units = 1
-debug = false
-debug-assertions = false
-
 [dependencies]
 cortexr4 = { path = "../../arch/cortex-r4" }
 vcell = "0.1.0"
@@ -26,8 +12,9 @@ r0 = "0.2.2"
 cc = "1.0"
 
 [features]
-default = ["errata57", "errata66", "pbist_rom", "pbist_ram"]
+default = ["errata57", "errata66", "pbist_rom"]
 errata57 = []
 errata66 = []
 pbist_rom = []
 pbist_ram = []
+
