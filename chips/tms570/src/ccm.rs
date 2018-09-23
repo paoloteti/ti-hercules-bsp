@@ -106,7 +106,7 @@ impl Ccm {
         esm.error_reset();
 
         self.set_mode(CcmMode::SelfTestErrorForcing);
-        wait_until_set!(self.ccmkeyr.get(), 0);
+        wait_until_neq!(self.ccmkeyr.get(), 0);
         if esm.error_is_set(EsmError::CCMR4SelfTest) {
             return false;
         }
