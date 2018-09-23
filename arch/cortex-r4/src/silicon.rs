@@ -1,9 +1,9 @@
 /// Work Around for Errata CORTEX-R4#66:
 ///
-/// Errata Description:
+/// #Errata Description:
 ///     Register Corruption During A Load-Multiple Instruction At
 ///     an Exception Vector
-/// Workaround:
+/// #Workaround:
 ///     Disable out-of-order completion for divide instructions
 ///     (bit 7) in Auxiliary Control register
 #[inline]
@@ -17,10 +17,10 @@ pub unsafe fn errata66() {
 
 /// Work Around for Errata CORTEX-R4#57:
 ///
-/// Errata Description:
+/// #Errata Description:
 ///     Conditional VMRS APSR_Nzcv, FPSCR May
 ///     Evaluate With Incorrect Flags
-/// Workaround:
+/// #Workaround:
 ///     Disable out-of-order single-precision floating point
 ///     multiply-accumulate instruction completion [BIT 16 (Set DOOFMACS)]
 #[inline]
