@@ -1,22 +1,22 @@
-use vcell::VolatileCell;
 use esm::Esm;
 use esm_ch::{EsmError, EsmGroup};
+use vcell::VolatileCell;
 use vim::Vim;
 
 pub struct Ccm {
-    ccmsr: VolatileCell<u32>,    // 0x00 CCM-R4F StatusRegister
-    ccmkeyr: VolatileCell<u32>,  // 0x04 CCM-R4F Key Register
+    ccmsr: VolatileCell<u32>,   // 0x00 CCM-R4F StatusRegister
+    ccmkeyr: VolatileCell<u32>, // 0x04 CCM-R4F Key Register
 }
 const CCMR4F_BASE_ADDR: *const Ccm = 0xFFFF_F600 as *const Ccm;
 
 /// Self-test Error
-const STE:u32 = 0x1;
+const STE: u32 = 0x1;
 /// Self-test Error Type
-const STET:u32 = 0x1 << 1;
+const STET: u32 = 0x1 << 1;
 /// Self-test Complete
-const STC:u32 = 0x1 << 8;
+const STC: u32 = 0x1 << 8;
 /// Compare Error
-const CMPE:u32 = 0x1 << 16;
+const CMPE: u32 = 0x1 << 16;
 
 pub enum SelfTestError {
     /// Self-test not failed
@@ -32,7 +32,7 @@ pub enum CcmMode {
     Lockstep = 0x0,
     SelfTest = 0x6,
     ErrorForcing = 0x9,
-    SelfTestErrorForcing = 0xF
+    SelfTestErrorForcing = 0xF,
 }
 
 impl Ccm {
@@ -40,7 +40,7 @@ impl Ccm {
         &*CCMR4F_BASE_ADDR
     }
 
-    pub fn set_mode(&self, mode:CcmMode) {
+    pub fn set_mode(&self, mode: CcmMode) {
         self.ccmkeyr.set(mode as u32)
     }
 
