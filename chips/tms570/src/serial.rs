@@ -21,7 +21,7 @@ pub enum StopBits {
     /// Two stop bits
     Two = 0x1 << 4,
     /// One stop bits
-    One = 0x0 << 4,
+    One = 0x0,
 }
 
 pub enum DataBits {
@@ -45,11 +45,11 @@ pub enum DataBits {
 
 pub enum Parity {
     /// Parity Odd
-    Odd  = (0x0 << 3) | (0x1 << 2),
+    Odd  = 0b0100,
     /// Parity Even
-    Even = (0x1 << 3) | (0x1 << 2),
+    Even = 0b1100,
     /// Parity None
-    None = (0x0 << 2),
+    None = 0b0000,
 }
 
 pub trait SerialLine {

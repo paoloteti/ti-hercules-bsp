@@ -152,7 +152,7 @@ impl SciRegisters {
 
     pub fn putc(&self, b:u8) {
         wait_until_zero!(self.FLR.get(), event::TX_INT);
-        self.TD.set(b as u32);
+        self.TD.set(u32::from(b));
     }
 
     pub fn write(&self, buffer: &'static [u8]) {

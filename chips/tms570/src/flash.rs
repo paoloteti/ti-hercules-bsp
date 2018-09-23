@@ -74,7 +74,7 @@ impl Flash {
 
     pub fn setup(&self, power_mode:FlashWPowerModes) {
         // Setup flash read mode, address wait states and data wait states
-        self.FRDCNTL.set(0x00000000 | (0x3 << 8) | (0x1 << 4) | 0x1);
+        self.FRDCNTL.set((0x3 << 8) | (0x1 << 4) | 0x1);
 
         // Setup flash access wait states for bank 7
         self.FSMWRENA.set(0x5);
@@ -85,6 +85,6 @@ impl Flash {
         let mode = power_mode as u32;
         self.FBFALLBACK.set((mode << 14) | // BANK 7
                             (mode << 2)  | // BANK 1
-                             mode << 0);   // BANK 0
+                            mode);         // BANK 0
     }
 }

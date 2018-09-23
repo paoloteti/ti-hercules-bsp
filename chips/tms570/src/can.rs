@@ -118,11 +118,11 @@ const CAN_PARRAM_ADDR: [*const u32; 3] = [
 
 const DIR_WRITE:u8 = 0x1 << 7;
 const DIR_READ:u8  = 0x0 << 7;
-const NEWDAT:u8    = 0x1 << 0;
-const TXREQ:u8     = 0x0 << 0;
+const NEWDAT:u8    = 0x1;
+const TXREQ:u8     = 0x0;
 const BUSY:u8      = 0x1 << 7;
 const MSG_LOST:u32 = 0x1 << 14; /* IFxMCTL: message lost */
-const DATA_A:u8    = 0x1 << 0;
+const DATA_A:u8    = 0x1;
 const DATA_B:u8    = 0x1 << 1;
 
 const CAN_FRAME_SIZE:usize = 8;

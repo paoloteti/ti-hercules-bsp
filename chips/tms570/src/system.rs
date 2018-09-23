@@ -187,7 +187,7 @@ pub enum SysClockSources {
 
 #[derive(Clone, Copy)]
 pub enum Ram {
-    Internal =  0x1 << 0,
+    Internal =  0x1,
     Dma =       0x1 << 1,
     Vim =       0x1 << 2,
     Het1 =      0x1 << 3,
@@ -450,8 +450,7 @@ impl Sys {
 
         // Note: Suspend mode (ECPCOS) is entered while performing
         // certain JTAG debugging operations, so force ECPCOS at 0 here.
-        self.sys1.ecpcntl.set(((oscin as u32) << 24) |
-                              (0x0 << 23) | (divider as u32));
+        self.sys1.ecpcntl.set(((oscin as u32) << 24) | (divider as u32));
     }
 
     pub fn eclk_gpio_setup(&self) {

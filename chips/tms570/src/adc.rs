@@ -284,8 +284,8 @@ impl Adc  {
             // Enable Calibration
             self.regs.CALCR.set(self.regs.CALCR.get() | 0x1);
             // Start calibration conversion
-            self.regs.CALCR.set(self.regs.CALCR.get() | 0x00010000);
-            wait_until_set!(self.regs.CALCR.get(), 0x00010000);
+            self.regs.CALCR.set(self.regs.CALCR.get() | 0x0001_0000);
+            wait_until_set!(self.regs.CALCR.get(), 0x0001_0000);
 
             sum += self.regs.CALR.get();
         }
