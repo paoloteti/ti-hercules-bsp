@@ -84,7 +84,7 @@ impl Ccm {
             return false;
         }
         self.set_mode(CcmMode::ErrorForcing);
-        wait_until_set!(self.ccmkeyr.get(), 0);
+        wait_until_neq!(self.ccmkeyr.get(), 0);
 
         // check if compare error flag is set
         if esm.error_is_set(EsmError::CCMR4LockStep) {

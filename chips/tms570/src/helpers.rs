@@ -36,6 +36,22 @@ macro_rules! wait_until_true {
     };
 }
 
+/// Macro to wait until not equal
+#[macro_export]
+macro_rules! wait_until_neq {
+    ($reg: expr, $v: expr ) => {
+        while $reg != $v { /* wait */ }
+    };
+}
+
+/// Macro to wait until not equal
+#[macro_export]
+macro_rules! wait_until_eq {
+    ($reg: expr, $v: expr ) => {
+        while $reg == $v { /* wait */ }
+    };
+}
+
 /// Divide positive or negative dividend by positive or negative divisor
 /// and round to closest integer. Result is undefined for negative
 /// divisors if the dividend variable type is unsigned and for negative
