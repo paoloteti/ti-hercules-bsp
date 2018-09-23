@@ -162,7 +162,7 @@ impl HwCrc  {
     }
 
     pub fn set_ch_mode(&self, ch:CrcChannel, mode:ChannelMode) {
-        let mask = (mode as u32) << (ch as u32) * 8;
+        let mask = (mode as u32) << ((ch as u32) * 8);
         self.ctrl2.set(self.ctrl2.get() | mask);
     }
 

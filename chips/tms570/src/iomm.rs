@@ -40,8 +40,8 @@ impl Iomm {
     /// runtime. For the same reason function is not public.
     fn kicker(&self, open:bool) {
 	    if open {
-	        self.kicker0.set(0x83E70B13);
-	        self.kicker1.set(0x95A4F1E0);
+	        self.kicker0.set(0x83E7_0B13);
+	        self.kicker1.set(0x95A4_F1E0);
 	    } else {
             self.kicker0.set(0x0);
 	        self.kicker1.set(0x0);

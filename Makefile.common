@@ -33,7 +33,7 @@ target:
 .PHONY: target/$(TARGET)/release/$(PLATFORM)
 target/$(TARGET)/release/$(PLATFORM):
 	$(Q)cargo build $(VERBOSE) --target $(TARGET) --release
-	$(Q)$(STRIP) $@
+#	$(Q)$(STRIP) $@
 	$(Q)$(SIZE) $@
 
 .PHONY: target/$(TARGET)/debug/$(PLATFORM)

@@ -29,9 +29,9 @@ FLASH.ERASE ALL
 FLASH.Program ALL
 
 
-;Data.LOAD.auto target/armebv7r-none-eabihf/release/ti_tms570
+Data.LOAD.auto target/armebv7r-none-eabihf/release/ti_tms570
 
-Data.LOAD.auto target/armebv7r-none-eabihf/debug/ti_tms570
+;Data.LOAD.auto target/armebv7r-none-eabihf/debug/ti_tms570
 
 FLASH.Program OFF
 

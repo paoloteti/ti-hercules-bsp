@@ -161,7 +161,7 @@ const DMA_RAM_BASE_ADDR: *const DmaRam = 0xFFF8_0000 as *const DmaRam;
 // Global Control Register (GCTRL) bits masks
 const DMA_BUSY:u32                  = 0x1 << 14;
 const DMA_EN:u32                    = 0x1 << 16;
-const DMA_RESET:u32                 = 0x0 << 0;
+const DMA_RESET:u32                 = 0x0;
 
 #[derive(Clone, Copy)]
 pub enum DmaDebug {
@@ -277,10 +277,11 @@ impl Dma  {
         }
     }
 
-    pub fn parity_enable(&self, enable:bool) {
-        match enable {
-            true => self.regs.DMAPCR.set(0xA),
-            false => self.regs.DMAPCR.set(0x5),
+    pub fn parity_enable(&self, enable :bool) {
+        if enable {
+            self.regs.DMAPCR.set(0xA)
+        } else {
+            self.regs.DMAPCR.set(0x5)
         }
     }
 
@@ -309,10 +310,11 @@ impl Dma  {
     }
 
     /// Enables the DMA channel for hardware or software triggering
-    pub fn channel_enable(&self, ch:u32, hw_trigger:bool) {
-        match hw_trigger {
-            true => self.regs.HWCHENAS.set(0x1 << ch),
-            false => self.regs.SWCHENAS.set(0x1 << ch),
+    pub fn channel_enable(&self, ch:u32, hw_trigger: bool) {
+        if hw_trigger {
+            self.regs.HWCHENAS.set(0x1 << ch)
+        } else {
+            self.regs.SWCHENAS.set(0x1 << ch)
         }
     }
 

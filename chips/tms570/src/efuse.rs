@@ -81,14 +81,13 @@ impl Efc {
     }
 
     pub fn check(&self) -> EfcError {
-        let error = self.error.get();
-        match error {
+        match self.error.get() {
             EGC_ERROR_NONE => {
                 if self.stuck_zero() {
                     self.self_test();
-                    return EfcError::OnGoing;
+                    EfcError::OnGoing
                 } else {
-                    return EfcError::StuckZero;
+                    EfcError::StuckZero
                 }
             },
             EFC_ERROR_SINGLE_BIT => {

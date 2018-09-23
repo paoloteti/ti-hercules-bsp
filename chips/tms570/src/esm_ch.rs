@@ -124,11 +124,11 @@ pub enum EsmError {
 }
 
 impl EsmError {
-    pub fn ch(&self) -> usize {
-        (*self as usize) >> 24
+    pub fn ch(self) -> usize {
+        (self as usize) >> 24
     }
 
-    pub fn group(&self) -> usize {
-        (*self as usize) & 0xFF
+    pub fn group(self) -> usize {
+        (self as usize) & 0xFF
     }
 }

@@ -118,7 +118,7 @@ impl DWD for ChipWatchDog {
 
     /// Enable the DWD counter
     fn counter_enable(&self) {
-        self.regs.DWDCTRL.set(0xA98559DA);
+        self.regs.DWDCTRL.set(0xA985_59DA);
     }
 
     fn count_down(&self) -> u32 {

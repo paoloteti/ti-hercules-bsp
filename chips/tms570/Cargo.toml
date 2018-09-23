@@ -26,7 +26,7 @@ r0 = "0.2.2"
 cc = "1.0"
 
 [features]
-default = ["errata57", "errata66", "pbist_rom"]
+default = ["errata57", "errata66", "pbist_rom", "pbist_ram"]
 errata57 = []
 errata66 = []
 pbist_rom = []

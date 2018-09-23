@@ -10,7 +10,7 @@ pub struct Ccm {
 const CCMR4F_BASE_ADDR: *const Ccm = 0xFFFF_F600 as *const Ccm;
 
 /// Self-test Error
-const STE:u32 = 0x1 << 0;
+const STE:u32 = 0x1;
 /// Self-test Error Type
 const STET:u32 = 0x1 << 1;
 /// Self-test Complete

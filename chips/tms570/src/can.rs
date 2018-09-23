@@ -101,16 +101,16 @@ const CAN_BASE_ADDR: [*const CanRegisters; 3] = [
     CAN1_BASE_ADDR, CAN2_BASE_ADDR, CAN3_BASE_ADDR
 ];
 
-const CAN1_RAM_ADDR: *const u32 = 0xFF1E0000 as *const u32;
-const CAN2_RAM_ADDR: *const u32 = 0xFF1C0000 as *const u32;
-const CAN3_RAM_ADDR: *const u32 = 0xFF1A0000 as *const u32;
+const CAN1_RAM_ADDR: *const u32 = 0xFF1E_0000 as *const u32;
+const CAN2_RAM_ADDR: *const u32 = 0xFF1C_0000 as *const u32;
+const CAN3_RAM_ADDR: *const u32 = 0xFF1A_0000 as *const u32;
 const CAN_RAM_ADDR: [*const u32; 3] = [
     CAN1_RAM_ADDR, CAN2_RAM_ADDR, CAN3_RAM_ADDR
 ];
 
-const CAN1_PARRAM_ADDR: *const u32 = 0xFF1E0010 as *const u32;
-const CAN2_PARRAM_ADDR: *const u32 = 0xFF1C0010 as *const u32;
-const CAN3_PARRAM_ADDR: *const u32 = 0xFF1A0010 as *const u32;
+const CAN1_PARRAM_ADDR: *const u32 = 0xFF1E_0010 as *const u32;
+const CAN2_PARRAM_ADDR: *const u32 = 0xFF1C_0010 as *const u32;
+const CAN3_PARRAM_ADDR: *const u32 = 0xFF1A_0010 as *const u32;
 const CAN_PARRAM_ADDR: [*const u32; 3] = [
     CAN1_PARRAM_ADDR, CAN2_PARRAM_ADDR, CAN3_PARRAM_ADDR
 ];
@@ -180,7 +180,7 @@ impl DCan  {
         let regid = (mbox >> 5) as usize;
         if self.regs.TXRQx[regid].get() & (0x1 << mbox) == 0 {
             wait_until_set!(self.regs.IF1STAT.get(), BUSY);
-            if data.len() > 0 {
+            if !data.is_empty() {
                 self.regs.IF1CMD.set(DIR_WRITE | TXREQ | DATA_A | DATA_B);
             } else { // Remote Frame
                 self.regs.IF1CMD.set(DIR_WRITE | TXREQ);

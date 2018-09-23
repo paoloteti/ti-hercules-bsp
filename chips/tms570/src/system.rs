@@ -316,8 +316,8 @@ impl Sys {
     pub fn set_pll_divider(&self, div1:u8, div3:u8) {
         let pll1 = self.sys1.pllctl1.get();
         let pll2 = self.sys2.pllctl3.get();
-        let p1 = (pll1 & 0xE0FFFFFF) | (div1 as u32) << 24;
-        let p2 = (pll2 & 0xE0FFFFFF) | (div3 as u32) << 24;
+        let p1 = (pll1 & 0xE0FF_FFFF) | (div1 as u32) << 24;
+        let p2 = (pll2 & 0xE0FF_FFFF) | (div3 as u32) << 24;
 
         self.sys1.pllctl1.set(p1);
         self.sys2.pllctl3.set(p2);
@@ -374,9 +374,9 @@ impl Sys {
 
     pub fn activate_peripherals(&self, act:bool) {
         if act {
-            self.sys1.clkcntl.set(self.sys1.clkcntl.get() & 0xFFFFFEFF)
+            self.sys1.clkcntl.set(self.sys1.clkcntl.get() & 0xFFFF_FEFF)
         } else {
-            self.sys1.clkcntl.set(self.sys1.clkcntl.get() | 0x00000100)
+            self.sys1.clkcntl.set(self.sys1.clkcntl.get() | 0x0000_0100)
         }
     }
 
@@ -384,7 +384,7 @@ impl Sys {
         let div1 = (vclk1 as u32) << 24;
         let div2 = (vclk2 as u32) << 16;
         let div3 = (vclk3 as u32) << 8;
-        let div4 = (vclk4 as u32) << 0;
+        let div4 = vclk4 as u32;
 
         // Note: VCLK and VCLK2 clock ratio restrictions.
         // VCLK2 must always be greater than or equal to VCLK.

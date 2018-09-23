@@ -46,15 +46,15 @@ pub enum PinMux {
 }
 
 impl PinMux {
-    pub fn pin(&self) -> usize {
-        (*self as usize) >> 24
+    pub fn pin(self) -> usize {
+        (self as usize) >> 24
     }
 
-    pub fn bit(&self) -> usize {
-        (*self as usize) & 0xff
+    pub fn bit(self) -> usize {
+        (self as usize) & 0xff
     }
 
-    pub fn group(&self) -> usize {
-        ((*self as usize) >> 16) & 0xff
+    pub fn group(self) -> usize {
+        ((self as usize) >> 16) & 0xff
     }
 }

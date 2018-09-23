@@ -135,7 +135,7 @@ pub enum ConvEvent {
     /// Interrupt is not generated (event disabled)
     None = 0x0,
     /// Interrupt is generated if threshold counter reaches zero.
-    Threshold = 0x1 << 0,
+    Threshold = 0x1,
     /// A memory overrun occurs when the ADC tries to write a
     /// new conversion result to the Group results memory which is already full
     ConversionOverrun = 0x1 << 1,
@@ -160,11 +160,11 @@ pub enum AdcGroup {
 
 pub enum AdcResolution {
     /// 12 bit data resolution
-    Bit12 = 0x00000000,
+    Bit12 = 0x0000,
     /// 10 bit data resolution
-    Bit10 = 0x00000100,
+    Bit10 = 0x0100,
     /// 8 bit data resolution
-    Bit8  = 0x00000200,
+    Bit8  = 0x0200,
 }
 
 #[derive(Copy,Clone,Default)]

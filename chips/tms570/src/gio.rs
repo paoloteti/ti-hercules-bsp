@@ -161,7 +161,7 @@ impl Gio {
     }
 
     pub fn interrupt(&self, port:GioPorts, pin:usize, enable:bool) {
-        let mask = (enable as u32) << ((port as u32) * 8) + (pin as u32);
+        let mask = (enable as u32) << (((port as u32) * 8) + (pin as u32));
         if enable {
             self.regs.enaset.set(mask);
         } else {

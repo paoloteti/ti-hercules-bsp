@@ -51,6 +51,7 @@ fn vim_dummy_isr(){}
 #[link_section = ".vim_table"]
 static INTERRUPTS: [fn(); VIM_CHANNELS] = [vim_dummy_isr; VIM_CHANNELS];
 
+#[derive(Copy,Clone)]
 pub enum VimType {
     SysInterrupt,
     FirInterrupt,

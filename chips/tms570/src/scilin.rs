@@ -107,26 +107,29 @@ impl SciRegisters {
         self.GCR0.set(0x1); // is out of reset
     }
 
-    pub fn sw_reset(&self, rst:bool) {
-        match rst {
-            true => self.GCR1.set(self.GCR1.get() | SCIGCR1_SWNRST),
-            false => self.GCR1.set(self.GCR1.get() & !SCIGCR1_SWNRST),
+    pub fn sw_reset(&self, rst: bool) {
+        if rst {
+            self.GCR1.set(self.GCR1.get() | SCIGCR1_SWNRST)
+        } else {
+            self.GCR1.set(self.GCR1.get() & !SCIGCR1_SWNRST)
         }
     }
 
     pub fn tx_enable(&self, enable: bool) {
         let ctrl = self.GCR1.get();
-        match enable {
-            true => self.GCR1.set(ctrl | TX_ENABLE),
-            false => self.GCR1.set(ctrl & !TX_ENABLE),
+        if enable {
+            self.GCR1.set(ctrl | TX_ENABLE)
+        } else {
+            self.GCR1.set(ctrl & !TX_ENABLE)
         }
     }
 
     pub fn rx_enable(&self, enable: bool) {
         let ctrl = self.GCR1.get();
-        match enable {
-            true => self.GCR1.set(ctrl | RX_ENABLE),
-            false => self.GCR1.set(ctrl & !RX_ENABLE),
+        if enable {
+            self.GCR1.set(ctrl | RX_ENABLE)
+        } else {
+            self.GCR1.set(ctrl & !RX_ENABLE)
         }
     }
 
