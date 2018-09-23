@@ -9,8 +9,6 @@
 ///   "Chapter 6. Events and Performance Monitor"
 ///
 
-
-
 pub enum PmuEvent {
     InstructionCacheMiss = 0x01,
     DataCacheMiss = 0x03,
@@ -74,7 +72,7 @@ pub enum PmuEvent {
     TcmCorEccErrorAxiSlave = 0x6D,
 }
 
-
+#[derive(Copy,Clone)]
 pub enum Counter {
     Cycle,
     Event,
@@ -107,46 +105,44 @@ pub unsafe fn init() {
         mcr p15, #0, r0, c9, c12, #5
         mov r0,  #0x11
         mcr p15, #0, r0, c9, c13, #1
-        bx  lr
-    ")
+    " :::: "volatile")
 }
 
-/// Enable (and reset) or disable cycle counter and all event counters
-pub unsafe fn counters_global_enable(enable:bool) {
-    asm!("mrc p15, #0, r0, c9, c12, #0");
-    match enable {
-        true => asm!("orr r0, r0, #7"),
-        false => asm!("bic r0, r0, #1"),
-    }
+/// Enable (and reset) cycle counter and all event counters
+pub unsafe fn counters_global_enable() {
     asm!("
+        mrc p15, #0, r0, c9, c12, #0
+        orr r0, r0, #7
         mcr p15, #0, r0, c9, c12, #0
-        bx lr
-    ")
+    " :::: "volatile")
+}
+
+/// Disable all event counters
+pub unsafe fn counters_global_disable() {
+    asm!("
+        mrc p15, #0, r0, c9, c12, #0
+        bic r0, r0, #1
+        mcr p15, #0, r0, c9, c12, #0
+    " :::: "volatile")
 }
 
 /// Reset cycle, event or both counters
-pub unsafe fn reset_counters(counter:Counter) {
+pub unsafe fn reset_counters(counter: Counter) {
     asm!("mrc p15, #0, r0, c9, c12, #0");
     match counter {
         Counter::Event => asm!("orr r0, r0, #2"),
         Counter::Cycle => asm!("orr r0, r0, #4"),
-        Counter::Both  => asm!("orr r0, r0, #6"),
+        Counter::Both => asm!("orr r0, r0, #6"),
     }
-    asm!("
-        mcr p15, #0, r0, c9, c12, #0
-        bx  lr
-    ")
+    asm!("mcr p15, #0, r0, c9, c12, #0")
 }
-
-
 
 /// Starts selected counters
 /// 'counters' - Counter mask
 #[inline]
-pub unsafe fn start_counters(counters:u32) {
+pub unsafe fn start_counters(counters: u32) {
     asm!("
-        mcr p15, #0, r0, c9, c12, #1
-        bx  lr"
+        mcr p15, #0, r0, c9, c12, #1"
         :
         : "0"(counters)
         : "memory"
@@ -156,10 +152,9 @@ pub unsafe fn start_counters(counters:u32) {
 /// Stops selected counters
 /// 'counters' - Counter mask
 #[inline]
-pub unsafe fn stop_counters(counters:u32) {
+pub unsafe fn stop_counters(counters: u32) {
     asm!("
-        mcr p15, #0, r0, c9, c12, #1
-        bx  lr"
+        mcr p15, #0, r0, c9, c12, #1"
         :
         : "0"(counters)
         : "memory"
@@ -169,12 +164,11 @@ pub unsafe fn stop_counters(counters:u32) {
 /// Set event counter count event
 /// 'counter' - Counter select
 /// 'event'   - Count event
-pub unsafe fn set_count_event(counter:u32, event:PmuEvent) {
+pub unsafe fn set_count_event(counter: u32, event: PmuEvent) {
     let event_code = event as u32;
     asm!("
         mcr p15, #0, r0, c9, c12, #5
-        mcr p15, #0, r1, c9, c13, #1
-        bx  lr"
+        mcr p15, #0, r1, c9, c13, #1"
         :
         : "0"(counter) "1"(event_code)
         : "memory"
@@ -196,11 +190,10 @@ pub unsafe fn get_cycle_count() -> u32 {
 
 /// Returns current event counter value
 /// 'counter' - Counter select
-pub unsafe fn get_event_count(counter:u32) {
+pub unsafe fn get_event_count(counter: u32) {
     asm!("
         mcr p15, #0, r0, c9, c12, #5
-        mrc p15, #0, r0, c9, c13, #2
-        bx  lr"
+        mrc p15, #0, r0, c9, c13, #2"
         :
         : "0"(counter)
         : "memory"
