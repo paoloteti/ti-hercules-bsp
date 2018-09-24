@@ -9,7 +9,7 @@ build = "build.rs"
 panic = "abort"
 incremental = false
 lto = true
-opt-level = 0
+opt-level = 1
 debug = true
 debug-assertions = true
 
