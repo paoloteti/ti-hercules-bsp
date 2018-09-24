@@ -12,10 +12,16 @@ before_install: set -e
 
 install:
   - bash ci/install.sh
-  - export PATH="$PATH:$PWD/gcc/bin"
 
 script:
   - bash ci/script.sh
+
+addons:
+  apt:
+    sources:
+    - sourceline: 'ppa:team-gcc-arm-embedded/ppa'
+    packages:
+    - gcc-arm-embedded
 
 after_script: set +e
 
