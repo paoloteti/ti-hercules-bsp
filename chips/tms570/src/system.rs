@@ -25,7 +25,7 @@ fn lpo_trim() -> u32 {
     unsafe { ::core::ptr::read_volatile(LPO_TRIM_ADDR) >> 16 }
 }
 
-#[allow(dead_code)]
+#[repr(C)]
 struct SysRegister1 {
     syspc1: VolatileCell<u32>,      // 0x0000
     syspc2: VolatileCell<u32>,      // 0x0004
@@ -93,7 +93,7 @@ struct SysRegister1 {
 }
 const SYS1_BASE_ADDR: *const SysRegister1 = 0xFFFF_FF00 as *const SysRegister1;
 
-#[allow(dead_code)]
+#[repr(C)]
 struct SysRegister2 {
     pllctl3: VolatileCell<u32>,      // 0x0000
     rsvd1: VolatileCell<u32>,        // 0x0004
@@ -409,6 +409,7 @@ impl Sys {
     }
 
     /// Enable/Disable Memory Hardware init
+    #[inline(always)]
     fn memory_controller_enable(&self, enable: bool) {
         if enable {
             self.sys1.minitgcr.set(0xA)
@@ -417,6 +418,7 @@ impl Sys {
         }
     }
 
+    #[inline(always)]
     pub fn init_memory(&self, ram:Ram) {
         self.memory_controller_enable(true);
         self.sys1.msinena.set(ram as u32);

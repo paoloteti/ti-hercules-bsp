@@ -147,7 +147,9 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
         sys.pbist_stop();
     }
 
-    if cfg!(feature = "pbist_ram") {
+    // Not available in debug mode because PBIST on ESRAMx can't
+    // use stack and We can't guarantee this.
+    if cfg!(feature = "pbist_ram") && !cfg!(debug_assertions) {
         // ECC is disabled on reset (AUX register)
         // ESRAM Single Port PBIST
         sys.pbist_run(pbist::MARCH13N_SP,
