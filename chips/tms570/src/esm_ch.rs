@@ -10,9 +10,8 @@
 macro_rules! map_ch_group {
     ($ch: expr, $group: expr) => {
         (($group as isize) << 24) | ($ch as isize)
-    }
+    };
 }
-
 
 pub enum EsmGroup {
     One = 0,
@@ -20,7 +19,7 @@ pub enum EsmGroup {
     Three = 2,
 }
 
-#[derive(Copy,Clone)]
+#[derive(Copy, Clone)]
 pub enum EsmError {
     /// MibADC2 - RAM parity error
     MibADC2Ram = map_ch_group!(EsmGroup::One, 1),
