@@ -37,5 +37,5 @@ pub unsafe fn atomic<F, R>(f: F) -> R
     interrupts_disable();
     let res = f();
     interrupts_enable();
-    return res;
+    res
 }
