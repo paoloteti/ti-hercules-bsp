@@ -127,6 +127,10 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
     sys.set_pll_divider(0, 0);
     sys.eclk_functional_mode(7, false);
 
+    if !sys.clock_supervisor_test() {
+        panic!("CLK TEST");
+    }
+
     // Parallel Test on PBIST ROM (can't be done in parallel with others)
     if cfg!(feature = "pbist_rom") {
         sys.pbist_run(pbist::TRIPLEREADSLOW | pbist::TRIPLEREADFAST,

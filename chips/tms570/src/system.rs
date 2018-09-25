@@ -17,6 +17,8 @@
 
 use config;
 use vcell::VolatileCell;
+use esm;
+use esm_ch::EsmError;
 
 const LPO_TRIM_ADDR: *const u32 = 0xF008_01B4 as *const u32;
 
@@ -533,5 +535,28 @@ impl Sys {
     pub fn pbist_stop(&self) {
         self.pbist.PACT.set(0x0);
         self.memory_self_controller(false);
+    }
+
+    /// Checks clock supervisor failure detection logic
+    pub unsafe fn clock_supervisor_test(&self) -> bool {
+        self.sys1.clktest.set(self.sys1.clktest.get() | 0x0300_0000);
+        let ghvsrc = self.sys1.ghvsrc.get();
+        self.sys1.ghvsrc.set(0x05050005);
+        // disable oscillator so it fail
+        self.sys1.csdisset.set(0x1);
+        wait_until_zero!(self.sys1.gblstat.get(), 0x1);
+        let esm = esm::Esm::new();
+        if !esm.error_is_set(EsmError::OscFail) {
+            return false;
+        } else {
+            // Disable test mode and restore original settings
+            esm.clear_error(EsmError::OscFail);
+            self.sys1.clktest.set(self.sys1.clktest.get() & !0x0300_0000);
+            self.sys1.csdisclr.set(0x1);
+            wait_until_zero!(self.sys1.csvstat.get(), 0x3);
+            self.sys1.gblstat.set(0x301);  // clear any pending flag
+            self.sys1.ghvsrc.set(ghvsrc);
+        }
+        true
     }
 }
