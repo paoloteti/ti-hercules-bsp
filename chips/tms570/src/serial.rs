@@ -1,20 +1,19 @@
-
 pub mod event {
     pub type SciEvent = u32;
     /// Framing error
-    pub const FE_INT:SciEvent    = 0x0400_0000;
+    pub const FE_INT: SciEvent = 0x0400_0000;
     /// Overrun error
-    pub const OE_INT:SciEvent    = 0x0200_0000;
+    pub const OE_INT: SciEvent = 0x0200_0000;
     /// Parity error
-    pub const PE_INT:SciEvent    = 0x0100_0000;
+    pub const PE_INT: SciEvent = 0x0100_0000;
     /// Receive buffer ready
-    pub const RX_INT:SciEvent    = 0x0000_0200;
+    pub const RX_INT: SciEvent = 0x0000_0200;
     /// Transmit buffer ready
-    pub const TX_INT:SciEvent    = 0x0000_0100;
+    pub const TX_INT: SciEvent = 0x0000_0100;
     /// Wakeup
-    pub const WAKE_INT:SciEvent  = 0x0000_0002;
+    pub const WAKE_INT: SciEvent = 0x0000_0002;
     /// Break detect
-    pub const BREAK_INT:SciEvent = 0x0000_0001;
+    pub const BREAK_INT: SciEvent = 0x0000_0001;
 }
 
 pub enum StopBits {
@@ -45,7 +44,7 @@ pub enum DataBits {
 
 pub enum Parity {
     /// Parity Odd
-    Odd  = 0b0100,
+    Odd = 0b0100,
     /// Parity Even
     Even = 0b1100,
     /// Parity None
@@ -53,15 +52,15 @@ pub enum Parity {
 }
 
 pub trait SerialLine {
-    fn new(id:u32, databits:DataBits, stop:StopBits, parity:Parity) -> Self;
+    fn new(id: u32, databits: DataBits, stop: StopBits, parity: Parity) -> Self;
     fn id(&self) -> u32;
-    fn set_baudrate(&self, baudrate:u32);
+    fn set_baudrate(&self, baudrate: u32);
     fn rx_enable(&mut self, enable: bool) -> &mut Self;
     fn tx_enable(&mut self, enable: bool) -> &mut Self;
     fn baudrate(&self) -> u32;
     fn open(&self);
     fn close(&self);
-    fn put(&self, b:u8);
+    fn put(&self, b: u8);
     fn get(&self) -> u8;
     fn getc_try(&self) -> Option<u8>;
     fn write(&self, buffer: &[u8]);
