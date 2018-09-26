@@ -67,8 +67,8 @@ impl Iomm {
 
     pub fn setup_pins(&self, pins: &[pinmux::PinMux]) {
         self.kicker(true);
-        for i in 0..pins.len() {
-            self.configure(pins[i], true);
+        for p in pins.iter() {
+            self.configure(*p, true);
         }
         self.kicker(false);
     }
