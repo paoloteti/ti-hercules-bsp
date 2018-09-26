@@ -1,6 +1,7 @@
 
 MEMORY
 {
+    vectors (rx) : ORIGIN = 0x00000000,   LENGTH = 0x00000020
     rom (rx)     : ORIGIN = ROM_ORIGIN,   LENGTH = ROM_LENGTH
     cpustack (rw): ORIGIN = STACK_ORIGIN, LENGTH = STACK_LENGTH
     ram (rwx)    : ORIGIN = RAM_ORIGIN,   LENGTH = RAM_LENGTH
@@ -25,9 +26,8 @@ SECTIONS
     /* ARM Cortex-R4 Vector Table */
     .intvecs :
     {
-        . = ALIGN(4);
         KEEP(*(.intvecs))
-    } > rom
+    } > vectors
 
     .text :
     {
