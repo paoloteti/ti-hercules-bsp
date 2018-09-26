@@ -155,15 +155,15 @@ impl SciRegisters {
         self.TD.set(u32::from(b));
     }
 
-    pub fn write(&self, buffer: &'static [u8]) {
-        for i in 0..buffer.len() {
-            self.putc(buffer[i]);
+    pub fn write(&self, buffer: &[u8]) {
+        for b in buffer.iter() {
+            self.putc(*b);
         }
     }
 
-    pub fn read(&self, buffer: &'static mut[u8]) {
-        for i in 0..buffer.len() {
-            buffer[i] = self.getc();
+    pub fn read(&self, buffer: &mut[u8]) {
+        for b in buffer.iter_mut() {
+            *b = self.getc();
         }
     }
 
@@ -211,6 +211,7 @@ impl SerialLine for SciChipset {
         self.regs.sw_reset(false);
     }
 
+    #[inline]
     fn baudrate(&self) -> u32 {
         self.baudrate.get()
     }
@@ -224,26 +225,32 @@ impl SerialLine for SciChipset {
         }
     }
 
-    fn write(&self, buffer: &'static [u8]) {
+    #[inline]
+    fn write(&self, buffer: &[u8]) {
         self.regs.write(buffer)
     }
 
-    fn read(&self, buffer: &'static mut [u8]) {
+    #[inline]
+    fn read(&self, buffer: &mut [u8]) {
         self.regs.read(buffer)
     }
 
+    #[inline]
     fn put(&self, b:u8) {
         self.regs.putc(b)
     }
 
+    #[inline]
     fn get(&self) -> u8 {
         self.regs.getc()
     }
 
+    #[inline]
     fn getc_try(&self) -> Option<u8> {
         self.regs.getc_try()
     }
 
+    #[inline]
     fn error(&self) -> u32 {
         self.regs.flags()
     }

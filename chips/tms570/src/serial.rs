@@ -64,8 +64,8 @@ pub trait SerialLine {
     fn put(&self, b:u8);
     fn get(&self) -> u8;
     fn getc_try(&self) -> Option<u8>;
-    fn write(&self, buffer: &'static [u8]);
-    fn read(&self, buffer: &'static mut [u8]);
+    fn write(&self, buffer: &[u8]);
+    fn read(&self, buffer: &mut [u8]);
     fn error(&self) -> u32;
     fn interrupt(&self, ev: event::SciEvent);
 }
