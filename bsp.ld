@@ -130,10 +130,10 @@ SECTIONS
 
     .cpustack (NOLOAD) :
     {
-        . = ALIGN(8);
+        . = ALIGN(4);
         _sstack = .;
         . = . + __stack_size__;
-        . = ALIGN(8);
+        . = ALIGN(4);
         _estack = .;
     } > cpustack
 
@@ -151,6 +151,7 @@ SECTIONS
 
     .heap :
     {
+        . = ALIGN(4);
         _sheap = .;
         . = . + __heap_size__;
         _eheap = .;
