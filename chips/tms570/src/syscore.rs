@@ -62,17 +62,17 @@ pub unsafe fn init_core_registers() {
         mov lr, r0
         mrs r1,cpsr
         msr spsr_cxsf, r1
-
-        mrc   p15,     #0x00,      r2,       c1, c0, #0x02
-        orr   r2,      r2,         #0xF00000
-        mcr   p15,     #0x00,      r2,       c1, c0, #0x02
-        mov   r2,      #0x40000000
     "::: "memory" : "volatile");
 
     #[cfg(vfp)]
     asm!(
         "
+        mrc   p15,     #0x00,      r2,       c1, c0, #0x02
+        orr   r2,      r2,         #0xF00000
+        mcr   p15,     #0x00,      r2,       c1, c0, #0x02
+        mov   r2,      #0x40000000
         fmxr  fpexc,   r2
+
         fmdrr d0, r1, r1
         fmdrr d1, r1, r1
         fmdrr d2, r1, r1
