@@ -182,11 +182,11 @@ impl DCan  {
             wait_until_set!(self.regs.IF1STAT.get(), BUSY);
             if !data.is_empty() {
                 self.regs.IF1CMD.set(DIR_WRITE | TXREQ | DATA_A | DATA_B);
+                for i in 0..data.len() {
+                    self.regs.IF1DATx[i].set(data[i]);
+                }
             } else { // Remote Frame
                 self.regs.IF1CMD.set(DIR_WRITE | TXREQ);
-            }
-            for i in 0..data.len() {
-                self.regs.IF1DATx[i].set(data[i]);
             }
             self.regs.IF1NO.set(mbox);
             return CanReturn::Success{ret: data.len()};
