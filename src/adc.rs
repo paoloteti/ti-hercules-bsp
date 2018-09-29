@@ -251,6 +251,13 @@ impl Adc {
         self.regs.GxSEL[group as usize].set(0x0);
     }
 
+    /// Stops conversion on all ADC hardware groups
+    pub fn stop_all(&self) {
+        self.stop(AdcGroup::One);
+        self.stop(AdcGroup::Two);
+        self.stop(AdcGroup::Three);
+    }
+
     /// Computes offset error using Calibration mode
     /// ADC resolution is forced, temporarily, to be 12-bits.
     /// Offset error is the difference of the average value
@@ -260,9 +267,7 @@ impl Adc {
         let old_mode = self.regs.OPMODECR.get();
         self.regs.OPMODECR.set(AdcResolution::Bit12 as u32);
 
-        self.stop(AdcGroup::One);
-        self.stop(AdcGroup::Two);
-        self.stop(AdcGroup::Three);
+	self.stop_all();
 
         for test in 0..3 {
             // Disable Calibration
