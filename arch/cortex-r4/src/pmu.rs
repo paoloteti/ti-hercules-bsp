@@ -170,7 +170,7 @@ pub unsafe fn set_count_event(counter: u32, event: PmuEvent) {
         mcr p15, #0, r0, c9, c12, #5
         mcr p15, #0, r1, c9, c13, #1"
         :
-        : "0"(counter) "1"(event_code)
+        : "r"(counter), "r"(event_code)
         : "memory"
         : "volatile")
 }
@@ -190,14 +190,16 @@ pub unsafe fn get_cycle_count() -> u32 {
 
 /// Returns current event counter value
 /// 'counter' - Counter select
-pub unsafe fn get_event_count(counter: u32) {
+pub unsafe fn get_event_count(counter: u32) -> u32 {
+    let ret: u32;
     asm!("
-        mcr p15, #0, r0, c9, c12, #5
+        mcr p15, #0, r0, c9, c12, #5 /* select counter */
         mrc p15, #0, r0, c9, c13, #2"
-        :
+        : "=r"(ret)
         : "0"(counter)
         : "memory"
-        : "volatile")
+        : "volatile");
+        ret
 }
 
 /// Returns current overflow register and clear flags
