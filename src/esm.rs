@@ -33,8 +33,33 @@ impl Esm {
         &*ESM_BASE_ADDR
     }
 
+    /// Init and reset the ESM driver.
+    pub fn init(&self, preload: u32) {
+        // disable error pin channels and interrupts
+        self.depapr1.set(0xFFFF_FFFF);
+        self.iepcr4.set(0xFFFF_FFFF);
+        self.iecr1.set(0xFFFF_FFFF);
+        self.iecr4.set(0xFFFF_FFFF);
+
+        self.clear_all_errors();
+        if self.error_pin_active() {
+            self.error_reset();
+        } else {
+            self.normal_operation();
+        }
+        self.ltcpr.set(preload - 1);
+    }
+
     pub fn error_reset(&self) {
         self.ekr.set(0x5)
+    }
+
+    pub fn normal_operation(&self) {
+        self.ekr.set(0x0)
+    }
+
+    pub fn error_pin_active(&self) -> bool {
+        self.epsr.get() == 0x0
     }
 
     /// Up to 128 error channels are supported, divided into 3 different groups:
@@ -64,6 +89,14 @@ impl Esm {
         } else {
             self.sr4[group].set(0x1 << (ch - 32));
         }
+    }
+
+    pub fn clear_all_errors(&self) {
+        self.sr1[0].set(0x0);
+        self.sr1[1].set(0x0);
+        self.sr1[2].set(0x0);
+        self.ssr2.set(0x0);
+        self.sr4[0].set(0x0)
     }
 
     pub fn shadow_stat_clear(&self, group: EsmGroup) {
