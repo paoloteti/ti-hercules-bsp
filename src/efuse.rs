@@ -58,12 +58,16 @@ const PIN_INST_ERR: u32 = 0x1 << 11;
 const PIN_SIGLE_BIT_ERR: u32 = 0x1 << 12;
 const PIN_SELF_TEST_ERR: u32 = 0x1 << 14;
 
-#[derive(Copy,Clone,PartialEq)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum EfcError {
-    OnGoing = 0,    // No error
-    StuckZero,      // Stuck at Zero error
-    OneBit,         // One Bit error
-    Other,          // Other error
+    /// No error
+    OnGoing = 0,
+    /// Stuck at Zero error
+    StuckZero,
+    /// One Bit error
+    OneBit,
+    /// Other errors
+    Other,
 }
 
 impl Efc {
