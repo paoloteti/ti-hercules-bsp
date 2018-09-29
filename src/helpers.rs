@@ -52,18 +52,12 @@ macro_rules! wait_until_eq {
     };
 }
 
-/// Divide positive or negative dividend by positive or negative divisor
-/// and round to closest integer. Result is undefined for negative
-/// divisors if the dividend variable type is unsigned and for negative
-/// dividends if the divisor variable type is unsigned.
+/// Divide positive by positive divisor and round to closest
+/// unsigned integer.
 #[macro_export]
-macro_rules! div_round_closest {
+macro_rules! udiv_round_closest {
     ($x: expr, $divisor: expr ) => {
-        if $x > 1 || $divisor > 1 || $x > 0 {
-            ($x + ($divisor / 2)) / $divisor
-        } else {
-            ($x - ($divisor / 2)) / $divisor
-        }
+        ($x + ($divisor / 2)) / $divisor
     };
 }
 

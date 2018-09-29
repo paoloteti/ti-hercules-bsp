@@ -217,7 +217,7 @@ impl SerialLine for SciChipset {
         if baudrate > 0 {
             let is_async = self.regs.GCR1.get() & ASYNC_TIMING != 0;
             let f = if is_async { 16 } else { 1 };
-            let br = div_round_closest!(config::VCLK, f * baudrate) - 1;
+            let br = udiv_round_closest!(config::VCLK, f * baudrate) - 1;
             self.regs.BRS.set(br);
             self.baudrate.set(baudrate);
         }
