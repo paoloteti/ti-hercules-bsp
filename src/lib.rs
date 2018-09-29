@@ -101,11 +101,12 @@ pub unsafe extern "C" fn tms570_reset() -> ! {
     sys.enable_pheripherals(true);
 
     if efuse_stat == efuse::EfcError::OnGoing {
+        // Wait for eFuse controller self-test to complete
         if !efuse.self_test_completed() {
-            loop {}
+            panic!("[eFuse] won't complete]");
         }
-    } else  {
-        loop {}
+    } else {
+        panic!("[eFuse] not reliable]");
     }
 
     // Setup flash before speed-up PLL otherwise MCU can't
