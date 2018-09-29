@@ -4,7 +4,7 @@
 use vcell::VolatileCell;
 use pinmux;
 
-#[allow(dead_code)]
+#[repr(C)]
 pub struct Iomm {
     revision: VolatileCell<u32>,      	    // Revision
     _reserved1: [VolatileCell<u32>; 7],

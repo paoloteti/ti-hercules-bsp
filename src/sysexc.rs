@@ -2,6 +2,7 @@
 
 use vcell::VolatileCell;
 
+#[repr(C)]
 pub struct SysException {
     exc: VolatileCell<u32>,
 }

@@ -6,7 +6,7 @@ use config::RTICLK1;
 use vcell::VolatileCell;
 use dwd::{DWD, WdViolation};
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 struct Counter {
     FRCx: VolatileCell<u32>,        // 0x10,0x30: Free Running Counter x
@@ -18,14 +18,14 @@ struct Counter {
     _rsvd2: [VolatileCell<u32>; 2], // 0x28,0x48: Reserved
 }
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 struct Comparator {
     COMPx: VolatileCell<u32>,      // 0x50,0x58,0x60,0x68: Compare x
     UDCPx: VolatileCell<u32>,      // 0x54,0x5C,0x64,0x6C: Update Compare x
 }
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 struct RtiRegisters {
     GCTRL: VolatileCell<u32>,          // 0x00: Global Control

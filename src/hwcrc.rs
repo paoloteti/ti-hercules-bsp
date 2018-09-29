@@ -16,7 +16,7 @@
 use vcell::VolatileCell;
 use core::ptr;
 
-#[allow(dead_code)]
+#[repr(C)]
 pub struct HwCrc {
     ctrl0: VolatileCell<u32>,              // 0x00: Global Control 0
     _reserved1: VolatileCell<u32>,         // 0x04: reserved

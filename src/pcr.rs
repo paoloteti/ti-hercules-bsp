@@ -4,7 +4,7 @@
 
 use vcell::VolatileCell;
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 pub struct Pcr {
     PMPROTSET0: VolatileCell<u32>,

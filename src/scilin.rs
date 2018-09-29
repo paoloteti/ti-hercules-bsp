@@ -6,7 +6,7 @@ use core::cell::Cell;
 use serial::{event, DataBits, Parity, SerialLine, StopBits};
 use vcell::VolatileCell;
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 struct LinRegisters {
     GCR0: VolatileCell<u32>,        // 0x00: Global control 0
@@ -45,7 +45,7 @@ struct LinRegisters {
 #[allow(dead_code)]
 const LIN_BASE_ADDR: *const LinRegisters = 0xFFF7_E400 as *const LinRegisters;
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 struct SciRegisters {
     GCR0: VolatileCell<u32>, // 0x00 Global Control 0

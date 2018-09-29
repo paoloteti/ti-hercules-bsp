@@ -2,7 +2,7 @@ use vcell::VolatileCell;
 use esm;
 use esm_ch::EsmError;
 
-#[allow(dead_code)]
+#[repr(C)]
 pub struct Efc {
     instruction: VolatileCell<u32>,      // 0x0  INSTRUCTION AN DUMPWORD REG.
     address: VolatileCell<u32>,          // 0x4  ADDRESS REG.

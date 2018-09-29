@@ -2,7 +2,7 @@ use cortexr4::asm::{nop, wfi};
 use system;
 use vcell::VolatileCell;
 
-#[allow(dead_code)]
+#[repr(C)]
 pub struct Stc {
     stcgcr0: VolatileCell<u32>,       // 0x00: STC Control 0
     stcgcr1: VolatileCell<u32>,       // 0x04: STC Control 1

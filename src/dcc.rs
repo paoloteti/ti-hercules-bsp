@@ -1,6 +1,7 @@
 
 use vcell;
 
+#[repr(C)]
 pub struct Dcc {
     gctrl: VolatileCell<u32>,      	    // 0x00: Control
     rev: VolatileCell<u32>,      		// 0x04: Revision Id

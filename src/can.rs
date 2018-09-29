@@ -9,7 +9,7 @@
 
 use vcell::VolatileCell;
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 struct CanRegisters {
     CTL: VolatileCell<u32>,                 // 0x0000: Control

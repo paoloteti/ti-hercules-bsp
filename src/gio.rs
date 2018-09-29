@@ -7,7 +7,7 @@
 
 use vcell::VolatileCell;
 
-#[allow(dead_code)]
+#[repr(C)]
 struct GioRegisters {
     gcr0: VolatileCell<u32>,      // 0x00: Global Control
     _reserved: VolatileCell<u32>, // 0x04: Reserved

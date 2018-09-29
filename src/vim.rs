@@ -5,7 +5,7 @@ use vcell::VolatileCell;
 pub const VIM_CHANNELS: usize = 128;
 const VIM_CH_GROUPS: usize = 32;
 
-#[allow(dead_code)]
+#[repr(C)]
 pub struct VimRegisters {
     parflg: VolatileCell<u32>,           // Parity Flag
     parctl:VolatileCell<u32>,            // Parity Control
