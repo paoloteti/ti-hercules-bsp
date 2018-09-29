@@ -1,4 +1,3 @@
-
 ///
 /// Analog To Digital Converter (ADC) Module
 ///
@@ -24,7 +23,6 @@
 /// - External event pin (ADEVT) to trigger conversions
 ///   ADEVT is also programmable as general-purpose I/O
 /// - Eight hardware events to trigger conversions
-
 use core::cmp::min;
 use vcell::VolatileCell;
 
@@ -35,13 +33,13 @@ struct AdcRegisters {
     OPMODECR: VolatileCell<u32>,           // 0x0004: Operating mode control
     CLOCKCR: VolatileCell<u32>,            // 0x0008: Clock control
     CALCR: VolatileCell<u32>,              // 0x000C: Calibration control
-    GxMODECR: [VolatileCell<u32>;3],        // 0x0010,0x0014,0x0018: Group 0-2 mode control
+    GxMODECR: [VolatileCell<u32>; 3],      // 0x0010,0x0014,0x0018: Group 0-2 mode control
     EVSRC: VolatileCell<u32>,              // 0x001C: Group 0 trigger source control
     G1SRC: VolatileCell<u32>,              // 0x0020: Group 1 trigger source control
     G2SRC: VolatileCell<u32>,              // 0x0024: Group 2 trigger source control
-    GxINTENA: [VolatileCell<u32>;3],       // 0x0028,0x002C,0x0030: Group 0-2 interrupt enable
-    GxINTFLG: [VolatileCell<u32>;3],       // 0x0034,0x0038,0x003C: Group 0-2 interrupt flag
-    GxINTCR: [VolatileCell<u32>;3],        // 0x0040-0x0048: Group 0-2 interrupt threshold
+    GxINTENA: [VolatileCell<u32>; 3],      // 0x0028,0x002C,0x0030: Group 0-2 interrupt enable
+    GxINTFLG: [VolatileCell<u32>; 3],      // 0x0034,0x0038,0x003C: Group 0-2 interrupt flag
+    GxINTCR: [VolatileCell<u32>; 3],       // 0x0040-0x0048: Group 0-2 interrupt threshold
     EVDMACR: VolatileCell<u32>,            // 0x004C: Group 0 DMA control
     G1DMACR: VolatileCell<u32>,            // 0x0050: Group 1 DMA control
     G2DMACR: VolatileCell<u32>,            // 0x0054: Group 2 DMA control
@@ -96,7 +94,7 @@ struct AdcRegisters {
     PARADDR: VolatileCell<u32>,            // 0x0184: Parity error address
     PWRUPDLYCTRL: VolatileCell<u32>,       // 0x0188: Power-Up delay control
     _reserved7: VolatileCell<u32>,         // 0x018C: Reserved
-	ADEVCHNSELMODECTRL: VolatileCell<u32>, // 0x0190: Event Group Channel Selection Mode Control
+    ADEVCHNSELMODECTRL: VolatileCell<u32>, // 0x0190: Event Group Channel Selection Mode Control
     ADG1CHNSELMODECTRL: VolatileCell<u32>, // 0x0194: Group1 Channel Selection Mode Control
     ADG2CHNSELMODECTRL: VolatileCell<u32>, // 0x0198: Group2 Channel Selection Mode Control
     ADEVCURRCOUNT: VolatileCell<u32>,      // 0x019C: Event Group Current Count
@@ -109,27 +107,19 @@ struct AdcRegisters {
 const ADC1_BASE_ADDR: *const AdcRegisters = 0xFFF7_C000 as *const AdcRegisters;
 const ADC2_BASE_ADDR: *const AdcRegisters = 0xFFF7_C200 as *const AdcRegisters;
 
-const ADC_BASE_ADDR: [*const AdcRegisters; 2] = [
-    ADC1_BASE_ADDR, ADC2_BASE_ADDR
-];
+const ADC_BASE_ADDR: [*const AdcRegisters; 2] = [ADC1_BASE_ADDR, ADC2_BASE_ADDR];
 
 const ADC1_RAM_ADDR: *const u32 = 0xFF3E_0000 as *const u32;
 const ADC2_RAM_ADDR: *const u32 = 0xFF3A_0000 as *const u32;
-const ADC_RAM_ADDR: [*const u32; 2] = [
-    ADC1_RAM_ADDR, ADC2_RAM_ADDR
-];
+const ADC_RAM_ADDR: [*const u32; 2] = [ADC1_RAM_ADDR, ADC2_RAM_ADDR];
 
-const ADC1_PRAM_ADDR: *const u32 = 0xFF3E_1000  as *const u32;
-const ADC2_PRAM_ADDR: *const u32 = 0xFF3A_1000  as *const u32;
-const ADC_PRAM_ADDR: [*const u32; 2] = [
-    ADC1_PRAM_ADDR, ADC2_PRAM_ADDR
-];
+const ADC1_PRAM_ADDR: *const u32 = 0xFF3E_1000 as *const u32;
+const ADC2_PRAM_ADDR: *const u32 = 0xFF3A_1000 as *const u32;
+const ADC_PRAM_ADDR: [*const u32; 2] = [ADC1_PRAM_ADDR, ADC2_PRAM_ADDR];
 
 const ADC1_LUT_ADDR: *const u32 = 0xFF3E_2000 as *const u32;
 const ADC2_LUT_ADDR: *const u32 = 0xFF3A_2000 as *const u32;
-const ADC_LUT_ADDR: [*const u32; 2] = [
-    ADC1_LUT_ADDR, ADC2_LUT_ADDR
-];
+const ADC_LUT_ADDR: [*const u32; 2] = [ADC1_LUT_ADDR, ADC2_LUT_ADDR];
 
 pub enum ConvEvent {
     /// Interrupt is not generated (event disabled)
@@ -144,17 +134,16 @@ pub enum ConvEvent {
     ConversionEnd = 0x1 << 3,
 }
 
-
-#[derive(Copy,Clone)]
+#[derive(Copy, Clone)]
 pub enum AdcID {
     One = 0,
     Two = 1,
 }
 
-#[derive(Copy,Clone)]
+#[derive(Copy, Clone)]
 pub enum AdcGroup {
-    One   = 0,
-    Two   = 1,
+    One = 0,
+    Two = 1,
     Three = 2,
 }
 
@@ -164,28 +153,28 @@ pub enum AdcResolution {
     /// 10 bit data resolution
     Bit10 = 0x0100,
     /// 8 bit data resolution
-    Bit8  = 0x0200,
+    Bit8 = 0x0200,
 }
 
-#[derive(Copy,Clone,Default)]
+#[derive(Copy, Clone, Default)]
 pub struct AdcSample {
-    value:u32,
-    ch:u32,
+    value: u32,
+    ch: u32,
 }
 
 #[allow(dead_code)]
 pub struct Adc {
     pub id: AdcID,
-    fifo_size:u8,
-    resolution:AdcResolution,
+    fifo_size: u8,
+    resolution: AdcResolution,
     regs: &'static AdcRegisters,
     ram: *const u32,
     pram: *const u32,
     lut: *const u32,
 }
 
-impl Adc  {
-    pub fn new(id:AdcID, fifo_size:u8, res:AdcResolution) -> Adc {
+impl Adc {
+    pub fn new(id: AdcID, fifo_size: u8, res: AdcResolution) -> Adc {
         let adc = Adc {
             id: id,
             fifo_size: fifo_size,
@@ -205,37 +194,36 @@ impl Adc  {
         self.regs.RSTCR.set(0x0);
     }
 
-    pub fn done(&self, group:AdcGroup) -> bool {
+    pub fn done(&self, group: AdcGroup) -> bool {
         self.regs.GxINTFLG[group as usize].get() & ConvEvent::ConversionEnd as u32 != 0
     }
 
-    pub fn fifo_full(&self, group:AdcGroup) -> bool {
-        let is_full = ConvEvent::Threshold as u32 |
-                      ConvEvent::ConversionOverrun as u32;
+    pub fn fifo_full(&self, group: AdcGroup) -> bool {
+        let is_full = ConvEvent::Threshold as u32 | ConvEvent::ConversionOverrun as u32;
         self.regs.GxINTFLG[group as usize].get() & is_full != 0
     }
 
     /// Resets ADC FiFo
-    pub fn fifo_clean(&self, group:AdcGroup) {
+    pub fn fifo_clean(&self, group: AdcGroup) {
         self.regs.GxFIFORESETCR[group as usize].set(0x1)
     }
 
     /// Unpack a raw sampling register into an AdcSample
     /// value based on configured ADC resolution
-    fn unpack(&self, raw:u32, sample: &mut AdcSample) {
+    fn unpack(&self, raw: u32, sample: &mut AdcSample) {
         match self.resolution {
             AdcResolution::Bit12 => {
                 sample.value = raw & 0xfff;
                 sample.ch = (raw >> 16) & 0x1f;
-            },
+            }
             AdcResolution::Bit10 => {
                 sample.value = raw & 0x3ff;
                 sample.ch = (raw >> 10) & 0x1f;
-            },
+            }
             AdcResolution::Bit8 => {
                 sample.value = raw & 0xff;
                 sample.ch = (raw >> 10) & 0x1f;
-            },
+            }
         }
     }
 
@@ -243,7 +231,7 @@ impl Adc  {
     /// No more than min(slice length, ADC fifo length) raw samples are
     /// copied into the slice.
     /// Return number of valid sample inside the slice.
-    pub fn get(&self, group:AdcGroup, samples: &mut[AdcSample]) -> usize {
+    pub fn get(&self, group: AdcGroup, samples: &mut [AdcSample]) -> usize {
         let size = min(samples.len(), self.fifo_size as usize);
         for i in 0..size {
             let raw = self.regs.buff[group as usize][0].get();
@@ -253,13 +241,13 @@ impl Adc  {
     }
 
     /// Starts a conversion of the ADC hardware group
-    pub fn start(&self, group:AdcGroup, ch:usize) {
+    pub fn start(&self, group: AdcGroup, ch: usize) {
         self.regs.GxINTCR[group as usize].set(self.fifo_size as u32);
         self.regs.GxSEL[group as usize].set(0x1 << ch);
     }
 
     /// Stops a conversion of the ADC hardware group
-    pub fn stop(&self, group:AdcGroup) {
+    pub fn stop(&self, group: AdcGroup) {
         self.regs.GxSEL[group as usize].set(0x0);
     }
 
