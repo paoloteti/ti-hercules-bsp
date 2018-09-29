@@ -22,7 +22,7 @@ The TMS570 family integrates dual Cortex-R4F and Cortex-R5F processors in lock-s
 ## How to use
 
 ```
-tms570 = { git = "https://github.com/paoloteti/ti-hercules-bsp" }
+tms570 = { git = "https://github.com/paoloteti/ti-hercules-bsp.git" }
 f021_fapi = { git = "https://github.com/paoloteti/f021-flash-api.git" }
 ```
 
