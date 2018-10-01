@@ -34,7 +34,7 @@ impl Esm {
     }
 
     /// Init and reset the ESM driver.
-    pub fn init(&self, preload: u32) {
+    pub fn reset(&self, preload: u16) {
         // disable error pin channels and interrupts
         self.depapr1.set(0xFFFF_FFFF);
         self.iepcr4.set(0xFFFF_FFFF);
@@ -47,7 +47,11 @@ impl Esm {
         } else {
             self.normal_operation();
         }
-        self.ltcpr.set(preload - 1);
+        self.set_preload(preload);
+    }
+
+    pub fn set_preload(&self, preload: u16) {
+        self.ltcpr.set((preload - 1) as u32)
     }
 
     pub fn error_reset(&self) {
@@ -60,6 +64,14 @@ impl Esm {
 
     pub fn error_pin_active(&self) -> bool {
         self.epsr.get() == 0x0
+    }
+
+    pub fn high_level_interrupt(&self) -> u32 {
+        self.ioffhr.get() - 1
+    }
+
+    pub fn low_level_interrupt(&self) -> u32 {
+        self.iofflr.get() - 1
     }
 
     /// Up to 128 error channels are supported, divided into 3 different groups:
@@ -92,14 +104,35 @@ impl Esm {
     }
 
     pub fn clear_all_errors(&self) {
-        self.sr1[0].set(0x0);
-        self.sr1[1].set(0x0);
-        self.sr1[2].set(0x0);
-        self.ssr2.set(0x0);
-        self.sr4[0].set(0x0)
+        self.sr1[0].set(0xFFFF_FFFF);
+        self.sr1[1].set(0xFFFF_FFFF);
+        self.sr1[2].set(0xFFFF_FFFF);
+        self.ssr2.set(0xFFFF_FFFF);
+        self.sr4[0].set(0xFFFF_FFFF)
     }
 
     pub fn shadow_stat_clear(&self, group: EsmGroup) {
         self.ssr2.set(0x1 << (group as u32));
     }
+
+    pub fn disable_interrupt(&self, err: EsmError) {
+        self.iecr4.set(0x1 << err.ch() - 31);
+        self.iecr1.set(0x1 << err.ch());
+    }
+
+    pub fn enable_interrupt(&self, err: EsmError) {
+        self.iesr4.set(0x1 << err.ch() - 31);
+        self.iesr1.set(0x1 << err.ch());
+    }
+
+    pub fn disable_error(&self, err: EsmError) {
+        self.iepcr4.set(0x1 << err.ch() - 31);
+        self.depapr1.set(0x1 << err.ch());
+    }
+
+    pub fn enable_error(&self, err: EsmError) {
+        self.iepsr4.set(0x1 << err.ch() - 31);
+        self.eepapr1.set(0x1 << err.ch());
+    }
+
 }
