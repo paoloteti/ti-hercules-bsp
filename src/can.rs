@@ -127,6 +127,9 @@ const DATA_B:u8    = 0x1 << 1;
 
 const CAN_FRAME_SIZE:usize = 8;
 
+#[cfg(target_endian = "big")]
+const REMAP_BIG_ENDIAN: [usize; CAN_FRAME_SIZE] = [ 3, 2, 1, 0, 7, 6, 5, 4 ];
+
 #[derive(Copy,Clone)]
 pub enum CanID {
     One     = 0,
@@ -169,6 +172,24 @@ impl DCan  {
         self.regs.ES.get()
     }
 
+    #[inline(always)]
+    fn raw_set(&self, i: usize, b: u8) {
+        if cfg!(target_endian = "big") {
+            self.regs.IF1DATx[REMAP_BIG_ENDIAN[i]].set(b);
+        } else {
+            self.regs.IF1DATx[i].set(b);
+        }
+    }
+
+    #[inline(always)]
+    fn raw_get(&self, i: usize) -> u8 {
+        if cfg!(target_endian = "big") {
+            self.regs.IF2DATx[REMAP_BIG_ENDIAN[i]].get()
+        } else {
+            self.regs.IF2DATx[i].get()
+        }
+    }
+
     pub fn send(&self, mbox:u8, data:&[u8]) -> CanReturn {
         if !valid_mbox!(mbox) {
             return CanReturn::InvalidMsgBox;
@@ -183,7 +204,7 @@ impl DCan  {
             if !data.is_empty() {
                 self.regs.IF1CMD.set(DIR_WRITE | TXREQ | DATA_A | DATA_B);
                 for i in 0..data.len() {
-                    self.regs.IF1DATx[i].set(data[i]);
+                    self.raw_set(i, data[i]);
                 }
             } else { // Remote Frame
                 self.regs.IF1CMD.set(DIR_WRITE | TXREQ);
@@ -220,7 +241,7 @@ impl DCan  {
                 return CanReturn::WrongBufferSize;
             }
             for i in 0..size {
-                data[i] = self.regs.IF2DATx[i].get();
+                data[i] = self.raw_get(i);
             }
         }
         CanReturn::Success{ret: size}
