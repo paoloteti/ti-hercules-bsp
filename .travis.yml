@@ -8,6 +8,12 @@ matrix:
     - env: TARGET=armebv7r-none-eabi
       rust: nightly
 
+    - env: TARGET=armv7r-none-eabihf
+      rust: nightly
+
+    - env: TARGET=armv7r-none-eabi
+      rust: nightly
+
 before_install: set -e
 
 install:
