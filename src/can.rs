@@ -173,21 +173,27 @@ impl DCan  {
     }
 
     #[inline(always)]
+    #[cfg(target_endian = "big")]
     fn raw_set(&self, i: usize, b: u8) {
-        if cfg!(target_endian = "big") {
-            self.regs.IF1DATx[REMAP_BIG_ENDIAN[i]].set(b);
-        } else {
-            self.regs.IF1DATx[i].set(b);
-        }
+        self.regs.IF1DATx[REMAP_BIG_ENDIAN[i]].set(b);
     }
 
     #[inline(always)]
+    #[cfg(target_endian = "little")]
+    fn raw_set(&self, i: usize, b: u8) {
+        self.regs.IF1DATx[i].set(b);
+    }
+
+    #[inline(always)]
+    #[cfg(target_endian = "big")]
     fn raw_get(&self, i: usize) -> u8 {
-        if cfg!(target_endian = "big") {
-            self.regs.IF2DATx[REMAP_BIG_ENDIAN[i]].get()
-        } else {
-            self.regs.IF2DATx[i].get()
-        }
+        self.regs.IF2DATx[REMAP_BIG_ENDIAN[i]].get()
+    }
+
+    #[inline(always)]
+    #[cfg(target_endian = "little")]
+    fn raw_get(&self, i: usize) -> u8 {
+        self.regs.IF2DATx[i].get()
     }
 
     pub fn send(&self, mbox:u8, data:&[u8]) -> CanReturn {
