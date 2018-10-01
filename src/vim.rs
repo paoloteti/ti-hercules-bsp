@@ -64,6 +64,7 @@ pub struct Vim {
 
 #[allow(dead_code)]
 impl Vim {
+
     pub unsafe fn new() -> Vim {
         Vim {
             regs: &*VIM_BASE_ADDR,
@@ -72,12 +73,12 @@ impl Vim {
         }
     }
 
-    pub fn fiq_id(&self) -> u32 {
-        self.regs.fiq_index.get()
+    pub fn fiq_id(&self) -> usize {
+        self.regs.fiq_index.get() as usize
     }
 
-    pub fn irq_id(&self) -> u32 {
-        self.regs.irq_index.get()
+    pub fn irq_id(&self) -> usize {
+        self.regs.irq_index.get() as usize
     }
 
     pub fn isr_set(&self, ch: usize, isr: fn()) {
@@ -96,6 +97,11 @@ impl Vim {
         } else {
             self.regs.parflg.set(0x5)
         }
+    }
+
+    /// clear VIM RAM parity error flag in VIM
+    pub fn parity_flag_clear(&self) {
+        self.regs.parflg.set(0x1);
     }
 
     pub fn parity_check(&self) -> bool {
@@ -117,8 +123,7 @@ impl Vim {
         if !esm.error_is_set(EsmError::VimParity) {
             error = false;
         } else {
-            // clear VIM RAM parity error flag in VIM
-            self.regs.parflg.set(0x1);
+            self.parity_flag_clear();
             esm.clear_error(EsmError::VimParity);
             self.pram.parity[0].set(self.pram.parity[0].get() ^ 0x1);
         }
@@ -144,10 +149,39 @@ impl Vim {
             let grp = ch / VIM_CH_GROUPS;
             let id = ch % VIM_CH_GROUPS;
             if enable {
-                self.regs.req_maskclr[grp].set(0x1 << id);
-            } else {
                 self.regs.req_maskset[grp].set(0x1 << id);
+            } else {
+                self.regs.req_maskclr[grp].set(0x1 << id);
             }
+        }
+    }
+
+    #[inline]
+    pub fn clear_esm_interrupt(&self) {
+        self.regs.intreq[0].set(0x1)
+    }
+
+    pub unsafe fn default_parity_fallback_handler(&self) {
+        let error_address = self.regs.adderr.get();
+        let _error_ch = ((error_address & 0x1FF) >> 2) as usize;
+
+        // FIXME(pteti) Fix error address using a backup table
+        // self.table.isr[error_ch].set(self.BACKUP_ISR_TABLE[error_ch] as u32);
+        self.parity_flag_clear();
+        let v = if self.fiq_id() != 0 { self.fiq_id() - 1 } else { self.irq_id() - 1 };
+
+        if v == 0 {
+            // ESM interrupt (high-priority) We can't disable.
+            // So clear it and clear related error.
+            self.clear_esm_interrupt();
+            let esm = Esm::new();
+            let vec = esm.high_level_interrupt();
+            let error = EsmError::from(vec as u8);
+            esm.clear_error(error);
+        } else {
+            // FIQ/IRQ: disable and enable again.
+            self.interrupt_enable(v, false);
+            self.interrupt_enable(v, true);
         }
     }
 }
