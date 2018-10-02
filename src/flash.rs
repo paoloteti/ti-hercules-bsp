@@ -1,7 +1,7 @@
 
 use vcell::VolatileCell;
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 pub struct Flash {
     FRDCNTL: VolatileCell<u32>,       // 0x0000

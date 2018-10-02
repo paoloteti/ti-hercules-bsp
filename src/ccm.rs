@@ -3,6 +3,7 @@ use esm_ch::{EsmError, EsmGroup};
 use vcell::VolatileCell;
 use vim::Vim;
 
+#[repr(C)]
 pub struct Ccm {
     ccmsr: VolatileCell<u32>,   // 0x00 CCM-R4F StatusRegister
     ccmkeyr: VolatileCell<u32>, // 0x04 CCM-R4F Key Register
