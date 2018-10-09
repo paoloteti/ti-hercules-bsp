@@ -139,7 +139,6 @@ pub enum CanID {
 
 pub enum CanReturn {
     Success { ret: usize },
-    NoError,
     DataLost,
     InvalidMsgBox,
     WrongBufferSize,
