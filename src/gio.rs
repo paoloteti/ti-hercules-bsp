@@ -36,6 +36,7 @@ struct GioPortsRegisters {
     psl: VolatileCell<u32>,    // 0x1C: Pull Up/Down Selection
 }
 const GIO_PORTA_ADDR: *const GioPortsRegisters = 0xFFF7_BC34 as *const GioPortsRegisters;
+const GIO_PORTB_ADDR: *const GioPortsRegisters = 0xFFF7_BC54 as *const GioPortsRegisters;
 
 pub struct Gio {
     regs: &'static GioRegisters,
@@ -74,7 +75,7 @@ impl Gio {
     pub fn new() -> Gio {
         let gio = Gio {
             regs: unsafe { &*GIO_BASE_ADDR },
-            ports: unsafe { [&*GIO_PORTA_ADDR, &*GIO_PORTA_ADDR] },
+            ports: unsafe { [&*GIO_PORTA_ADDR, &*GIO_PORTB_ADDR] },
         };
         // Reset it (if not already out of reset)
         if gio.regs.gcr0.get() == 0x0 {
