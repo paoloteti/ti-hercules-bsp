@@ -41,10 +41,12 @@ const MIBSPI_PORT3_ADDR: *const GioPortsRegisters = 0xFFF7_F818 as *const GioPor
 const MIBSPI_PORT5_ADDR: *const GioPortsRegisters = 0xFFF7_FC18 as *const GioPortsRegisters;
 const LIN_PORT_ADDR: *const GioPortsRegisters = 0xFFF7_E440 as *const GioPortsRegisters;
 const SCI_PORT_ADDR: *const GioPortsRegisters = 0xFFF7_E540 as *const GioPortsRegisters;
+const HET_PORT1_ADDR: *const GioPortsRegisters = 0xFFF7_B84C as *const GioPortsRegisters;
+const HET_PORT2_ADDR: *const GioPortsRegisters = 0xFFF7_B94C as *const GioPortsRegisters;
 
 pub struct Gio {
     regs: &'static GioRegisters,
-    ports: [&'static GioPortsRegisters; 7],
+    ports: [&'static GioPortsRegisters; 9],
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -69,6 +71,10 @@ pub enum GioPorts {
     LinPort = 5,
     /// Gio Port from SCI
     SciPort = 6,
+    /// Gio Port 1 from HET
+    HetPort1 = 7,
+    /// Gio Port 2 from HET
+    HetPort2 = 8,
 }
 
 #[derive(Clone, Copy)]
@@ -100,6 +106,8 @@ impl Gio {
                     &*MIBSPI_PORT5_ADDR,
                     &*LIN_PORT_ADDR,
                     &*SCI_PORT_ADDR,
+                    &*HET_PORT1_ADDR,
+                    &*HET_PORT2_ADDR,
                 ]
             },
         };
