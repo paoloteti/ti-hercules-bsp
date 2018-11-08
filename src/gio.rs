@@ -4,7 +4,6 @@
 /// The I/O pins are bidirectional and bit-programmable.
 /// The GIO module also supports external interrupt capability.
 ///
-
 use vcell::VolatileCell;
 
 #[repr(C)]
@@ -51,7 +50,7 @@ pub struct Gio {
 #[derive(Clone, Copy, PartialEq)]
 pub enum GioDirection {
     Output = 0x0,
-    Input  = 0x1,
+    Input = 0x1,
 }
 
 #[derive(Clone, Copy, PartialEq, PartialOrd)]
@@ -92,13 +91,17 @@ impl Gio {
     pub fn new() -> Gio {
         let gio = Gio {
             regs: unsafe { &*GIO_BASE_ADDR },
-            ports: unsafe {[&*GIO_PORTA_ADDR,
-                            &*GIO_PORTB_ADDR,
-                            &*MIBSPI_PORT1_ADDR,
-                            &*MIBSPI_PORT3_ADDR,
-                            &*MIBSPI_PORT5_ADDR,
-                            &*LIN_PORT_ADDR,
-                            &*SCI_PORT_ADDR]},
+            ports: unsafe {
+                [
+                    &*GIO_PORTA_ADDR,
+                    &*GIO_PORTB_ADDR,
+                    &*MIBSPI_PORT1_ADDR,
+                    &*MIBSPI_PORT3_ADDR,
+                    &*MIBSPI_PORT5_ADDR,
+                    &*LIN_PORT_ADDR,
+                    &*SCI_PORT_ADDR,
+                ]
+            },
         };
         // Reset it (if not already out of reset)
         if gio.regs.gcr0.get() == 0x0 {
@@ -117,7 +120,7 @@ impl Gio {
     }
 
     /// Configure GIO direction.
-    pub fn direction(&self, port:GioPorts, n:usize, dir:GioDirection) {
+    pub fn direction(&self, port: GioPorts, n: usize, dir: GioDirection) {
         let d = self.ports[port as usize].dir.get();
         match dir {
             GioDirection::Input => self.ports[port as usize].dir.set(d & !(0x1 << n)),
@@ -125,7 +128,7 @@ impl Gio {
         }
     }
 
-    pub fn set(&self, port:GioPorts, n:usize, on:bool) {
+    pub fn set(&self, port: GioPorts, n: usize, on: bool) {
         if on {
             self.ports[port as usize].dset.set(0x1 << n);
         } else {
@@ -133,7 +136,7 @@ impl Gio {
         }
     }
 
-    pub fn toogle(&self, port:GioPorts, n:usize) {
+    pub fn toogle(&self, port: GioPorts, n: usize) {
         let mask = 0x1 << n;
         if self.ports[port as usize].din.get() & mask != 0 {
             self.ports[port as usize].dset.set(mask);
@@ -142,32 +145,32 @@ impl Gio {
         }
     }
 
-    pub fn set_all(&self, port:GioPorts, v:u32) {
+    pub fn set_all(&self, port: GioPorts, v: u32) {
         self.ports[port as usize].dout.set(v)
     }
 
-    pub fn get(&self, port:GioPorts, n:usize) -> bool {
+    pub fn get(&self, port: GioPorts, n: usize) -> bool {
         (self.ports[port as usize].din.get() >> n) & 0x1 != 0x1
     }
 
-    pub fn get_all(&self, port:GioPorts) -> u32 {
+    pub fn get_all(&self, port: GioPorts) -> u32 {
         self.ports[port as usize].din.get()
     }
 
     /// Enable/Disable pull up/down functionality.
     /// Function has effect only when GIO pin is an input pin
-    pub fn pull_enable(&self, port:GioPorts, n:usize, enable:bool) {
+    pub fn pull_enable(&self, port: GioPorts, n: usize, enable: bool) {
         self.ports[port as usize].puldis.set((enable as u32) << n);
     }
 
     /// Configure pin a in pull up or pull down functionality.
     /// No need to explicity invoke pull_enable(true).
-    pub fn pull(&self, port:GioPorts, n:usize, p:Pull) {
+    pub fn pull(&self, port: GioPorts, n: usize, p: Pull) {
         self.ports[port as usize].psl.set((p as u32) << n);
         self.pull_enable(port, n, true);
     }
 
-    pub fn open_drain(&self, port:GioPorts, n:usize, od:bool) {
+    pub fn open_drain(&self, port: GioPorts, n: usize, od: bool) {
         let pdr = self.ports[port as usize].pdr.get();
         self.ports[port as usize].pdr.set(pdr | (od as u32) << n);
     }
@@ -176,7 +179,7 @@ impl Gio {
     /// or falling edge (high to low)
     /// To ensure recognition of the signal as an edge, the signal must
     /// maintain the new level for at least one VCLK cycle
-    pub fn edge(&self, port:GioPorts, n:usize, e:Edge) {
+    pub fn edge(&self, port: GioPorts, n: usize, e: Edge) {
         let mask = ((port as u32) * 8) + (n as u32);
         match e {
             Edge::Falling => self.regs.pol.set(self.regs.pol.get() & !mask),
@@ -184,7 +187,7 @@ impl Gio {
         }
     }
 
-    pub fn interrupt(&self, port:GioPorts, pin:usize, enable:bool) {
+    pub fn interrupt(&self, port: GioPorts, pin: usize, enable: bool) {
         let mask = (enable as u32) << (((port as u32) * 8) + (pin as u32));
         if enable {
             self.regs.enaset.set(mask);
@@ -193,5 +196,4 @@ impl Gio {
             self.regs.enaclr.set(mask);
         }
     }
-
 }
