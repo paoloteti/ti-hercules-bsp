@@ -37,10 +37,15 @@ struct GioPortsRegisters {
 }
 const GIO_PORTA_ADDR: *const GioPortsRegisters = 0xFFF7_BC34 as *const GioPortsRegisters;
 const GIO_PORTB_ADDR: *const GioPortsRegisters = 0xFFF7_BC54 as *const GioPortsRegisters;
+const MIBSPI_PORT1_ADDR: *const GioPortsRegisters = 0xFFF7_F418 as *const GioPortsRegisters;
+const MIBSPI_PORT3_ADDR: *const GioPortsRegisters = 0xFFF7_F818 as *const GioPortsRegisters;
+const MIBSPI_PORT5_ADDR: *const GioPortsRegisters = 0xFFF7_FC18 as *const GioPortsRegisters;
+const LIN_PORT_ADDR: *const GioPortsRegisters = 0xFFF7_E440 as *const GioPortsRegisters;
+const SCI_PORT_ADDR: *const GioPortsRegisters = 0xFFF7_E540 as *const GioPortsRegisters;
 
 pub struct Gio {
     regs: &'static GioRegisters,
-    ports: [&'static GioPortsRegisters; 2],
+    ports: [&'static GioPortsRegisters; 7],
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -51,8 +56,20 @@ pub enum GioDirection {
 
 #[derive(Clone, Copy, PartialEq, PartialOrd)]
 pub enum GioPorts {
+    /// Gio Port A
     A = 0,
+    /// Gio Port B
     B = 1,
+    /// Gio Port 1 from MIBSPI
+    MibSpiPort1 = 2,
+    /// Gio Port 3 from MIBSPI
+    MibSpiPort3 = 3,
+    /// Gio Port 5 from MIBSPI
+    MibSpiPort5 = 4,
+    /// Gio Port from LIN
+    LinPort = 5,
+    /// Gio Port from SCI
+    SciPort = 6,
 }
 
 #[derive(Clone, Copy)]
@@ -75,7 +92,13 @@ impl Gio {
     pub fn new() -> Gio {
         let gio = Gio {
             regs: unsafe { &*GIO_BASE_ADDR },
-            ports: unsafe { [&*GIO_PORTA_ADDR, &*GIO_PORTB_ADDR] },
+            ports: unsafe {[&*GIO_PORTA_ADDR,
+                            &*GIO_PORTB_ADDR,
+                            &*MIBSPI_PORT1_ADDR,
+                            &*MIBSPI_PORT3_ADDR,
+                            &*MIBSPI_PORT5_ADDR,
+                            &*LIN_PORT_ADDR,
+                            &*SCI_PORT_ADDR]},
         };
         // Reset it (if not already out of reset)
         if gio.regs.gcr0.get() == 0x0 {
