@@ -37,7 +37,7 @@ debug = false
 cc = "1.0"
 
 [features]
-default = ["errata57", "errata66", "pbist_rom"]
+default = ["errata57", "errata66"]
 errata57 = []
 errata66 = []
 pbist_rom = []
