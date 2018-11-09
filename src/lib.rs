@@ -42,6 +42,7 @@ pub mod flash;
 pub mod config;
 pub mod serial;
 pub mod het;
+pub mod mibspi;
 
 use dwd::DWD;
 use esm_ch::EsmError;
