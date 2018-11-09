@@ -82,6 +82,7 @@ struct HetRegisters {
     PINDIS: VolatileCell<u32>,
 }
 
+#[allow(dead_code)]
 struct HetInstruction {
     program: VolatileCell<u32>,
     control: VolatileCell<u32>,
