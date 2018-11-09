@@ -41,6 +41,7 @@ pub mod scilin;
 pub mod flash;
 pub mod config;
 pub mod serial;
+pub mod het;
 
 use dwd::DWD;
 use esm_ch::EsmError;
