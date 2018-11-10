@@ -115,19 +115,34 @@ pub struct MibSpi {
 }
 
 impl MibSpi {
-    pub fn new(id: MibSpiID) -> MibSpi {
-        MibSpi {
+    pub fn new(id: MibSpiID, master: bool) -> MibSpi {
+        let mibspi = MibSpi {
             id: id,
             regs: unsafe { &*MIBSPI_ADDR[id as usize] },
             ram: unsafe { &*MIBSPI_RAM_ADDR[id as usize] },
-        }
+        };
+        mibspi.init(master);
+        mibspi
     }
 
-    /// Force MIBSPI module reset.
-    /// Struct constructor put MIBSPI module out of reset, so usually
-    /// there is no need to explicit reset the controller.
-    pub fn reset(&self) {
+    pub fn init(&self, master: bool) {
         self.regs.GCR0.set(0x0);
         self.regs.GCR0.set(0x1);
+        let internal_clock = 0x1 << 1;
+
+        let gcr1 = internal_clock | (master as u32);
+        self.regs.GCR1.set(self.regs.GCR1.get() | gcr1);
+
+        // startup the module
+        self.regs.GCR1.set(self.regs.GCR1.get() | 0x0100_0000);
+    }
+
+    /// SPIENA pin high-impedance enable. When active, the SPIENA pin
+    /// is forced to high-impedance when not driving a low signal.
+    /// If inactive, then the pin will output both a high and a low signal.
+    pub fn highz(&self, enable: bool) {
+        let enablehighz = (enable as u32) << 24;
+        let int0 = self.regs.INT0.get() & !enablehighz;
+        self.regs.INT0.set(int0 | enablehighz);
     }
 }
