@@ -28,6 +28,19 @@ use vcell::VolatileCell;
 
 #[repr(C)]
 #[allow(non_snake_case)]
+struct GxBUF {
+    BUF0: VolatileCell<u32>,
+    BUF1: VolatileCell<u32>,
+    BUF2: VolatileCell<u32>,
+    BUF3: VolatileCell<u32>,
+    BUF4: VolatileCell<u32>,
+    BUF5: VolatileCell<u32>,
+    BUF6: VolatileCell<u32>,
+    BUF7: VolatileCell<u32>,
+}
+
+#[repr(C)]
+#[allow(non_snake_case)]
 struct AdcRegisters {
     RSTCR: VolatileCell<u32>,              // 0x0000: Reset control
     OPMODECR: VolatileCell<u32>,           // 0x0004: Operating mode control
@@ -55,7 +68,7 @@ struct AdcRegisters {
     CALR: VolatileCell<u32>,               // 0x0084: Calibration
     SMSTATE: VolatileCell<u32>,            // 0x0088: State machine state
     LASTCONV: VolatileCell<u32>,           // 0x008C: Last conversion
-    buff: [[VolatileCell<u32>; 8]; 3],     // 0x0090 ..0x00EC: Group x-y result buffer
+    buff: [GxBUF; 3],                      // 0x0090 ..0x00EC: Group x-y result buffer
     EVEMUBUFFER: VolatileCell<u32>,        // 0x00F0: Group 0 emulation result buffer
     G1EMUBUFFER: VolatileCell<u32>,        // 0x00F4: Group 1 emulation result buffer
     G2EMUBUFFER: VolatileCell<u32>,        // 0x00F8: Group 2 emulation result buffer
@@ -142,31 +155,42 @@ pub enum AdcID {
 
 #[derive(Copy, Clone)]
 pub enum AdcGroup {
-    One = 0,
-    Two = 1,
-    Three = 2,
+    /// ADC event group
+    Event = 0,
+    /// ADC group 1
+    One = 1,
+    /// ADC group 2
+    Two = 2,
 }
 
-pub enum AdcResolution {
-    /// 12 bit data resolution
+#[derive(Copy, Clone)]
+pub enum AdcCoreResolution {
+    Bit10 = 0,
+    Bit12 = 1,
+}
+
+#[derive(Copy, Clone)]
+pub enum ReadDataFormat {
+    /// 12 bit data
     Bit12 = 0x0000,
-    /// 10 bit data resolution
+    /// 10 bit data
     Bit10 = 0x0100,
-    /// 8 bit data resolution
+    /// 8 bit data
     Bit8 = 0x0200,
 }
 
 #[derive(Copy, Clone, Default)]
 pub struct AdcSample {
-    value: u32,
-    ch: u32,
+    pub valid: bool,
+    pub value: u32,
+    pub ch: u32,
 }
 
 #[allow(dead_code)]
 pub struct Adc {
     pub id: AdcID,
     fifo_size: u8,
-    resolution: AdcResolution,
+    format: ReadDataFormat,
     regs: &'static AdcRegisters,
     ram: *const u32,
     pram: *const u32,
@@ -174,25 +198,47 @@ pub struct Adc {
 }
 
 impl Adc {
-    pub fn new(id: AdcID, fifo_size: u8, res: AdcResolution) -> Adc {
+    pub fn new(id: AdcID, fifo_size: u8, res: AdcCoreResolution) -> Adc {
         let adc = Adc {
             id: id,
             fifo_size: fifo_size,
-            resolution: res,
+            format: ReadDataFormat::Bit12,
             regs: unsafe { &*ADC_BASE_ADDR[id as usize] },
             ram: unsafe { &*ADC_RAM_ADDR[id as usize] },
             pram: unsafe { &*ADC_PRAM_ADDR[id as usize] },
             lut: unsafe { &*ADC_LUT_ADDR[id as usize] },
         };
-        adc.init();
+        adc.init(res);
         adc
     }
 
-    fn init(&self) {
+    fn init(&self, core_res: AdcCoreResolution) {
         // Reset ADC
         self.regs.RSTCR.set(0x1);
         self.regs.RSTCR.set(0x0);
+        let res = (core_res as u32) << 31;
+        self.regs.OPMODECR.set(self.regs.OPMODECR.get() | res);
+        self.regs.CLOCKCR.set(0x7);
+        self.regs.BNDCR.set((8 << 16) | 16);
+        self.regs.BNDEND.set(self.regs.BNDEND.get() & 0xFFFF0002);
+
+        //TODO: move outside
+        self.regs.G1SAMP.set(1);
+        self.regs.G2SAMP.set(1);
     }
+
+
+    pub fn group_resolution(&mut self, grp: AdcGroup, dformat: ReadDataFormat) {
+        self.format = dformat;
+        // Always add channel id in conversion result
+        self.regs.GxMODECR[grp as usize].set((dformat as u32) | 0x20);
+    }
+
+    pub fn activate(&self) {
+        self.regs.OPMODECR.set(self.regs.OPMODECR.get() | 0x0000_0001);
+        // Wait for buffer initialization complete
+        wait_until_not_zero!(self.regs.BNDEND.get(), 0xFFFF_0000);
+	}
 
     pub fn done(&self, group: AdcGroup) -> bool {
         self.regs.GxINTFLG[group as usize].get() & ConvEvent::ConversionEnd as u32 != 0
@@ -211,19 +257,22 @@ impl Adc {
     /// Unpack a raw sampling register into an AdcSample
     /// value based on configured ADC resolution
     fn unpack(&self, raw: u32, sample: &mut AdcSample) {
-        match self.resolution {
-            AdcResolution::Bit12 => {
+        match self.format {
+            ReadDataFormat::Bit12 => {
+                sample.valid = (raw >> 31) == 0x0;
                 sample.value = raw & 0xfff;
                 sample.ch = (raw >> 16) & 0x1f;
-            }
-            AdcResolution::Bit10 => {
+            },
+            ReadDataFormat::Bit10 => {
+                sample.valid = (raw >> 16) == 0x0;
                 sample.value = raw & 0x3ff;
                 sample.ch = (raw >> 10) & 0x1f;
-            }
-            AdcResolution::Bit8 => {
+            },
+            ReadDataFormat::Bit8 => {
+                sample.valid = (raw >> 16) == 0x0;
                 sample.value = raw & 0xff;
                 sample.ch = (raw >> 10) & 0x1f;
-            }
+            },
         }
     }
 
@@ -232,9 +281,16 @@ impl Adc {
     /// copied into the slice.
     /// Return number of valid sample inside the slice.
     pub fn get(&self, group: AdcGroup, samples: &mut [AdcSample]) -> usize {
-        let size = min(samples.len(), self.fifo_size as usize);
+        let avail = self.regs.GxINTCR[group as usize].get();
+        let count = if avail >= 256 {
+            self.fifo_size
+        } else {
+            self.fifo_size - (avail as u8)
+        };
+
+        let size = min(samples.len(), count as usize);
         for i in 0..size {
-            let raw = self.regs.buff[group as usize][0].get();
+            let raw = self.regs.buff[group as usize].BUF0.get();
             self.unpack(raw, &mut samples[i]);
         }
         size
@@ -246,6 +302,16 @@ impl Adc {
         self.regs.GxSEL[group as usize].set(0x1 << ch);
     }
 
+    /// Starts a conversion more than a channel of a given ADC hardware group
+    pub fn start_parallel(&self, group: AdcGroup, mask: u32) {
+        self.regs.GxINTCR[group as usize].set(self.fifo_size as u32);
+        self.regs.GxSEL[group as usize].set(mask);
+    }
+
+    pub fn start_all(&self, group: AdcGroup) {
+        self.start_parallel(group, 0xFFFF_FFFF);
+    }
+
     /// Stops a conversion of the ADC hardware group
     pub fn stop(&self, group: AdcGroup) {
         self.regs.GxSEL[group as usize].set(0x0);
@@ -253,9 +319,9 @@ impl Adc {
 
     /// Stops conversion on all ADC hardware groups
     pub fn stop_all(&self) {
+        self.stop(AdcGroup::Event);
         self.stop(AdcGroup::One);
         self.stop(AdcGroup::Two);
-        self.stop(AdcGroup::Three);
     }
 
     /// Computes offset error using Calibration mode
@@ -265,9 +331,9 @@ impl Adc {
     pub fn calibrate(&self) -> i16 {
         let mut sum = 0;
         let old_mode = self.regs.OPMODECR.get();
-        self.regs.OPMODECR.set(AdcResolution::Bit12 as u32);
+        self.regs.OPMODECR.set(AdcCoreResolution::Bit12 as u32);
 
-	self.stop_all();
+        self.stop_all();
 
         for test in 0..3 {
             // Disable Calibration
@@ -286,8 +352,8 @@ impl Adc {
 
         // calculate error and write it back to CALR register as
         // a two's complement value
-        let error = !((sum / 4) - 0x7FF) - 1;
-        self.regs.CALR.set(error);
+        let error = !(sum / 4).wrapping_sub(0x7FF);
+        self.regs.CALR.set(error.wrapping_sub(1));
 
         self.regs.OPMODECR.set(old_mode);
         error as i16

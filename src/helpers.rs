@@ -22,6 +22,14 @@ macro_rules! wait_until_zero {
     };
 }
 
+/// Macro to wait until a bit-mask is not 0
+#[macro_export]
+macro_rules! wait_until_not_zero {
+    ($reg: expr, $mask: expr ) => {
+        while $reg & $mask != 0x0 { /* wait */ }
+    };
+}
+
 #[macro_export]
 macro_rules! wait_until_false {
     ($condition: expr ) => {
