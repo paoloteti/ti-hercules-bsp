@@ -198,7 +198,14 @@ pub struct Adc {
 }
 
 impl Adc {
-    pub fn new(id: AdcID, fifo_size: u8, res: AdcCoreResolution) -> Adc {
+    pub fn new(
+        id: AdcID,
+        fifo_size: u8,
+        event_buff_size: u8,
+        group_buff_size: u8,
+        res: AdcCoreResolution,
+    ) -> Adc {
+        assert!(event_buff_size <= group_buff_size);
         let adc = Adc {
             id: id,
             fifo_size: fifo_size,
@@ -208,25 +215,22 @@ impl Adc {
             pram: unsafe { &*ADC_PRAM_ADDR[id as usize] },
             lut: unsafe { &*ADC_LUT_ADDR[id as usize] },
         };
-        adc.init(res);
-        adc
-    }
 
-    fn init(&self, core_res: AdcCoreResolution) {
         // Reset ADC
-        self.regs.RSTCR.set(0x1);
-        self.regs.RSTCR.set(0x0);
-        let res = (core_res as u32) << 31;
-        self.regs.OPMODECR.set(self.regs.OPMODECR.get() | res);
-        self.regs.CLOCKCR.set(0x7);
-        self.regs.BNDCR.set((8 << 16) | 16);
-        self.regs.BNDEND.set(self.regs.BNDEND.get() & 0xFFFF0002);
+        adc.regs.RSTCR.set(0x1);
+        adc.regs.RSTCR.set(0x0);
+        let cres = (res as u32) << 31;
+        adc.regs.OPMODECR.set(adc.regs.OPMODECR.get() | cres);
+        adc.regs.CLOCKCR.set(0x7);
+        let bndcr = ((event_buff_size as u32) << 16) | (group_buff_size as u32);
+        adc.regs.BNDCR.set(bndcr);
+        adc.regs.BNDEND.set(adc.regs.BNDEND.get() & 0xFFFF0002);
 
         //TODO: move outside
-        self.regs.G1SAMP.set(1);
-        self.regs.G2SAMP.set(1);
+        adc.regs.G1SAMP.set(1);
+        adc.regs.G2SAMP.set(1);
+        adc
     }
-
 
     pub fn group_resolution(&mut self, grp: AdcGroup, dformat: ReadDataFormat) {
         self.format = dformat;
@@ -238,7 +242,7 @@ impl Adc {
         self.regs.OPMODECR.set(self.regs.OPMODECR.get() | 0x0000_0001);
         // Wait for buffer initialization complete
         wait_until_not_zero!(self.regs.BNDEND.get(), 0xFFFF_0000);
-	}
+    }
 
     pub fn done(&self, group: AdcGroup) -> bool {
         self.regs.GxINTFLG[group as usize].get() & ConvEvent::ConversionEnd as u32 != 0
@@ -262,17 +266,17 @@ impl Adc {
                 sample.valid = (raw >> 31) == 0x0;
                 sample.value = raw & 0xfff;
                 sample.ch = (raw >> 16) & 0x1f;
-            },
+            }
             ReadDataFormat::Bit10 => {
                 sample.valid = (raw >> 16) == 0x0;
                 sample.value = raw & 0x3ff;
                 sample.ch = (raw >> 10) & 0x1f;
-            },
+            }
             ReadDataFormat::Bit8 => {
                 sample.valid = (raw >> 16) == 0x0;
                 sample.value = raw & 0xff;
                 sample.ch = (raw >> 10) & 0x1f;
-            },
+            }
         }
     }
 
