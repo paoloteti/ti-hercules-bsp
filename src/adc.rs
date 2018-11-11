@@ -363,8 +363,9 @@ impl Adc {
 
         // calculate error and write it back to CALR register as
         // a two's complement value
-        let error = !(sum / 4).wrapping_sub(0x7FF);
-        self.regs.CALR.set(error.wrapping_sub(1));
+        let mut error = (sum / 4).wrapping_sub(0x7FF);
+        error = ((!error) & 0xFFF) + 1;
+        self.regs.CALR.set(error);
 
         self.regs.OPMODECR.set(old_mode);
         error as i16
