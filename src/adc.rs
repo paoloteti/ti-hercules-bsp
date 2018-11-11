@@ -297,6 +297,8 @@ impl Adc {
             let raw = self.regs.buff[group as usize].BUF0.get();
             self.unpack(raw, &mut samples[i]);
         }
+        // clear "G1 END" and "THR INT FLG"
+        self.regs.GxINTFLG[group as usize].set(0x9);
         size
     }
 
