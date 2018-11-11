@@ -312,6 +312,11 @@ impl Adc {
         self.start_parallel(group, 0xFFFF_FFFF);
     }
 
+    /// Resets the FiFo read and write pointers
+    pub fn reset_fifo(&self, group: AdcGroup) {
+        self.regs.GxFIFORESETCR[group as usize].set(0x0);
+    }
+
     /// Stops a conversion of the ADC hardware group
     pub fn stop(&self, group: AdcGroup) {
         self.regs.GxSEL[group as usize].set(0x0);
