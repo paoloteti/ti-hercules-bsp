@@ -258,6 +258,16 @@ impl Adc {
         self.regs.GxFIFORESETCR[group as usize].set(0x1)
     }
 
+    /// A discharge period for the sampling capacitor is
+    /// added before the sampling period for each channel
+    pub fn capacitor_discharge(&self, group: AdcGroup, delay: u32) {
+        match group {
+            AdcGroup::Event => self.regs.EVSAMPDISEN.set(delay),
+            AdcGroup::One => self.regs.G1SAMPDISEN.set(delay),
+            AdcGroup::Two => self.regs.G2SAMPDISEN.set(delay),
+        }
+    }
+
     /// Unpack a raw sampling register into an AdcSample
     /// value based on configured ADC resolution
     fn unpack(&self, raw: u32, sample: &mut AdcSample) {
