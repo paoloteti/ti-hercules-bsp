@@ -4,7 +4,7 @@
 
 #[allow(dead_code)]
 extern "C" {
-    fn tms570_reset();
+    fn reset();
     pub fn undef_entry();
     pub fn prefetch_abort();
     pub fn phantom_interrupt();
@@ -38,7 +38,7 @@ extern "C" {
 
 global_asm!(r#"
     .section .intvecs,"a",%progbits
-    .extern tms570_reset
+    .extern reset
     .extern undef_entry
     .extern svc_handler
     .extern prefetch_abort
@@ -47,7 +47,7 @@ global_asm!(r#"
     .weak reset_entry
 
 reset_entry:
-    b   tms570_reset
+    b   reset
     b   undef_entry
     b   svc_handler
     b   prefetch_abort
