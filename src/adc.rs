@@ -387,4 +387,35 @@ impl Adc {
     pub fn event_notification(&self, group: AdcGroup, event: ConvEvent) {
         self.regs.GxINTENA[group as usize].set(event as u32)
     }
+
+    // EVT pin as output pin
+    pub fn set_evt_output(&self) {
+        self.regs.EVTDIR.set(0);
+    }
+
+    // EVT pin as input pin
+    pub fn set_evt_input(&self) {
+        self.regs.EVTDIR.set(1);
+    }
+
+    /// EVT pin open drain enable
+    pub fn set_evt_open_drain(&self, enable: bool) {
+        self.regs.EVTPDR.set(enable as u32);
+    }
+
+    /// EVT pin pull-up enable
+    pub fn evt_pull_up(&self, enable: bool) {
+        self.regs.EVTPSEL.set(enable as u32);
+    }
+
+    /// Set the EVT pin if configured as an output pin
+    pub fn set_evt_pin(&self, on: bool) {
+        self.regs.EVTOUT.set(on as u32);
+    }
+
+    /// Get the EVT pin value
+    pub fn get_evt_pin(&self) -> bool {
+        self.regs.EVTOUT.get() == 0
+    }
+
 }
