@@ -149,12 +149,7 @@ impl Gio {
     }
 
     pub fn toogle(&self, port: GioPorts, n: usize) {
-        let mask = 0x1 << n;
-        if self.ports[port as usize].din.get() & mask != 0 {
-            self.ports[port as usize].dset.set(mask);
-        } else {
-            self.ports[port as usize].dclr.set(mask);
-        }
+        self.set(port, n, !self.get(port, n))
     }
 
     pub fn set_all(&self, port: GioPorts, v: u32) {
