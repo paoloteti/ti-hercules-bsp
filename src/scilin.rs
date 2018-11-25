@@ -213,7 +213,7 @@ impl SerialLine for SciChipset {
         self.baudrate.get()
     }
 
-    fn set_baudrate(&self, baudrate: u32) {
+    fn set_baudrate(&mut self, baudrate: u32) -> &mut SciChipset {
         if baudrate > 0 {
             let is_async = self.regs.GCR1.get() & ASYNC_TIMING != 0;
             let f = if is_async { 16 } else { 1 };
@@ -221,6 +221,7 @@ impl SerialLine for SciChipset {
             self.regs.BRS.set(br);
             self.baudrate.set(baudrate);
         }
+        self
     }
 
     #[inline]
