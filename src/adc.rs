@@ -360,7 +360,7 @@ impl Adc {
             // Disable Calibration
             self.regs.CALCR.set(0x0);
             // Select test (change Bride-En, HiLo at each iteration)
-            self.regs.CALCR.set((test << (test + 8)) as u32);
+            self.regs.CALCR.set((test as u32) << 8);
             // Enable Calibration
             self.regs.CALCR.set(self.regs.CALCR.get() | 0x1);
             // Start calibration conversion
