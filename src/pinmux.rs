@@ -38,8 +38,13 @@ pub enum PinMux {
 
     Pin9_GIOA2         = grp_option!(9, 2, 0, 0),
 
+    Pin38_H2NET1_6     = grp_option!(38, 7, 16, 0),
     Pin38_SCIRX        = grp_option!(38, 7, 16, 1),
+    Pin38_EPWM5A       = grp_option!(38, 7, 16, 2),
+
+    Pin39_H2NET1_13    = grp_option!(39, 8, 0, 0),
     Pin39_SCITX        = grp_option!(39, 8, 0, 1),
+    Pin39_EPWM5B       = grp_option!(39, 8, 0, 2),
 
     Pin40_MIBSPI1NCS_2 = grp_option!(40, 8, 8, 0),
     Pin40_N2HET1_19    = grp_option!(40, 8, 8, 1),
