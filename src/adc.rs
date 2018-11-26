@@ -232,6 +232,18 @@ impl Adc {
         adc
     }
 
+    /// Enable parity check if parity protection is needed.
+    /// Note: after reset the parity protection is disabled.
+    pub fn parity_enable(&self, enable: bool) {
+        // Note: 0101b disable parity. It is recommended to write 1010b to enable parity, to
+        // guard against soft error from flipping this field to a disabled state.
+        if enable {
+            self.regs.PARCR.set(0b1010);
+        } else {
+            self.regs.PARCR.set(0b0101);
+        }
+    }
+
     pub fn group_resolution(&mut self, grp: AdcGroup, dformat: ReadDataFormat) {
         self.format = dformat;
         // Always add channel id in conversion result
