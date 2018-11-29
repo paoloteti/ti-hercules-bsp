@@ -22,9 +22,15 @@ use esm_ch::EsmError;
 
 const LPO_TRIM_ADDR: *const u32 = 0xF008_01B4 as *const u32;
 
-/// Read LPO TRIM value
+/// Read LPO TRIM value from OTP memory
 fn lpo_trim() -> u32 {
     unsafe { ::core::ptr::read_volatile(LPO_TRIM_ADDR) >> 16 }
+}
+
+/// Check if there is a valid LPO TRIM value in OTP memory
+#[inline]
+fn lpo_trim_available() -> bool {
+    lpo_trim() != 0xFFFF;
 }
 
 #[repr(C)]
@@ -360,12 +366,12 @@ impl Sys {
     /// close to 10MHz as possible.
     /// Use LPO from OTP memory if available.
     pub fn trim_lpo(&self) {
-        let lpo = lpo_trim();
-        if lpo != 0xFFFF {
-            self.sys1.lpomonctl.set((0x1 << 24) | lpo);
+        let lpo = if lpo_trim_available() {
+            lpo_trim()
         } else {
-            self.sys1.lpomonctl.set((0x1 << 24) | config::LPO);
-        }
+            config::LPO
+        };
+        self.sys1.lpomonctl.set((0x1 << 24) | lpo);
     }
 
     pub fn power_down(&self, mode:SleepMode) {
