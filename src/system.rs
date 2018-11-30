@@ -30,7 +30,7 @@ fn lpo_trim() -> u32 {
 /// Check if there is a valid LPO TRIM value in OTP memory
 #[inline]
 fn lpo_trim_available() -> bool {
-    lpo_trim() != 0xFFFF;
+    lpo_trim() != 0xFFFF
 }
 
 #[repr(C)]
