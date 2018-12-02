@@ -43,6 +43,7 @@ pub mod stc;
 pub mod syscore;
 pub mod sysexc;
 pub mod system;
+pub mod tcram;
 pub mod vim;
 
 extern "C" {
