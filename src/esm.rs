@@ -116,22 +116,22 @@ impl Esm {
     }
 
     pub fn disable_interrupt(&self, err: EsmError) {
-        self.iecr4.set(0x1 << err.ch() - 31);
+        self.iecr4.set(0x1 << (err.ch() - 31));
         self.iecr1.set(0x1 << err.ch());
     }
 
     pub fn enable_interrupt(&self, err: EsmError) {
-        self.iesr4.set(0x1 << err.ch() - 31);
+        self.iesr4.set(0x1 << (err.ch() - 31));
         self.iesr1.set(0x1 << err.ch());
     }
 
     pub fn disable_error(&self, err: EsmError) {
-        self.iepcr4.set(0x1 << err.ch() - 31);
+        self.iepcr4.set(0x1 << (err.ch() - 31));
         self.depapr1.set(0x1 << err.ch());
     }
 
     pub fn enable_error(&self, err: EsmError) {
-        self.iepsr4.set(0x1 << err.ch() - 31);
+        self.iepsr4.set(0x1 << (err.ch() - 31));
         self.eepapr1.set(0x1 << err.ch());
     }
 
