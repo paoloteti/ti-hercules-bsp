@@ -51,7 +51,7 @@ impl Esm {
     }
 
     pub fn set_preload(&self, preload: u16) {
-        self.ltcpr.set((preload - 1) as u32)
+        self.ltcpr.set(u32::from(preload - 1))
     }
 
     pub fn error_reset(&self) {
@@ -134,5 +134,4 @@ impl Esm {
         self.iepsr4.set(0x1 << (err.ch() - 31));
         self.eepapr1.set(0x1 << err.ch());
     }
-
 }
