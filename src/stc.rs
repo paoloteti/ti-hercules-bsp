@@ -57,7 +57,7 @@ impl Stc {
     }
 
     fn setup_intervals(&self, intervals: u16, restart: bool) {
-        self.stcgcr0.set((intervals as u32) << 16);
+        self.stcgcr0.set(u32::from(intervals) << 16);
         if restart {
             self.stcgcr0.set(self.stcgcr0.get() | 0x1);
         }
