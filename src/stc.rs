@@ -4,22 +4,38 @@ use vcell::VolatileCell;
 
 #[repr(C)]
 pub struct Stc {
-    stcgcr0: VolatileCell<u32>,       // 0x00: STC Control 0
-    stcgcr1: VolatileCell<u32>,       // 0x04: STC Control 1
-    stctpr: VolatileCell<u32>,        // 0x08: STC Self-Test Run Timeout Counter Preload
-    stccaddr: VolatileCell<u32>,      // 0x0C: STC Self-Test Current ROM Address
-    stccicr: VolatileCell<u32>,       // 0x10: STC Self-Test Current Interval Count
-    stcgstat: VolatileCell<u32>,      // 0x14: STC Self-Test Global Status
-    stcfstat: VolatileCell<u32>,      // 0x18: STC Self-Test Fail Status
-    cpu1_curmisr3: VolatileCell<u32>, // 0x1C: STC CPU1 Current MISR
-    cpu1_curmisr2: VolatileCell<u32>, // 0x20: STC CPU1 Current MISR
-    cpu1_curmisr1: VolatileCell<u32>, // 0x24: STC CPU1 Current MISR
-    cpu1_curmisr0: VolatileCell<u32>, // 0x28: STC CPU1 Current MISR
-    cpu2_curmisr3: VolatileCell<u32>, // 0x2C: STC CPU2 Current MISR
-    cpu2_curmisr2: VolatileCell<u32>, // 0x30: STC CPU2 Current MISR
-    cpu2_curmisr1: VolatileCell<u32>, // 0x34: STC CPU2 Current MISR
-    cpu2_curmisr0: VolatileCell<u32>, // 0x38: STC CPU2 Current MISR
-    stcscscr: VolatileCell<u32>,      // 0x3C: STC Signature Compare Self-Check
+    /// Control Register 0
+    stcgcr0: VolatileCell<u32>,
+    /// Control Register 1
+    stcgcr1: VolatileCell<u32>,
+    /// Self-Test Run Timeout Counter Preload
+    stctpr: VolatileCell<u32>,
+    /// Self-Test Current ROM Address
+    stccaddr: VolatileCell<u32>,
+    /// Self-Test Current Interval Count
+    stccicr: VolatileCell<u32>,
+    /// Self-Test Global Status
+    stcgstat: VolatileCell<u32>,
+    /// Self-Test Fail Status
+    stcfstat: VolatileCell<u32>,
+    /// CPU1 Current MISR block 3
+    cpu1_curmisr3: VolatileCell<u32>,
+    /// CPU1 Current MISR block 2
+    cpu1_curmisr2: VolatileCell<u32>,
+    /// CPU1 Current MISR block 1
+    cpu1_curmisr1: VolatileCell<u32>,
+    /// CPU1 Current MISR block 0
+    cpu1_curmisr0: VolatileCell<u32>,
+    /// CPU2 Current MISR block 3
+    cpu2_curmisr3: VolatileCell<u32>,
+    /// CPU2 Current MISR block 2
+    cpu2_curmisr2: VolatileCell<u32>,
+    /// CPU2 Current MISR block 1
+    cpu2_curmisr1: VolatileCell<u32>,
+    /// CPU2 Current MISR block 0
+    cpu2_curmisr0: VolatileCell<u32>,
+    /// Signature Compare Self-Check
+    stcscscr: VolatileCell<u32>,
 }
 
 const STC_BASE_ADDR: *const Stc = 0xFFFF_E600 as *const Stc;
