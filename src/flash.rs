@@ -72,17 +72,30 @@ impl Flash {
         &*FLASH_BASE_ADDR
     }
 
-    pub fn setup(&self, power_mode:FlashWPowerModes) {
-        // Setup flash read mode, address wait states and data wait states
-        self.FRDCNTL.set((0x3 << 8) | (0x1 << 4) | 0x1);
+    /// Setup flash read mode, address wait states and data wait states
+    ///
+    /// # Arguments
+    ///
+    /// * `ws` The random read wait state bits indicate how many wait states
+    /// are added to a flash read access. In Pipeline mode there is always one wait.
+    ///
+    /// * `address_ws` Address Setup Wait State is enabled. Address is latched one
+    /// cycle before decoding to determine pipeline hit or miss. Address Setup Wait State
+    /// is only available in pipeline mode
+    pub fn setup(&self, power: FlashWPowerModes, ws: u8, address_ws: bool, pipeline: bool) {
+        let aswsten = (address_ws as u32) << 4;
+        let rwait = u32::from(ws & 0xF)  << 8;
+        let enpipe = pipeline as u32;
+
+        self.FRDCNTL.set(rwait | aswsten | enpipe);
 
         // Setup flash access wait states for bank 7
         self.FSMWRENA.set(0x5);
-        self.EEPROMCONFIG.set(0x00000002 | (0x3 << 16));
+        self.EEPROMCONFIG.set(0x0000_0002 | (0x3 << 16));
         self.FSMWRENA.set(0xA);
 
         // Setup flash bank power modes
-        let mode = power_mode as u32;
+        let mode = power as u32;
         self.FBFALLBACK.set((mode << 14) | // BANK 7
                             (mode << 2)  | // BANK 1
                             mode);         // BANK 0

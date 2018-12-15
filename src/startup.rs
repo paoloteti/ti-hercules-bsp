@@ -77,7 +77,7 @@ pub unsafe extern "C" fn tms570_startup() -> ! {
     // Setup flash before speed-up PLL otherwise MCU can't
     // properly read data from Flash memory.
     let flash = flash::Flash::new();
-    flash.setup(flash::FlashWPowerModes::Active);
+    flash.setup(flash::FlashWPowerModes::Active, 3, true, true);
 
     sys.trim_lpo();
     sys.clock_domain_setup(true, system::ClockDomains::AvClk3);
