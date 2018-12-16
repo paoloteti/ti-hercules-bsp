@@ -21,7 +21,7 @@
 ///   memory regions
 
 use vcell::VolatileCell;
-use dma_ctrl::DmaControlPacket;
+use crate::dma_ctrl::DmaControlPacket;
 
 /// Number of supported DMA Regions
 const DMA_REGION_NUM:usize = 4;

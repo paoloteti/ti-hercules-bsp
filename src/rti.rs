@@ -2,9 +2,9 @@
 /// RTI Control Module
 ///
 use core::mem;
-use config::RTICLK1;
+use crate::config::RTICLK1;
 use vcell::VolatileCell;
-use dwd::{DWD, WdViolation};
+use crate::dwd::{DWD, WdViolation};
 
 #[repr(C)]
 #[allow(non_snake_case)]

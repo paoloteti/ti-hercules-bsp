@@ -1,7 +1,7 @@
-use esm::Esm;
-use esm_ch::{EsmError, EsmGroup};
+use crate::esm::Esm;
+use crate::esm_ch::{EsmError, EsmGroup};
+use crate::vim::Vim;
 use vcell::VolatileCell;
-use vim::Vim;
 
 #[repr(C)]
 pub struct Ccm {

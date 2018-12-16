@@ -1,6 +1,6 @@
 use vcell::VolatileCell;
-use esm;
-use esm_ch::EsmError;
+use crate::esm;
+use crate::esm_ch::EsmError;
 
 #[repr(C)]
 pub struct Efc {

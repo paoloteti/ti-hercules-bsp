@@ -1,5 +1,5 @@
-use esm::Esm;
-use esm_ch::EsmError;
+use crate::esm::Esm;
+use crate::esm_ch::EsmError;
 use vcell::VolatileCell;
 
 pub const VIM_CHANNELS: usize = 128;

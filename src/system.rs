@@ -15,10 +15,10 @@
 /// TMS570LS Series Technical Reference Manual (TRM), code SPNU489B
 ///
 
-use config;
+use crate::config;
+use crate::esm;
+use crate::esm_ch::EsmError;
 use vcell::VolatileCell;
-use esm;
-use esm_ch::EsmError;
 
 const LPO_TRIM_ADDR: *const u32 = 0xF008_01B4 as *const u32;
 

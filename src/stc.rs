@@ -1,5 +1,5 @@
 use cortexr4::asm::{nop, wfi};
-use system;
+use crate::system;
 use vcell::VolatileCell;
 
 #[repr(C)]

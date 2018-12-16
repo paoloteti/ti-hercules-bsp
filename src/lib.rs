@@ -8,10 +8,6 @@
 #![feature(naked_functions)]
 #![no_std]
 
-extern crate cortexr4;
-extern crate r0;
-extern crate vcell;
-
 #[macro_use]
 mod helpers;
 

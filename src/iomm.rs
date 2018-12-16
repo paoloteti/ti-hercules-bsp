@@ -1,4 +1,4 @@
-use pinmux;
+use crate::pinmux;
 ///
 /// I/O Multiplexing and Control Module (IOMM)
 ///

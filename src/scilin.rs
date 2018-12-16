@@ -1,10 +1,10 @@
-use config;
 ///
 /// SCI/LIN Device Driver
 ///
 use core::cell::Cell;
-use serial::{event, DataBits, Parity, SerialLine, StopBits};
 use vcell::VolatileCell;
+use crate::config;
+use crate::serial::{event, DataBits, Parity, SerialLine, StopBits};
 
 #[repr(C)]
 #[allow(non_snake_case)]
