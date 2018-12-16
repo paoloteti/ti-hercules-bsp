@@ -222,7 +222,7 @@ impl Adc {
         let cres = (res as u32) << 31;
         adc.regs.OPMODECR.set(adc.regs.OPMODECR.get() | cres);
         adc.regs.CLOCKCR.set(0x7);
-        let bndcr = ((event_buff_size as u32) << 16) | (group_buff_size as u32);
+        let bndcr = (u32::from(event_buff_size) << 16) | u32::from(group_buff_size);
         adc.regs.BNDCR.set(bndcr);
         adc.regs.BNDEND.set(adc.regs.BNDEND.get() & 0xFFFF0002);
 
@@ -326,13 +326,13 @@ impl Adc {
 
     /// Starts a conversion of the ADC hardware group
     pub fn start(&self, group: AdcGroup, ch: usize) {
-        self.regs.GxINTCR[group as usize].set(self.fifo_size as u32);
+        self.regs.GxINTCR[group as usize].set(u32::from(self.fifo_size));
         self.regs.GxSEL[group as usize].set(0x1 << ch);
     }
 
     /// Starts a conversion more than a channel of a given ADC hardware group
     pub fn start_parallel(&self, group: AdcGroup, mask: u32) {
-        self.regs.GxINTCR[group as usize].set(self.fifo_size as u32);
+        self.regs.GxINTCR[group as usize].set(u32::from(self.fifo_size));
         self.regs.GxSEL[group as usize].set(mask);
     }
 
