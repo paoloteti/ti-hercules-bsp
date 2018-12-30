@@ -30,7 +30,6 @@ pub struct Dcc {
 }
 const DCC1_BASE_ADDR: *const Dcc = 0xFFFF_EC00 as *const Dcc;
 const DCC2_BASE_ADDR: *const Dcc = 0xFFFF_F400 as *const Dcc;
-const DCC_BASE_ADDR: [*const Dcc; 2] = [DCC1_BASE_ADDR, DCC2_BASE_ADDR];
 
 #[derive(Copy, Clone)]
 enum DccId {
@@ -55,7 +54,10 @@ enum DccClockSource {
 
 impl Dcc {
     pub fn new(id: DccId) -> &'static Dcc {
-        unsafe { &*DCC_BASE_ADDR[id as usize] }
+        match id {
+            DccId::One => unsafe { &*DCC1_BASE_ADDR },
+            DccId::Two => unsafe { &*DCC2_BASE_ADDR },
+        }
     }
 
     /// Enable/Disable DCC module. Module will automatically start/stop counting.
