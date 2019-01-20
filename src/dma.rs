@@ -26,12 +26,13 @@ use crate::dma_ctrl::DmaControlPacket;
 /// Number of supported DMA Regions
 const DMA_REGION_NUM:usize = 4;
 
+#[repr(C)]
 struct DmaMpr {
     start_add: VolatileCell<u32>, // Protection Region Start Address
     end_add: VolatileCell<u32>,   // Protection Region End Address
 }
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 struct DmaRegisters {
     GCTRL: VolatileCell<u32>,           // 0x0000: Global Control
@@ -128,7 +129,7 @@ struct DmaRegisters {
 }
 const DMA_BASE_ADDR: *const DmaRegisters = 0xFFFF_F000 as *const DmaRegisters;
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 struct Pcp {
     ISADDR: VolatileCell<u32>,
@@ -141,7 +142,7 @@ struct Pcp {
     _reserved2: VolatileCell<u32>,
 }
 
-#[allow(dead_code)]
+#[repr(C)]
 #[allow(non_snake_case)]
 struct Wcp {
     CSADDR: VolatileCell<u32>,
@@ -150,6 +151,7 @@ struct Wcp {
     _reserved: VolatileCell<u32>,
 }
 
+#[repr(C)]
 struct DmaRam {
     pcp: [Pcp; 32],
     _reserved: [VolatileCell<u32>; 256],
