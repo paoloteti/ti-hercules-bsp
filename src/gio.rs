@@ -103,9 +103,9 @@ pub enum GioPorts {
 #[derive(Clone, Copy)]
 pub enum Edge {
     /// Falling edge (high to low)
-    Falling = 0x0,
+    Falling,
     /// Rising edge (low to high)
-    Rising = 0x1,
+    Rising,
 }
 
 #[derive(Clone, Copy)]
