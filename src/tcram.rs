@@ -30,7 +30,7 @@ pub enum TcRamID {
 
 impl Tcram {
     pub unsafe fn new(id: TcRamID) -> &'static Tcram {
-	match id {
+        match id {
             TcRamID::One => &*TCRAM1_BASE_ADDR,
             TcRamID::Two => &*TCRAM2_BASE_ADDR,
         }
