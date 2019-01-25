@@ -233,10 +233,10 @@ impl HwCrc {
     pub fn digest(&self, ch: CrcChannel) -> u64 {
         match ch {
             CrcChannel::CH1 => {
-                ((self.psa_sigregl1.get() as u64) << 32) | self.psa_sigregh1.get() as u64
+                (u64::from(self.psa_sigregl1.get()) << 32) | u64::from(self.psa_sigregh1.get())
             }
             CrcChannel::CH2 => {
-                ((self.psa_sigregl2.get() as u64) << 32) | self.psa_sigregh2.get() as u64
+                (u64::from(self.psa_sigregl2.get()) << 32) | u64::from(self.psa_sigregh2.get())
             }
         }
     }
