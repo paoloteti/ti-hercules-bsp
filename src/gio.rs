@@ -24,6 +24,7 @@ struct GioRegisters {
 }
 const GIO_BASE_ADDR: *const GioRegisters = 0xFFF7_BC00 as *const GioRegisters;
 
+#[repr(C)]
 struct GioPortsRegisters {
     dir: VolatileCell<u32>,    // 0x00: Data Direction
     din: VolatileCell<u32>,    // 0x04: Data Input
