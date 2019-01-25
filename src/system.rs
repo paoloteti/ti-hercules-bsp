@@ -348,12 +348,12 @@ impl Sys {
         self.sys1.rclksrc.set( (0x1 << 24)
                               | ((SysClockSources::Vclk as u32) << 16)
                               | (0x1 << 8)
-                              | ((SysClockSources::Vclk as u32) << 0));
+                              | (SysClockSources::Vclk as u32));
         self.sys1.vclkasrc.set(((SysClockSources::Vclk as u32) << 8) |
-                               (SysClockSources::Vclk as u32) << 0);
+                               (SysClockSources::Vclk as u32));
 
         self.sys2.vclkacon1.set(((SysClockSources::Vclk as u32) << 16) |
-                                 (SysClockSources::Vclk as u32) << 0);
+                                 (SysClockSources::Vclk as u32));
 
     }
 
@@ -393,10 +393,10 @@ impl Sys {
     }
 
     pub fn peripherals_clock_divider(&self, vclk1:u8, vclk2:u8, vclk3:u8, vclk4:u8) {
-        let div1 = (vclk1 as u32) << 24;
-        let div2 = (vclk2 as u32) << 16;
-        let div3 = (vclk3 as u32) << 8;
-        let div4 = vclk4 as u32;
+        let div1 = u32::from(vclk1) << 24;
+        let div2 = u32::from(vclk2) << 16;
+        let div3 = u32::from(vclk3) << 8;
+        let div4 = u32::from(vclk4);
 
         // Note: VCLK and VCLK2 clock ratio restrictions.
         // VCLK2 must always be greater than or equal to VCLK.
@@ -464,7 +464,7 @@ impl Sys {
 
         // Note: Suspend mode (ECPCOS) is entered while performing
         // certain JTAG debugging operations, so force ECPCOS at 0 here.
-        self.sys1.ecpcntl.set(((oscin as u32) << 24) | (divider as u32));
+        self.sys1.ecpcntl.set(((oscin as u32) << 24) | u32::from(divider));
     }
 
     pub fn eclk_gpio_setup(&self) {
