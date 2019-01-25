@@ -3,27 +3,27 @@ use vcell::VolatileCell;
 
 #[repr(C)]
 pub struct Esm {
-    eepapr1: VolatileCell<u32>,  // 0x0000
-    depapr1: VolatileCell<u32>,  // 0x0004
-    iesr1: VolatileCell<u32>,    // 0x0008
-    iecr1: VolatileCell<u32>,    // 0x000C
-    ilsr1: VolatileCell<u32>,    // 0x0010
-    ilcr1: VolatileCell<u32>,    // 0x0014
-    sr1: [VolatileCell<u32>; 3], // 0x0018, 0x001C, 0x0020
-    epsr: VolatileCell<u32>,     // 0x0024
-    ioffhr: VolatileCell<u32>,   // 0x0028
-    iofflr: VolatileCell<u32>,   // 0x002C
-    ltcr: VolatileCell<u32>,     // 0x0030
-    ltcpr: VolatileCell<u32>,    // 0x0034
-    ekr: VolatileCell<u32>,      // 0x0038
-    ssr2: VolatileCell<u32>,     // 0x003C
-    iepsr4: VolatileCell<u32>,   // 0x0040
-    iepcr4: VolatileCell<u32>,   // 0x0044
-    iesr4: VolatileCell<u32>,    // 0x0048
-    iecr4: VolatileCell<u32>,    // 0x004C
-    ilsr4: VolatileCell<u32>,    // 0x0050
-    ilcr4: VolatileCell<u32>,    // 0x0054
-    sr4: [VolatileCell<u32>; 3], // 0x0058, 0x005C, 0x0060
+    eepapr1: VolatileCell<u32>,
+    depapr1: VolatileCell<u32>,
+    iesr1: VolatileCell<u32>,
+    iecr1: VolatileCell<u32>,
+    ilsr1: VolatileCell<u32>,
+    ilcr1: VolatileCell<u32>,
+    sr1: [VolatileCell<u32>; 3],
+    epsr: VolatileCell<u32>,
+    ioffhr: VolatileCell<u32>,
+    iofflr: VolatileCell<u32>,
+    ltcr: VolatileCell<u32>,
+    ltcpr: VolatileCell<u32>,
+    ekr: VolatileCell<u32>,
+    ssr2: VolatileCell<u32>,
+    iepsr4: VolatileCell<u32>,
+    iepcr4: VolatileCell<u32>,
+    iesr4: VolatileCell<u32>,
+    iecr4: VolatileCell<u32>,
+    ilsr4: VolatileCell<u32>,
+    ilcr4: VolatileCell<u32>,
+    sr4: [VolatileCell<u32>; 3],
 }
 
 const ESM_BASE_ADDR: *const Esm = 0xFFFF_F500 as *const Esm;
