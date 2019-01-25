@@ -1,39 +1,58 @@
-///
 /// The general-purpose input/output (GIO) module provides
 /// the TMS570 familyof devices with input/output (I/O) capability.
 /// The I/O pins are bidirectional and bit-programmable.
 /// The GIO module also supports external interrupt capability.
-///
 use vcell::VolatileCell;
 
 #[repr(C)]
 struct GioRegisters {
-    gcr0: VolatileCell<u32>,      // 0x00: Global Control
-    _reserved: VolatileCell<u32>, // 0x04: Reserved
-    intdet: VolatileCell<u32>,    // 0x08: Interrupt Detect
-    pol: VolatileCell<u32>,       // 0x0C: Interrupt Polarity
-    enaset: VolatileCell<u32>,    // 0x10: Interrupt Enable Set
-    enaclr: VolatileCell<u32>,    // 0x14: Interrupt Enable Clear
-    lvlset: VolatileCell<u32>,    // 0x18: Interrupt Priority Set
-    lvlclr: VolatileCell<u32>,    // 0x1C: Interrupt Priority Clear
-    flg: VolatileCell<u32>,       // 0x20: Interrupt Flag
-    off1: VolatileCell<u32>,      // 0x24: Interrupt Offset A
-    off2: VolatileCell<u32>,      // 0x28: Interrupt Offset B
-    emu1: VolatileCell<u32>,      // 0x2C: Emulation 1
-    emu2: VolatileCell<u32>,      // 0x30: Emulation 2
+    /// Global Control
+    gcr0: VolatileCell<u32>,
+    /// Reserved
+    _reserved: VolatileCell<u32>,
+    /// Interrupt Detect
+    intdet: VolatileCell<u32>,
+    /// Interrupt Polarity
+    pol: VolatileCell<u32>,
+    /// Interrupt Enable Set
+    enaset: VolatileCell<u32>,
+    /// Interrupt Enable Clear
+    enaclr: VolatileCell<u32>,
+    /// Interrupt Priority Set
+    lvlset: VolatileCell<u32>,
+    /// Interrupt Priority Clear
+    lvlclr: VolatileCell<u32>,
+    /// Interrupt Flag
+    flg: VolatileCell<u32>,
+    /// Interrupt Offset A
+    off1: VolatileCell<u32>,
+    /// Interrupt Offset B
+    off2: VolatileCell<u32>,
+    /// Emulation 1
+    emu1: VolatileCell<u32>,
+    /// Emulation 2
+    emu2: VolatileCell<u32>,
 }
 const GIO_BASE_ADDR: *const GioRegisters = 0xFFF7_BC00 as *const GioRegisters;
 
 #[repr(C)]
 struct GioPortsRegisters {
-    dir: VolatileCell<u32>,    // 0x00: Data Direction
-    din: VolatileCell<u32>,    // 0x04: Data Input
-    dout: VolatileCell<u32>,   // 0x08: Data Output
-    dset: VolatileCell<u32>,   // 0x0C: Data Output Set
-    dclr: VolatileCell<u32>,   // 0x10: Data Output Clear
-    pdr: VolatileCell<u32>,    // 0x14: Open Drain
-    puldis: VolatileCell<u32>, // 0x18: Pullup Disable
-    psl: VolatileCell<u32>,    // 0x1C: Pull Up/Down Selection
+    /// Data Direction
+    dir: VolatileCell<u32>,
+    /// Data Input
+    din: VolatileCell<u32>,
+    /// Data Output
+    dout: VolatileCell<u32>,
+    /// Data Output Set
+    dset: VolatileCell<u32>,
+    /// Data Output Clear
+    dclr: VolatileCell<u32>,
+    /// Open Drain
+    pdr: VolatileCell<u32>,
+    /// Pullup Disable
+    puldis: VolatileCell<u32>,
+    /// Pull Up/Down Selection
+    psl: VolatileCell<u32>,
 }
 const GIO_PORTA_ADDR: *const GioPortsRegisters = 0xFFF7_BC34 as *const GioPortsRegisters;
 const GIO_PORTB_ADDR: *const GioPortsRegisters = 0xFFF7_BC54 as *const GioPortsRegisters;
