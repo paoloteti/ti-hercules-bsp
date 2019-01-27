@@ -1,4 +1,3 @@
-use cortexr4;
 use crate::dwd::DWD;
 use crate::efuse;
 use crate::esm;
@@ -11,6 +10,7 @@ use crate::syscore;
 use crate::sysexc;
 use crate::system;
 use crate::vim;
+use cortexr4;
 
 extern "C" {
     fn main(argc: isize, argv: *const *const u8) -> isize;
@@ -101,8 +101,8 @@ pub unsafe extern "C" fn tms570_startup() -> ! {
     // Parallel Test on PBIST ROM (can't be done in parallel with others)
     if cfg!(feature = "pbist_rom") {
         sys.pbist_run(
-            pbist::TRIPLEREADSLOW | pbist::TRIPLEREADFAST,
-            pbist::PBIST_ROM,
+            pbist::test::TRIPLEREADSLOW | pbist::test::TRIPLEREADFAST,
+            pbist::mem::PBIST_ROM,
         );
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
@@ -112,8 +112,8 @@ pub unsafe extern "C" fn tms570_startup() -> ! {
 
         // PBIST test on STC ROM
         sys.pbist_run(
-            pbist::TRIPLEREADSLOW | pbist::TRIPLEREADFAST,
-            pbist::STC_ROM,
+            pbist::test::TRIPLEREADSLOW | pbist::test::TRIPLEREADFAST,
+            pbist::mem::STC_ROM,
         );
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
@@ -128,8 +128,8 @@ pub unsafe extern "C" fn tms570_startup() -> ! {
         // ECC is disabled on reset (AUX register)
         // ESRAM Single Port PBIST
         sys.pbist_run(
-            pbist::MARCH13N_SP,
-            pbist::ESRAM1 | pbist::ESRAM5 | pbist::ESRAM6 | pbist::ESRAM8,
+            pbist::test::MARCH13N_SP,
+            pbist::mem::ESRAM1 | pbist::mem::ESRAM5 | pbist::mem::ESRAM6 | pbist::mem::ESRAM8,
         );
         wait_until_false!(sys.pbist_completed());
         if sys.pbist_fail() {
