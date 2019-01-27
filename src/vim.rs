@@ -7,25 +7,29 @@ const VIM_CH_GROUPS: usize = 32;
 
 #[repr(C)]
 pub struct VimRegisters {
-    parflg: VolatileCell<u32>,            // Parity Flag
-    parctl: VolatileCell<u32>,            // Parity Control
-    adderr: VolatileCell<u32>,            // Address Parity Error
-    fbparerr: VolatileCell<u32>,          // Fall-Back Address Parity Error
-    irq_index: VolatileCell<u32>,         // 0x00
-    fiq_index: VolatileCell<u32>,         // 0x04
-    _reserved1: VolatileCell<u32>,        // 0x08
-    _reserved2: VolatileCell<u32>,        // 0x0C
-    firgpr: [VolatileCell<u32>; 4],       // 0x10-0x1C
-    intreq: [VolatileCell<u32>; 4],       // 0x20-0x2C
-    req_maskset: [VolatileCell<u32>; 4],  // 0x30-0x3C
-    req_maskclr: [VolatileCell<u32>; 4],  // 0x40-0x4C
-    wake_maskset: [VolatileCell<u32>; 4], // 0x50-0x5C
-    wake_maskclr: [VolatileCell<u32>; 4], // 0x60-0x6C
-    irq_vecreg: VolatileCell<u32>,        // 0x70
-    fiq_vecreg: VolatileCell<u32>,        // 0x74
-    capevt: VolatileCell<u32>,            // 0x78
-    _reserved3: VolatileCell<u32>,        // 0x7C
-    chan_ctrl: [VolatileCell<u32>; 32],   // 0x80-0x0FC
+    /// Parity Flag
+    parflg: VolatileCell<u32>,
+    /// Parity Control
+    parctl: VolatileCell<u32>,
+    /// Address Parity Error
+    adderr: VolatileCell<u32>,
+    /// Fall-Back Address Parity Error
+    fbparerr: VolatileCell<u32>,
+    irq_index: VolatileCell<u32>,
+    fiq_index: VolatileCell<u32>,
+    _reserved1: VolatileCell<u32>,
+    _reserved2: VolatileCell<u32>,
+    firgpr: [VolatileCell<u32>; 4],
+    intreq: [VolatileCell<u32>; 4],
+    req_maskset: [VolatileCell<u32>; 4],
+    req_maskclr: [VolatileCell<u32>; 4],
+    wake_maskset: [VolatileCell<u32>; 4],
+    wake_maskclr: [VolatileCell<u32>; 4],
+    irq_vecreg: VolatileCell<u32>,
+    fiq_vecreg: VolatileCell<u32>,
+    capevt: VolatileCell<u32>,
+    _reserved3: VolatileCell<u32>,
+    chan_ctrl: [VolatileCell<u32>; 32],
 }
 const VIM_BASE_ADDR: *const VimRegisters = 0xFFFF_FDEC as *const VimRegisters;
 

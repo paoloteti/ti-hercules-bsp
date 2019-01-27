@@ -1,7 +1,7 @@
-/// The general-purpose input/output (GIO) module provides
-/// the TMS570 familyof devices with input/output (I/O) capability.
-/// The I/O pins are bidirectional and bit-programmable.
-/// The GIO module also supports external interrupt capability.
+///! The general-purpose input/output (GIO) module provides
+///! the TMS570 familyof devices with input/output (I/O) capability.
+///! The I/O pins are bidirectional and bit-programmable.
+///! The GIO module also supports external interrupt capability.
 use vcell::VolatileCell;
 
 #[repr(C)]

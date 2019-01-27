@@ -5,8 +5,10 @@ use vcell::VolatileCell;
 
 #[repr(C)]
 pub struct Ccm {
-    ccmsr: VolatileCell<u32>,   // 0x00 CCM-R4F StatusRegister
-    ccmkeyr: VolatileCell<u32>, // 0x04 CCM-R4F Key Register
+    /// CCM-R4F StatusRegister
+    ccmsr: VolatileCell<u32>,
+    /// CCM-R4F Key Register
+    ccmkeyr: VolatileCell<u32>,
 }
 const CCMR4F_BASE_ADDR: *const Ccm = 0xFFFF_F600 as *const Ccm;
 

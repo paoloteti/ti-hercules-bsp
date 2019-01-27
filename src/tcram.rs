@@ -1,6 +1,6 @@
-///
-/// Tightly-Coupled RAM (TCRAM) module
-///
+///!
+///! Tightly-Coupled RAM (TCRAM) module
+///!
 use vcell::VolatileCell;
 
 #[repr(C)]

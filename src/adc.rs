@@ -1,28 +1,28 @@
-///
-/// Analog To Digital Converter (ADC) Module
-///
-/// The microcontroller includes two 12-bit ADC modules.
-/// The main features of each of the ADC modules are:
-/// - Selectable 10-bit or 12-bit resolution
-/// - Successive-approximation-register architecture
-/// - Three conversion groups – Group1, Group2 and Event Group
-/// - All three conversion groups can be configured to be
-///   hardware-triggered; group1 and group2 can also be triggered by software
-/// - Conversion results are stored in a 64-word memory (SRAM)
-///   These 64 words are divided between the three conversion groups and are
-///   configurable by software
-///   Accesses to the conversion result RAM are protected by parity
-/// - Flexible options for generating DMA requests for transferring conversion
-///   results
-/// - Multichannel conversions performed in ascending order, one channel at a time
-/// - Single or continuous conversion modes
-/// - Embedded self-test logic for input channel failure mode (open / short)
-///   detection
-/// - Embedded calibration logic for offset error correction
-/// - Enhanced Power-down mode
-/// - External event pin (ADEVT) to trigger conversions
-///   ADEVT is also programmable as general-purpose I/O
-/// - Eight hardware events to trigger conversions
+///!
+///! Analog To Digital Converter (ADC) Module
+///!
+///! The microcontroller includes two 12-bit ADC modules.
+///! The main features of each of the ADC modules are:
+///! - Selectable 10-bit or 12-bit resolution
+///! - Successive-approximation-register architecture
+///! - Three conversion groups – Group1, Group2 and Event Group
+///! - All three conversion groups can be configured to be
+///!   hardware-triggered; group1 and group2 can also be triggered by software
+///! - Conversion results are stored in a 64-word memory (SRAM)
+///!   These 64 words are divided between the three conversion groups and are
+///!   configurable by software
+///!   Accesses to the conversion result RAM are protected by parity
+///! - Flexible options for generating DMA requests for transferring conversion
+///!   results
+///! - Multichannel conversions performed in ascending order, one channel at a time
+///! - Single or continuous conversion modes
+///! - Embedded self-test logic for input channel failure mode (open / short)
+///!   detection
+///! - Embedded calibration logic for offset error correction
+///! - Enhanced Power-down mode
+///! - External event pin (ADEVT) to trigger conversions
+///!   ADEVT is also programmable as general-purpose I/O
+///! - Eight hardware events to trigger conversions
 use core::cmp::min;
 use vcell::VolatileCell;
 

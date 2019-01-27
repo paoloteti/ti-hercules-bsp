@@ -65,37 +65,37 @@ pub const IDDQROWSTRIPE2_SP: u32 = 0x2000_0000;
 
 pub mod mem {
 /// PBIST internal ROM
-pub const PBIST_ROM: u32 = 0x1 << (1 - 1);
+pub const PBIST_ROM: u32 = 0x1;
 /// STC internal ROM
-pub const STC_ROM: u32 = 0x1 << (2 - 1);
+pub const STC_ROM: u32 = 0x1 << 1;
 /// CAN1 Memory
-pub const DCAN1: u32 = 0x1 << (3 - 1);
+pub const DCAN1: u32 = 0x1 << 2;
 /// CAN2 Memory
-pub const DCAN2: u32 = 0x1 << (4 - 1);
+pub const DCAN2: u32 = 0x1 << 3;
 /// CAN2 Memory
-pub const DCAN3: u32 = 0x1 << (5 - 1);
+pub const DCAN3: u32 = 0x1 << 4;
 /// External SRAM 1
-pub const ESRAM1: u32 = 0x1 << (6 - 1);
+pub const ESRAM1: u32 = 0x1 << 5;
 /// MIBSPI 1 SRAM
-pub const MIBSPI1: u32 = 0x1 << (7 - 1);
+pub const MIBSPI1: u32 = 0x1 << 6;
 /// MIBSPI 3 SRAM
-pub const MIBSPI3: u32 = 0x1 << (8 - 1);
+pub const MIBSPI3: u32 = 0x1 << 7;
 /// MIBSPI 5 SRAM
-pub const MIBSPI5: u32 = 0x1 << (9 - 1);
+pub const MIBSPI5: u32 = 0x1 << 8;
 /// Vectored interrupt module memory
-pub const VIM: u32 = 0x1 << (10 - 1);
+pub const VIM: u32 = 0x1 << 9;
 /// ADC 1 data memory
-pub const MIBADC1: u32 = 0x1 << (11 - 1);
+pub const MIBADC1: u32 = 0x1 << 10;
 /// DMA memory
-pub const DMA: u32 = 0x1 << (12 - 1);
+pub const DMA: u32 = 0x1 << 11;
 /// N2HET 1 memory
-pub const N2HET1: u32 = 0x1 << (13 - 1);
+pub const N2HET1: u32 = 0x1 << 12;
 /// HETTU 1 memory
-pub const HETTU1: u32 = 0x1 << (14 - 1);
+pub const HETTU1: u32 = 0x1 << 13;
 /// RTP memory
-pub const RTP: u32 = 0x1 << (15 - 1);
+pub const RTP: u32 = 0x1 << 14;
 // FLEXRAY single port memory
-pub const FLEXRAY_SINGLE: u32 = 0x1 << (16 - 1);
+pub const FLEXRAY_SINGLE: u32 = 0x1 << 15;
 // FLEXRAY single dual memory
 pub const FLEXRAY_DUAL: u32 = 0x1 << (17 - 1);
 /// ADC 1 data memory

@@ -1,19 +1,18 @@
-///
-/// System Control Module (SYS) and
-/// Programmable Built-In Self-Test (PBIST) Module
-///
-/// The PBIST architecture consists of a small coprocessor
-/// with a dedicated instruction set targeted specifically
-/// toward testing memories. This coprocessor executes test
-/// routines stored in the PBIST ROMand runs them on multiple
-/// on-chip memory instances. The on-chip memory configuration
-/// information is also stored in the PBIST ROM. The testing is
-///  done in parallel for each of the CPU data RAMs, while it is
-/// done sequentially for the rest of the memories.
-///
-/// Reference:
-/// TMS570LS Series Technical Reference Manual (TRM), code SPNU489B
-///
+///!
+///! System Control Module (SYS) and
+///! Programmable Built-In Self-Test (PBIST) Module
+///!
+///! The PBIST architecture consists of a small coprocessor
+///! with a dedicated instruction set targeted specifically
+///! toward testing memories. This coprocessor executes test
+///! routines stored in the PBIST ROMand runs them on multiple
+///! on-chip memory instances. The on-chip memory configuration
+///! information is also stored in the PBIST ROM. The testing is
+///!  done in parallel for each of the CPU data RAMs, while it is
+///! done sequentially for the rest of the memories.
+///!
+///! Reference:
+///! TMS570LS Series Technical Reference Manual (TRM), code SPNU489B
 
 use crate::config;
 use crate::esm;

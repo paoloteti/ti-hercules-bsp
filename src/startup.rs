@@ -152,6 +152,7 @@ pub unsafe extern "C" fn tms570_startup() -> ! {
     r0::init_data(&mut _sdata, &mut _edata, &_sidata);
 
     main(0, ::core::ptr::null());
+
     loop {
         cortexr4::asm::wfi();
     }

@@ -1,11 +1,9 @@
-///
-/// DCAN Controller Area Network module
-///
-/// The Controller Area Network is a high integrity serial communications
-/// protocol for distributed real-time applications.
-/// The DCAN module supports bit rates up to 1 Mbit/s and is compliant
-/// to the CAN 2.0B protocol specification.
-///
+///! DCAN Controller Area Network module
+///!
+///! The Controller Area Network is a high integrity serial communications
+///! protocol for distributed real-time applications.
+///! The DCAN module supports bit rates up to 1 Mbit/s and is compliant
+///! to the CAN 2.0B protocol specification.
 
 use vcell::VolatileCell;
 

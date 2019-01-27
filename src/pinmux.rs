@@ -1,8 +1,7 @@
-/// Map PINNMRx register to bit field
-///
-/// Reference: TMS570LS31x/21x 16/32-Bit RISC Flash Microcontroller
-///            Chapter 4.6 Signal Multiplexing and Control
-///
+///! Map PINNMRx register to bit field
+///!
+///! Reference: TMS570LS31x/21x 16/32-Bit RISC Flash Microcontroller
+///!            Chapter 4.6 Signal Multiplexing and Control
 
 macro_rules! grp_option {
     ($pin: expr, $group: expr, $shift: expr, $option: expr) => {

@@ -1,11 +1,9 @@
-///
-/// ESM Channel Assignments for TMS5700714
-///
-/// Texas Instruments TMS5700714APGEQQ1 datasheet
-/// SPNS226C – JUNE 2013 – REVISED NOVEMBER 2014
-///
-/// Table 6-31. ESM Channel Assignments
-///
+///! ESM Channel Assignments for TMS5700714
+///!
+///! Texas Instruments TMS5700714APGEQQ1 datasheet
+///! SPNS226C – JUNE 2013 – REVISED NOVEMBER 2014
+///!
+///! Table 6-31. ESM Channel Assignments
 
 macro_rules! map_ch_group {
     ($ch: expr, $group: expr) => {

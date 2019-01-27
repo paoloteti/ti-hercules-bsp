@@ -1,18 +1,17 @@
 use core::ptr;
-///
-/// Cyclic Redundancy Check Controller Module (MCRC)
-///
-/// MCRC Controller is a module which is used to perform CRC
-/// (CyclicRedundancy Check) to verify the integrity of memory system.
-/// A signature representing the contents of the memory is obtained when the
-/// contents of the memory are read into MCRC Controller.
-/// The responsibility of MCRC controller is tocalculate the signature for a
-/// set of data and then compare the calculated signature value against a
-/// pre-determined good signature value. MCRC controller provides up to four
-/// channels to perform CRC calculation on multiple memories in parallel and can
-/// be used on any memory system. Channel 1 can also be put into data trace
-/// mode. In data trace mode, MCRC controller compresses each data being read
-/// through CPU read data bus.
+///! Cyclic Redundancy Check Controller Module (MCRC)
+///!
+///! MCRC Controller is a module which is used to perform CRC
+///! (CyclicRedundancy Check) to verify the integrity of memory system.
+///! A signature representing the contents of the memory is obtained when the
+///! contents of the memory are read into MCRC Controller.
+///! The responsibility of MCRC controller is tocalculate the signature for a
+///! set of data and then compare the calculated signature value against a
+///! pre-determined good signature value. MCRC controller provides up to four
+///! channels to perform CRC calculation on multiple memories in parallel and can
+///! be used on any memory system. Channel 1 can also be put into data trace
+///! mode. In data trace mode, MCRC controller compresses each data being read
+///! through CPU read data bus.
 use vcell::VolatileCell;
 
 #[repr(C)]
