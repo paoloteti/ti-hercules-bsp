@@ -234,6 +234,7 @@ impl Adc {
 
     /// Enable parity check if parity protection is needed.
     /// Note: after reset the parity protection is disabled.
+    /// ADC RAM memory shall be initialized before calling this function
     pub fn parity_enable(&self, enable: bool) {
         // Note: 0101b disable parity. It is recommended to write 1010b to enable parity, to
         // guard against soft error from flipping this field to a disabled state.
