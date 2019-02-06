@@ -428,7 +428,7 @@ impl Adc {
 
     /// Get the EVT pin value
     pub fn get_evt_pin(&self) -> bool {
-        self.regs.EVTOUT.get() == 0
+        self.regs.EVTOUT.get() != 0
     }
 
 }
