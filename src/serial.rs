@@ -60,7 +60,8 @@ pub trait SerialLine {
     fn baudrate(&self) -> u32;
     fn open(&self);
     fn close(&self);
-    fn put(&self, b: u8);
+    fn putc(&self, b: u8);
+    fn putc_try(&self, b: u8) -> bool;
     fn get(&self) -> u8;
     fn getc_try(&self) -> Option<u8>;
     fn write(&self, buffer: &[u8]);

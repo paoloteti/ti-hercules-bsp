@@ -154,6 +154,14 @@ impl SciRegisters {
         self.TD.set(u32::from(b));
     }
 
+    pub fn putc_try(&self, b: u8) -> bool {
+        let can_send = self.FLR.get() & event::TX_INT == 0;
+        if can_send {
+            self.TD.set(u32::from(b));
+	}
+        can_send
+    }
+
     pub fn write(&self, buffer: &[u8]) {
         for b in buffer.iter() {
             self.putc(*b);
@@ -235,8 +243,13 @@ impl SerialLine for SciChipset {
     }
 
     #[inline]
-    fn put(&self, b: u8) {
+    fn putc(&self, b: u8) {
         self.regs.putc(b)
+    }
+
+    #[inline]
+    fn putc_try(&self, b: u8) -> bool {
+        self.regs.putc_try(b)
     }
 
     #[inline]
