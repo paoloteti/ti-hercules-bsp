@@ -1,10 +1,10 @@
+use crate::config;
+use crate::serial::{event, DataBits, Parity, SerialLine, StopBits};
 ///
 /// SCI/LIN Device Driver
 ///
 use core::cell::Cell;
 use vcell::VolatileCell;
-use crate::config;
-use crate::serial::{event, DataBits, Parity, SerialLine, StopBits};
 
 #[repr(C)]
 #[allow(non_snake_case)]
@@ -158,7 +158,7 @@ impl SciRegisters {
         let can_send = self.FLR.get() & event::TX_INT == 0;
         if can_send {
             self.TD.set(u32::from(b));
-	}
+        }
         can_send
     }
 
