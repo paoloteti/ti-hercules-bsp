@@ -12,11 +12,11 @@ The TMS570 family integrates dual Cortex-R4F and Cortex-R5F processors in lock-s
 ## Getting started
 
 * Rust nightly as default toolchain (2018 edition)
-  * Latest tested: `rustc 1.32.0-nightly (f4a421ee3 2018-12-13)`
+  * Latest tested: `rustc 1.34.0-nightly (4b1e39b7b 2019-02-05)`
 * Add an armebv7r target:
   * Hard-float: `rustup target add armebv7r-none-eabihf`
   * Soft-float: `rustup target add armebv7r-none-eabi`
-* GCC v7.3.2 for ARM: `sudo apt-get install gcc-arm-none-eabi`
+* GCC v7.3.2 (or newer) for ARM: `sudo apt install gcc-arm-none-eabi`
 * JTAG programmer: Lautherbach Trace32 Powerview for ARM, SEGGER JLINK or any other supporting TMS570.
 
 ## How to use
@@ -25,6 +25,8 @@ The TMS570 family integrates dual Cortex-R4F and Cortex-R5F processors in lock-s
 tms570 = { git = "https://github.com/paoloteti/ti-hercules-bsp.git" }
 f021_fapi = { git = "https://github.com/paoloteti/f021-flash-api.git" }
 ```
+
+A Full for TMS570LS3137 can be found [here](https://github.com/paoloteti/tms570ls3137)
 
 ## License
 
