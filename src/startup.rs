@@ -11,6 +11,7 @@ use crate::sysexc;
 use crate::system;
 use crate::vim;
 use cortexr4;
+use siliconcr4;
 
 extern "C" {
     fn main(argc: isize, argv: *const *const u8) -> isize;
@@ -29,10 +30,10 @@ pub unsafe extern "C" fn tms570_startup() -> ! {
     syscore::event_bus_export_enable();
 
     #[cfg(feature = "errata57")]
-    cortexr4::silicon::errata57();
+    siliconcr4::errata57();
 
     #[cfg(feature = "errata66")]
-    cortexr4::silicon::errata66();
+    siliconcr4::errata66();
 
     let wdog: rti::ChipWatchDog = DWD::new();
 

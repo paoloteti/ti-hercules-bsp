@@ -8,5 +8,4 @@
 pub mod asm;
 pub mod mpu;
 pub mod pmu;
-pub mod silicon;
 

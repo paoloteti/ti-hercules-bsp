@@ -27,6 +27,7 @@ debug-assertions = false
 
 [dependencies]
 cortexr4 = { path = "arch/cortex-r4" }
+siliconcr4 = { git = "https://github.com/paoloteti/silicon-cr4.git" }
 vcell = "0.1.0"
 r0 = "0.2.2"
 
