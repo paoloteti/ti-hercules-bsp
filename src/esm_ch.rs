@@ -134,10 +134,10 @@ impl EsmError {
 impl From<u8> for EsmError {
     fn from(v: u8) -> Self {
         let e = match v {
-            0  ... 31 => map_ch_group!(EsmGroup::One, v),
-            32 ... 63 => map_ch_group!(EsmGroup::Two, v - 32),
-            64 ... 95 => map_ch_group!(EsmGroup::Three, v - 64),
-            96 ... 127 => map_ch_group!(EsmGroup::Four, v - 96),
+            0  ..= 31 => map_ch_group!(EsmGroup::One, v),
+            32 ..= 63 => map_ch_group!(EsmGroup::Two, v - 32),
+            64 ..= 95 => map_ch_group!(EsmGroup::Three, v - 64),
+            96 ..= 127 => map_ch_group!(EsmGroup::Four, v - 96),
             _ => unreachable!(),
         };
         unsafe { core::mem::transmute(e) }
