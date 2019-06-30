@@ -1,5 +1,5 @@
-#[link_name = "llvm.arm.hint"]
 extern "C" {
+    #[link_name = "llvm.arm.hint"]
     fn hint(a: i32);
 }
 
