@@ -7,6 +7,7 @@ build/*
 *.o
 *.ll
 .gdbinit
+Cargo.lock
 
 # IDE/Editor
 .vscode
