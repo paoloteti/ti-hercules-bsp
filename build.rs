@@ -12,7 +12,4 @@ fn main() {
     if target.contains("eabihf") {
         println!("cargo:rustc-cfg=vfp");
     }
-    
-    println!("cargo:rerun-if-changed=bsp.ld");
-    println!("cargo:rerun-if-changed=tms570ls31xx.ld");
 }
