@@ -10,7 +10,6 @@ use crate::syscore;
 use crate::sysexc;
 use crate::system;
 use crate::vim;
-use cortexr4;
 use siliconcr4;
 
 extern "C" {
@@ -156,7 +155,5 @@ pub unsafe extern "C" fn tms570_startup() -> ! {
 
     main(0, ::core::ptr::null());
 
-    loop {
-        cortexr4::asm::wfi();
-    }
+    panic!();
 }
