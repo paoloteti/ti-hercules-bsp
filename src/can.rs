@@ -158,7 +158,7 @@ pub struct DCan {
 impl DCan  {
     pub fn new(id: CanID) -> DCan {
         DCan {
-            id: id,
+            id,
             regs: unsafe { &*CAN_BASE_ADDR[id as usize] },
             ram: unsafe { &*CAN_RAM_ADDR[id as usize] },
             pram: unsafe { &*CAN_PARRAM_ADDR[id as usize] },
