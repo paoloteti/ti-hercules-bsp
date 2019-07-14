@@ -1,5 +1,4 @@
 /// System Exception Module
-
 use vcell::VolatileCell;
 
 #[repr(C)]
@@ -10,20 +9,20 @@ pub struct SysException {
 /// System Reset root-causes
 pub enum Reset {
     /// Power-on reset condition
-    PowerOn     = 0x8000,
+    PowerOn = 0x8000,
     /// Reset caused due to oscillator failure
-    OscFailure  = 0x4000,
+    OscFailure = 0x4000,
     /// Windowed watchdog violation or
     /// ICEPICK Reset (loading code / reset through a debugger)
-    WdIcePick   = 0x2000,
+    WdIcePick = 0x2000,
     /// Reset caused due to CPU reset.
     /// CPU reset can be caused by CPU self-test completion, or
     /// by toggling the "CPU RESET" bit of the CPU Reset Control Register.
-    Cpu         = 0x0020,
+    Cpu = 0x0020,
     /// Reset caused due to software reset.
-    Sw          = 0x0010,
+    Sw = 0x0010,
     /// Reset caused by external device.
-    External    = 0x0008,
+    External = 0x0008,
 }
 
 const SYS_EXC_ADDR: *const SysException = 0xFFFF_FFE4 as *const SysException;
@@ -57,7 +56,7 @@ impl SysException {
         self.exc.get() & (Reset::External as u32) != 0
     }
 
-    pub fn clear(&self, flag:Reset) {
+    pub fn clear(&self, flag: Reset) {
         self.exc.set(flag as u32)
     }
 
