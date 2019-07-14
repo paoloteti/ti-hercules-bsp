@@ -316,9 +316,9 @@ impl Adc {
         };
 
         let size = min(samples.len(), count as usize);
-        for i in 0..size {
+        for s in samples.iter_mut().take(size) {
             let raw = self.regs.buff[group as usize].BUF0.get();
-            self.unpack(raw, &mut samples[i]);
+            self.unpack(raw, s);
         }
         // clear "G1 END" and "THR INT FLG"
         self.regs.GxINTFLG[group as usize].set(0x9);
