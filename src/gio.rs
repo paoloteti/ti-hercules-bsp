@@ -177,7 +177,7 @@ impl Gio {
     }
 
     pub fn get(&self, port: GioPorts, n: usize) -> bool {
-        (self.ports[port as usize].din.get() >> n) & 0x1 != 0x1
+        (self.ports[port as usize].din.get() >> n) & 0x1 == 0x1
     }
 
     pub fn get_all(&self, port: GioPorts) -> u32 {
