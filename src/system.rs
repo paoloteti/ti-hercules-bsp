@@ -280,10 +280,10 @@ impl Sys {
         // - Setup reset on oscillator fail
         // - Setup reference clock divider
         // - Setup Pll multiplier
-        let pll_ctl1 = 0x00000000
-                    | 0x20000000
+        let pll_ctl1 = 0x0000_0000
+                    | 0x2000_0000
                     | (0x1F << 24)
-                    | 0x00000000
+                    | 0x0000_0000
                     | ((6 - 1) << 16)
                     | (0x7700);
         self.sys1.pllctl1.set(pll_ctl1);
@@ -550,7 +550,7 @@ impl Sys {
     pub unsafe fn clock_supervisor_test(&self) -> bool {
         self.sys1.clktest.set(self.sys1.clktest.get() | 0x0300_0000);
         let ghvsrc = self.sys1.ghvsrc.get();
-        self.sys1.ghvsrc.set(0x05050005);
+        self.sys1.ghvsrc.set(0x0505_0005);
         // disable oscillator so it fail
         self.sys1.csdisset.set(0x1);
         wait_until_zero!(self.sys1.gblstat.get(), 0x1);
