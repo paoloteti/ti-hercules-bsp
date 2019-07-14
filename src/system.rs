@@ -327,8 +327,8 @@ impl Sys {
     pub fn set_pll_divider(&self, div1:u8, div3:u8) {
         let pll1 = self.sys1.pllctl1.get();
         let pll2 = self.sys2.pllctl3.get();
-        let p1 = (pll1 & 0xE0FF_FFFF) | (div1 as u32) << 24;
-        let p2 = (pll2 & 0xE0FF_FFFF) | (div3 as u32) << 24;
+        let p1 = (pll1 & 0xE0FF_FFFF) | (u32::from(div1) << 24);
+        let p2 = (pll2 & 0xE0FF_FFFF) | (u32::from(div3) << 24);
 
         self.sys1.pllctl1.set(p1);
         self.sys2.pllctl3.set(p2);
