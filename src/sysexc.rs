@@ -22,6 +22,8 @@ pub enum Reset {
     Cpu         = 0x0020,
     /// Reset caused due to software reset.
     Sw          = 0x0010,
+    /// Reset caused by external device.
+    External    = 0x0008,
 }
 
 const SYS_EXC_ADDR: *const SysException = 0xFFFF_FFE4 as *const SysException;
@@ -49,6 +51,10 @@ impl SysException {
 
     pub fn cpu_reset(&self) -> bool {
         self.exc.get() & (Reset::Cpu as u32) != 0
+    }
+
+    pub fn external(&self) -> bool {
+        self.exc.get() & (Reset::External as u32) != 0
     }
 
     pub fn clear(&self, flag:Reset) {

@@ -46,6 +46,8 @@ pub unsafe extern "C" fn tms570_startup() -> ! {
         sysex.clear(sysexc::Reset::Cpu);
     } else if sysex.sw_reset() {
         sysex.clear(sysexc::Reset::Sw);
+    } else if sysex.external() {
+        sysex.clear(sysexc::Reset::External);
     }
 
     // Check if there were ESM group3 errors during power-up.
