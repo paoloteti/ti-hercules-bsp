@@ -120,7 +120,7 @@ pub struct Het {
 impl Het {
     pub fn new(id: HetID) -> Het {
         Het {
-            id: id,
+            id,
             regs: unsafe { &*HET_REG_ADDR[id as usize] },
             ram: unsafe { &*HET_RAM_ADDR[id as usize] },
         }

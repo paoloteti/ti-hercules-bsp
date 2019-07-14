@@ -207,8 +207,8 @@ impl Adc {
     ) -> Adc {
         assert!(event_buff_size <= group_buff_size);
         let adc = Adc {
-            id: id,
-            fifo_size: fifo_size,
+            id,
+            fifo_size,
             format: ReadDataFormat::Bit12,
             regs: unsafe { &*ADC_BASE_ADDR[id as usize] },
             ram: unsafe { &*ADC_RAM_ADDR[id as usize] },

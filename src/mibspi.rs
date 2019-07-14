@@ -117,7 +117,7 @@ pub struct MibSpi {
 impl MibSpi {
     pub fn new(id: MibSpiID, master: bool) -> MibSpi {
         let mibspi = MibSpi {
-            id: id,
+            id,
             regs: unsafe { &*MIBSPI_ADDR[id as usize] },
             ram: unsafe { &*MIBSPI_RAM_ADDR[id as usize] },
         };
