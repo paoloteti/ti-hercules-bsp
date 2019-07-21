@@ -51,9 +51,13 @@ pub enum Parity {
     None = 0b0000,
 }
 
+pub enum Lines {
+    Sci,
+    Lin,
+}
+
 pub trait SerialLine {
-    fn new(id: u32, databits: DataBits, stop: StopBits, parity: Parity) -> Self;
-    fn id(&self) -> u32;
+    fn new(id: Lines, databits: DataBits, stop: StopBits, parity: Parity) -> Self;
     fn set_baudrate(&mut self, baudrate: u32) -> &mut Self;
     fn rx_enable(&mut self, enable: bool) -> &mut Self;
     fn tx_enable(&mut self, enable: bool) -> &mut Self;

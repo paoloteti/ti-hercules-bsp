@@ -1,5 +1,5 @@
 use crate::config;
-use crate::serial::{event, DataBits, Parity, SerialLine, StopBits};
+use crate::serial::{event, DataBits, Lines, Parity, SerialLine, StopBits};
 ///
 /// SCI/LIN Device Driver
 ///
@@ -77,8 +77,8 @@ struct SciRegisters {
     _rsdv2: [VolatileCell<u32>; 12], // 0x60: Reserved
     IODFTCTRL: VolatileCell<u32>,    // 0x90: I/O Error Enable
 }
-//const SCI_BASE_ADDR: *const SciRegisters = 0xFFF7_E500 as *const SciRegisters;
-const SCI_BASE_ADDR: *const SciRegisters = 0xFFF7_E400 as *const SciRegisters;
+const SCI_BASE_ADDR: *const SciRegisters = 0xFFF7_E500 as *const SciRegisters;
+const SCI_LIN_BASE_ADDR: *const SciRegisters = 0xFFF7_E400 as *const SciRegisters;
 
 const TX_ENABLE: u32 = 0x1 << 25; // enable transmit
 const RX_ENABLE: u32 = 0x1 << 24; // enable receive
@@ -91,14 +91,17 @@ const PIO0_RX_FUNC_LIN: u32 = 0x1 << 1; // LINRX as SCI/LIN receive pin
 const SCIGCR1_SWNRST: u32 = 0x1 << 7;
 
 pub struct SciChipset {
-    id: Cell<u32>,
     baudrate: Cell<u32>,
     regs: &'static SciRegisters,
 }
 
 impl SciRegisters {
-    unsafe fn new() -> &'static SciRegisters {
+    unsafe fn as_sci() -> &'static SciRegisters {
         &*SCI_BASE_ADDR
+    }
+
+    unsafe fn as_lin() -> &'static SciRegisters {
+        &*SCI_LIN_BASE_ADDR
     }
 
     pub fn reset(&self) {
@@ -186,11 +189,14 @@ impl SerialLine for SciChipset {
     /// `databits` Number of bit per char
     /// `stop` Number of stop bits
     /// `parity` Parity Odd, Even or None (disabled)
-    fn new(id: u32, databits: DataBits, stop: StopBits, parity: Parity) -> SciChipset {
+    fn new(id: Lines, databits: DataBits, stop: StopBits, parity: Parity) -> SciChipset {
+        let regmap = match id {
+            Lines::Sci => unsafe { SciRegisters::as_sci() },
+            Lines::Lin => unsafe { SciRegisters::as_lin() },
+        };
         let ser_line = SciChipset {
-            id: Cell::new(id),
             baudrate: Cell::new(0),
-            regs: unsafe { SciRegisters::new() },
+            regs: regmap,
         };
 
         ser_line.regs.reset();
@@ -202,10 +208,6 @@ impl SerialLine for SciChipset {
         ser_line.regs.FORMAT.set(databits as u32);
         ser_line.regs.PIO0.set(PIO0_TX_FUNC_LIN | PIO0_RX_FUNC_LIN);
         ser_line
-    }
-
-    fn id(&self) -> u32 {
-        self.id.get()
     }
 
     fn open(&self) {
