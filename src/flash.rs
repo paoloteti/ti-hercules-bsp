@@ -1,4 +1,5 @@
 use vcell::VolatileCell;
+use crate::config;
 
 #[repr(C)]
 #[allow(non_snake_case)]
@@ -99,7 +100,10 @@ impl Flash {
 
         // Setup flash access wait states for bank 7
         self.unlock_fsm();
-        self.EEPROMCONFIG.set(0x0000_0002 | (0x3 << 16));
+        self.EEPROMCONFIG.set(
+            config::flash::EEPROM_AUTOSTART_GRACE
+            | ((config::flash::EEPROM_AUTOSUSP_EN as u32) << 8)
+            | ((config::flash::EEPROM_WAITSTATE << 16)));
         self.lock_fsm();
 
         // Setup flash bank power modes
