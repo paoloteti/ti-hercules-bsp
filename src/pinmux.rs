@@ -55,6 +55,11 @@ pub enum PinMux {
     Pin55_AD2EVT       = grp_option!(55, 9, 16, 1),
     Pin55_GIOB2        = grp_option!(55, 9, 16, 2),
     Pin55_EQEP1I       = grp_option!(55, 9, 16, 3),
+
+    Pin91_N2NET1_28    = grp_option!(91, 11, 24, 0),
+    Pin91_MIBSPI1NCS_5 = grp_option!(91, 11, 24, 1),
+
+    Pin92_N2NET1_26    = grp_option!(92, 12, 0, 0),
 }
 
 impl PinMux {
