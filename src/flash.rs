@@ -66,6 +66,22 @@ pub enum FlashWPowerModes {
     Active = 0x3,
 }
 
+pub enum DiagModes {
+    Disabled = 0,
+    /// Diagnostic ECC Data Correction test
+    ECCDataCorrectionTest = 1,
+    /// Diagnostic ECC Syndrome Reporting test
+    ECCSyndromeReportingTest = 2,
+    /// ECC Malfunction Test (same data)
+    ECCMalfunctionTestSameData = 3,
+    /// ECC Malfunction Test (inverted data)
+    ECCMalfunctionTestInvertedData = 4,
+    /// Address Tag Register Test
+    AdressTagRegisterTest = 5,
+    /// ECC Data Correction Diagnostic Test
+    ECCDataCorrectionDiagnosticTest = 7,
+}
+
 impl Flash {
     pub unsafe fn new() -> &'static Flash {
         &*FLASH_BASE_ADDR
@@ -79,6 +95,11 @@ impl Flash {
     /// Lock FSM registers
     fn lock_fsm(&self) {
         self.FSMWRENA.set(0xA);
+    }
+
+    /// Setup diagnostic mode/algorithm
+    pub fn diag_mode(&self, mode: DiagModes) {
+        self.FDIAGCTRL.set(self.FDIAGCTRL.get() | (mode as u32))
     }
 
     /// Setup flash read mode, address wait states and data wait states
