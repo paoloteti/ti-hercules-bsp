@@ -34,117 +34,133 @@ fn lpo_trim_available() -> bool {
 
 #[repr(C)]
 struct SysRegister1 {
-    syspc1: VolatileCell<u32>,      // 0x0000
-    syspc2: VolatileCell<u32>,      // 0x0004
-    syspc3: VolatileCell<u32>,      // 0x0008
-    syspc4: VolatileCell<u32>,      // 0x000C
-    syspc5: VolatileCell<u32>,      // 0x0010
-    syspc6: VolatileCell<u32>,      // 0x0014
-    syspc7: VolatileCell<u32>,      // 0x0018
-    syspc8: VolatileCell<u32>,      // 0x001C
-    syspc9: VolatileCell<u32>,      // 0x0020
-    sswpll1: VolatileCell<u32>,     // 0x0024
-    sswpll2: VolatileCell<u32>,     // 0x0028
-    sswpll3: VolatileCell<u32>,     // 0x002C
-    csdis: VolatileCell<u32>,       // 0x0030
-    csdisset: VolatileCell<u32>,    // 0x0034
-    csdisclr: VolatileCell<u32>,    // 0x0038
-    cddis: VolatileCell<u32>,       // 0x003C
-    cddisset: VolatileCell<u32>,    // 0x0040
-    cddisclr: VolatileCell<u32>,    // 0x0044
-    ghvsrc: VolatileCell<u32>,      // 0x0048
-    vclkasrc: VolatileCell<u32>,    // 0x004C
-    rclksrc: VolatileCell<u32>,     // 0x0050
-    csvstat: VolatileCell<u32>,     // 0x0054
-    mstgcr: VolatileCell<u32>,      // 0x0058
-    minitgcr: VolatileCell<u32>,    // 0x005C
-    msinena: VolatileCell<u32>,     // 0x0060
-    mstfail: VolatileCell<u32>,     // 0x0064
-    mstcgstat: VolatileCell<u32>,   // 0x0068
-    ministat: VolatileCell<u32>,    // 0x006C
-    pllctl1: VolatileCell<u32>,     // 0x0070
-    pllctl2: VolatileCell<u32>,     // 0x0074
-    syspc10: VolatileCell<u32>,     // 0x0078
-    dieid_l: VolatileCell<u32>,     // 0x007C
-    dieid_h: VolatileCell<u32>,     // 0x0080
-    vrctl: VolatileCell<u32>,       // 0x0084
-    lpomonctl: VolatileCell<u32>,   // 0x0088
-    clktest: VolatileCell<u32>,     // 0x008C
-    dftctrlreg1: VolatileCell<u32>, // 0x0090
-    dftctrlreg2: VolatileCell<u32>, // 0x0094
-    rsvd1: VolatileCell<u32>,       // 0x0098
-    rsvd2: VolatileCell<u32>,       // 0x009C
-    gpreg1: VolatileCell<u32>,      // 0x00A0
-    btrmsel: VolatileCell<u32>,     // 0x00A4
-    impfasts: VolatileCell<u32>,    // 0x00A8
-    impftadd: VolatileCell<u32>,    // 0x00AC
-    ssisr1: VolatileCell<u32>,      // 0x00B0
-    ssisr2: VolatileCell<u32>,      // 0x00B4
-    ssisr3: VolatileCell<u32>,      // 0x00B8
-    ssisr4: VolatileCell<u32>,      // 0x00BC
-    ramgcr: VolatileCell<u32>,      // 0x00C0
-    bmmcr1: VolatileCell<u32>,      // 0x00C4
-    bmmcr2: VolatileCell<u32>,      // 0x00C8
-    cpurstcr: VolatileCell<u32>,    // 0x00CC
-	clkcntl: VolatileCell<u32>,     // 0x00D0
-    ecpcntl: VolatileCell<u32>,     // 0x00D4
-    dspgcr: VolatileCell<u32>,      // 0x00D8
-    devcr1: VolatileCell<u32>,      // 0x00DC
-    sysecr: VolatileCell<u32>,      // 0x00E0
-    syssrc: VolatileCell<u32>,      // 0x00E4
-    systasr: VolatileCell<u32>,     // 0x00E8
-    gblstat: VolatileCell<u32>,     // 0x00EC
-    dev: VolatileCell<u32>,         // 0x00F0
-    ssivec: VolatileCell<u32>,      // 0x00F4
-    ssif: VolatileCell<u32>         // 0x00F8
+    syspc1: VolatileCell<u32>,
+    syspc2: VolatileCell<u32>,
+    syspc3: VolatileCell<u32>,
+    syspc4: VolatileCell<u32>,
+    syspc5: VolatileCell<u32>,
+    syspc6: VolatileCell<u32>,
+    syspc7: VolatileCell<u32>,
+    syspc8: VolatileCell<u32>,
+    syspc9: VolatileCell<u32>,
+    sswpll1: VolatileCell<u32>,
+    sswpll2: VolatileCell<u32>,
+    sswpll3: VolatileCell<u32>,
+    csdis: VolatileCell<u32>,
+    csdisset: VolatileCell<u32>,
+    csdisclr: VolatileCell<u32>,
+    cddis: VolatileCell<u32>,
+    cddisset: VolatileCell<u32>,
+    cddisclr: VolatileCell<u32>,
+    ghvsrc: VolatileCell<u32>,
+    vclkasrc: VolatileCell<u32>,
+    rclksrc: VolatileCell<u32>,
+    csvstat: VolatileCell<u32>,
+    mstgcr: VolatileCell<u32>,
+    minitgcr: VolatileCell<u32>,
+    msinena: VolatileCell<u32>,
+    mstfail: VolatileCell<u32>,
+    mstcgstat: VolatileCell<u32>,
+    ministat: VolatileCell<u32>,
+    pllctl1: VolatileCell<u32>,
+    pllctl2: VolatileCell<u32>,
+    syspc10: VolatileCell<u32>,
+    dieid_l: VolatileCell<u32>,
+    dieid_h: VolatileCell<u32>,
+    vrctl: VolatileCell<u32>,
+    lpomonctl: VolatileCell<u32>,
+    clktest: VolatileCell<u32>,
+    dftctrlreg1: VolatileCell<u32>,
+    dftctrlreg2: VolatileCell<u32>,
+    rsvd1: VolatileCell<u32>,
+    rsvd2: VolatileCell<u32>,
+    gpreg1: VolatileCell<u32>,
+    btrmsel: VolatileCell<u32>,
+    impfasts: VolatileCell<u32>,
+    impftadd: VolatileCell<u32>,
+    ssisr1: VolatileCell<u32>,
+    ssisr2: VolatileCell<u32>,
+    ssisr3: VolatileCell<u32>,
+    ssisr4: VolatileCell<u32>,
+    ramgcr: VolatileCell<u32>,
+    bmmcr1: VolatileCell<u32>,
+    bmmcr2: VolatileCell<u32>,
+    cpurstcr: VolatileCell<u32>,
+	clkcntl: VolatileCell<u32>,
+    ecpcntl: VolatileCell<u32>,
+    dspgcr: VolatileCell<u32>,
+    devcr1: VolatileCell<u32>,
+    sysecr: VolatileCell<u32>,
+    syssrc: VolatileCell<u32>,
+    systasr: VolatileCell<u32>,
+    gblstat: VolatileCell<u32>,
+    dev: VolatileCell<u32>,
+    ssivec: VolatileCell<u32>,
+    ssif: VolatileCell<u32>
 }
 const SYS1_BASE_ADDR: *const SysRegister1 = 0xFFFF_FF00 as *const SysRegister1;
 
 #[repr(C)]
 struct SysRegister2 {
-    pllctl3: VolatileCell<u32>,      // 0x0000
-    rsvd1: VolatileCell<u32>,        // 0x0004
-    stcclkdiv: VolatileCell<u32>,    // 0x0008
-    rsvd2: [VolatileCell<u32>; 6],   // 0x000C
-    ecpcntrl0: VolatileCell<u32>,    // 0x0024
-    rsvd3: [VolatileCell<u32>; 5],   // 0x0028
-    clc2cntl: VolatileCell<u32>,     // 0x003C
-    vclkacon1: VolatileCell<u32>,    // 0x0040
-    rsvd4: [VolatileCell<u32>; 11],  // 0x0044
-    clkslip: VolatileCell<u32>,      // 0x0070
-    rsvd5: [VolatileCell<u32>; 30],  // 0x0074
-    efc_ctlen: VolatileCell<u32>,    // 0x00EC
-    dieidl_reg0: VolatileCell<u32>,  // 0x00F0
-    dieidh_reg1: VolatileCell<u32>,  // 0x00F4
-    dieidl_reg2: VolatileCell<u32>,  // 0x00F8
-    diedih_reg3: VolatileCell<u32>   // 0x00FC
+    pllctl3: VolatileCell<u32>,
+    rsvd1: VolatileCell<u32>,
+    stcclkdiv: VolatileCell<u32>,
+    rsvd2: [VolatileCell<u32>; 6],
+    ecpcntrl0: VolatileCell<u32>,
+    rsvd3: [VolatileCell<u32>; 5],
+    clc2cntl: VolatileCell<u32>,
+    vclkacon1: VolatileCell<u32>,
+    rsvd4: [VolatileCell<u32>; 11],
+    clkslip: VolatileCell<u32>,
+    rsvd5: [VolatileCell<u32>; 30],
+    efc_ctlen: VolatileCell<u32>,
+    dieidl_reg0: VolatileCell<u32>,
+    dieidh_reg1: VolatileCell<u32>,
+    dieidl_reg2: VolatileCell<u32>,
+    diedih_reg3: VolatileCell<u32>
 }
 const SYS2_BASE_ADDR: *const SysRegister2 = 0xFFFF_E100 as *const SysRegister2;
 
 #[allow(dead_code)]
 #[allow(non_snake_case)]
 struct PbistRegisters {
-    RAMT: VolatileCell<u32>,           // 0x0160: RAM Configuration
-    DLR: VolatileCell<u32>,            // 0x0164: Datalogger
-    _reserved1: [VolatileCell<u32>;6], // 0x0168
-    PACT: VolatileCell<u32>,           // 0x0180: PBIST Activate
-    PBISTID: VolatileCell<u32>,        // 0x0184: PBIST ID
-    OVER: VolatileCell<u32>,           // 0x0188: Override
-    _reserved2: VolatileCell<u32>,     // 0x018C
-    FSRF0: VolatileCell<u32>,          // 0x0190: Fail Status Fail 0
-    _reserved5: VolatileCell<u32>,     // 0x0194
-    FSRC0: VolatileCell<u32>,          // 0x0198: Fail Status Count 0
-    FSRC1: VolatileCell<u32>,          // 0x019C: Fail Status Count 1
-    FSRA0: VolatileCell<u32>,          // 0x01A0: Fail Status Address 0
-    FSRA1: VolatileCell<u32>,          // 0x01A4: Fail Status Address 1
-    FSRDL0: VolatileCell<u32>,         // 0x01A8: Fail Status Data 0
-    _reserved3: VolatileCell<u32>,     // 0x01AC
-    FSRDL1: VolatileCell<u32>,         // 0x01B0: Fail Status Data 1
-    _reserved4: [VolatileCell<u32>;3], // 0x01B4
-    ROM: VolatileCell<u32>,            // 0x01C0: ROM Mask
-    ALGO: VolatileCell<u32>,           // 0x01C4: Algorithm Mask
-    RINFOL: VolatileCell<u32>,         // 0x01C8: RAM Info Mask Lower
-    RINFOU: VolatileCell<u32>,         // 0x01CC: RAM Info Mask Upper
+    /// RAM Configuration
+    RAMT: VolatileCell<u32>,
+    /// Datalogger
+    DLR: VolatileCell<u32>,
+    _reserved1: [VolatileCell<u32>;6],
+    /// PBIST Activate
+    PACT: VolatileCell<u32>,
+    /// PBIST ID
+    PBISTID: VolatileCell<u32>,
+    /// Override
+    OVER: VolatileCell<u32>,
+    _reserved2: VolatileCell<u32>,
+    /// Fail Status Fail 0
+    FSRF0: VolatileCell<u32>,
+    _reserved5: VolatileCell<u32>,
+    /// Fail Status Count 0
+    FSRC0: VolatileCell<u32>,
+    /// Fail Status Count 1
+    FSRC1: VolatileCell<u32>,
+    /// Fail Status Address 0
+    FSRA0: VolatileCell<u32>,
+    /// Fail Status Address 1
+    FSRA1: VolatileCell<u32>,
+    /// Fail Status Data 0
+    FSRDL0: VolatileCell<u32>,
+    _reserved3: VolatileCell<u32>,
+    /// Fail Status Data 1
+    FSRDL1: VolatileCell<u32>,
+    _reserved4: [VolatileCell<u32>;3],
+    /// ROM Mask
+    ROM: VolatileCell<u32>,
+    /// Algorithm Mask
+    ALGO: VolatileCell<u32>,
+    /// RAM Info Mask Lower
+    RINFOL: VolatileCell<u32>,
+    /// RAM Info Mask Upper
+    RINFOU: VolatileCell<u32>,
 }
 const PBIST_BASE_ADDR: *const PbistRegisters = 0xFFFF_E560 as *const PbistRegisters;
 
@@ -163,12 +179,18 @@ pub enum SleepMode {
 /// Enumerates MCU's available clock domains
 #[derive(Clone, Copy)]
 pub enum ClockDomains {
-    AvClk1 = 4,     // AVCLK1 domain
-    AvClk2 = 5,     // AVCLK2 domain
-    VClk3 = 8,      // VCLK3 domain
-    VClk4 = 9,      // VCLK4 domain
-    AvClk3 = 10,    // VCLK3 domain
-    AvClk4 = 11,    // AVCLK4 domain
+    /// AVCLK1 domain
+    AvClk1 = 4,
+    /// AVCLK2 domain
+    AvClk2 = 5,
+    /// VCLK3 domain
+    VClk3 = 8,
+    /// VCLK4 domain
+    VClk4 = 9,
+    /// VCLK3 domain
+    AvClk3 = 10,
+    /// AVCLK4 domain
+    AvClk4 = 11,
 }
 
 /// Enumerates available clock sources
