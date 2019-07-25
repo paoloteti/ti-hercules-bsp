@@ -96,9 +96,8 @@ impl DWD for ChipWatchDog {
     }
 
     fn time_violation(&self) -> bool {
-        let stat = self.regs.WDSTATUS.get();
-        stat != (WdViolation::KeySeqViolation as u32) &&
-        stat != (WdViolation::NoTimeViolation as u32)
+        self.status() != WdViolation::KeySeqViolation &&
+        self.status() != WdViolation::NoTimeViolation
     }
 
     fn status_clear(&self) {

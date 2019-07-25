@@ -1,5 +1,5 @@
 
-#[derive(Copy,Clone)]
+#[derive(Copy,Clone,PartialEq)]
 pub enum WdViolation {
     NoTimeViolation          = 0x00,
     KeySeqViolation          = 0x04,
