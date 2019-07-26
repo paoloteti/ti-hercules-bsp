@@ -21,10 +21,10 @@ pub const RTICLK1: u32 = MHz!(80);
 pub const LPC_PRELOAD: u32 = 16384;
 
 pub mod flash {
-/// Flash access wait states for bank 7 (EEPROM emulation)
-pub const EEPROM_WAITSTATE: u32 = 0x3;
-/// EEPROM Auto-ssuspend Enable
-pub const EEPROM_AUTOSUSP_EN: bool = false;
-/// EEPROM Auto-suspend Startup Grace Period
-pub const EEPROM_AUTOSTART_GRACE: u32 = 0x2;
+    /// Flash access wait states for bank 7 (EEPROM emulation)
+    pub const EEPROM_WAITSTATE: u32 = 0x3;
+    /// EEPROM Auto-ssuspend Enable
+    pub const EEPROM_AUTOSUSP_EN: bool = false;
+    /// EEPROM Auto-suspend Startup Grace Period
+    pub const EEPROM_AUTOSTART_GRACE: u32 = 0x2;
 }
