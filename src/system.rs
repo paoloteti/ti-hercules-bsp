@@ -18,19 +18,7 @@ use crate::config;
 use crate::esm;
 use crate::esm_ch::EsmError;
 use vcell::VolatileCell;
-
-const LPO_TRIM_ADDR: *const u32 = 0xF008_01B4 as *const u32;
-
-/// Read LPO TRIM value from OTP memory
-fn lpo_trim() -> u32 {
-    unsafe { ::core::ptr::read_volatile(LPO_TRIM_ADDR) >> 16 }
-}
-
-/// Check if there is a valid LPO TRIM value in OTP memory
-#[inline]
-fn lpo_trim_available() -> bool {
-    lpo_trim() != 0xFFFF
-}
+use crate::flash;
 
 #[repr(C)]
 struct SysRegister1 {
@@ -383,16 +371,21 @@ impl Sys {
         self.sys1.dev.get()
     }
 
-    /// Configure the LPO such that HF LPO is as
-    /// close to 10MHz as possible.
+    /// Configure the LPO such that HF LPO is as close to 10MHz as possible.
     /// Use LPO from OTP memory if available.
     pub fn trim_lpo(&self) {
-        let lpo = if lpo_trim_available() {
-            lpo_trim()
+        let lpo = if flash::lpo_trim_available() {
+            flash::lpo_trim_value()
         } else {
             config::LPO
         };
-        self.sys1.lpomonctl.set((0x1 << 24) | lpo);
+        // If LPO value it too big that would result in a fault due to the
+        // clock test (range check). So, disable range check for a while to be sure
+        // the sudden change will not cause a fault.
+        let clktest_save = self.sys1.clktest.get();
+        self.sys1.clktest.set(clktest_save | (0x1 << 24) & !(0x1 << 25));
+        self.sys1.lpomonctl.set((0x1 << 24) | u32::from(lpo));
+        self.sys1.clktest.set(clktest_save);
     }
 
     pub fn power_down(&self, mode:SleepMode) {

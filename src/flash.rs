@@ -1,5 +1,30 @@
-use vcell::VolatileCell;
 use crate::config;
+use vcell::VolatileCell;
+
+/// Read LPO TRIM value from OTP memory
+pub fn lpo_trim_value() -> u8 {
+    const LPO_TRIM_ADDR: *const u32 = 0xF008_01B4 as *const u32;
+    unsafe { (::core::ptr::read_volatile(LPO_TRIM_ADDR) >> 16) as u8 }
+}
+
+/// Check if there is a valid LPO TRIM value in OTP memory
+#[inline]
+pub fn lpo_trim_available() -> bool {
+    lpo_trim_value() != 0xFF
+}
+
+/// Retrive device part number as ASCII digit
+pub fn dev_part_number_symb(pn: &mut [u8; 32]) {
+    const LPO_PN_SYMBOLIZATION: *const u8 = 0xF008_01E0 as *const u8;
+    let mut reg = LPO_PN_SYMBOLIZATION;
+
+    for p in pn.iter_mut() {
+        unsafe {
+            *p = ::core::ptr::read_volatile(reg);
+            reg = reg.offset(1);
+        }
+    }
+}
 
 #[repr(C)]
 #[allow(non_snake_case)]
@@ -123,14 +148,17 @@ impl Flash {
         self.unlock_fsm();
         self.EEPROMCONFIG.set(
             config::flash::EEPROM_AUTOSTART_GRACE
-            | ((config::flash::EEPROM_AUTOSUSP_EN as u32) << 8)
-            | ((config::flash::EEPROM_WAITSTATE << 16)));
+                | ((config::flash::EEPROM_AUTOSUSP_EN as u32) << 8)
+                | (config::flash::EEPROM_WAITSTATE << 16),
+        );
         self.lock_fsm();
 
         // Setup flash bank power modes
         let mode = power as u32;
-        self.FBFALLBACK.set((mode << 14) | // BANK 7
+        self.FBFALLBACK.set(
+            (mode << 14) | // BANK 7
                             (mode << 2)  | // BANK 1
-                            mode);         // BANK 0
+                            mode,
+        ); // BANK 0
     }
 }
