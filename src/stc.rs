@@ -1,6 +1,6 @@
-use cortexr4::asm::{nop, wfi};
 use crate::system;
 use vcell::VolatileCell;
+use cortexr4_asm;
 
 #[repr(C)]
 pub struct Stc {
@@ -85,10 +85,6 @@ impl Stc {
         // Enable self-test
         self.stcgcr1.set(SCSCR_SELF_CHECK_KEY);
         // Idle the CPU so that the self-test can start
-        wfi();
-        nop();
-        nop();
-        nop();
-        nop();
+        cortexr4_asm::idle_cpu()
     }
 }
