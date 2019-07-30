@@ -36,7 +36,6 @@ pub mod scilin;
 pub mod serial;
 pub mod startup;
 pub mod stc;
-pub mod syscore;
 pub mod sysexc;
 pub mod system;
 pub mod tcram;

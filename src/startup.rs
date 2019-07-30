@@ -6,10 +6,10 @@ use crate::flash;
 use crate::pbist;
 use crate::pcr;
 use crate::rti;
-use crate::syscore;
 use crate::sysexc;
 use crate::system;
 use crate::vim;
+use cortexr4_asm;
 use siliconcr4;
 
 extern "C" {
@@ -24,9 +24,9 @@ extern "C" {
 
 #[naked]
 pub unsafe extern "C" fn tms570_startup() -> ! {
-    syscore::init_core_registers();
-    syscore::init_stack_pointers();
-    syscore::event_bus_export_enable();
+    cortexr4_asm::init_core_registers();
+    cortexr4_asm::init_stack_pointers();
+    cortexr4_asm::event_bus_export_enable();
 
     #[cfg(feature = "errata57")]
     siliconcr4::errata57();
@@ -139,16 +139,16 @@ pub unsafe extern "C" fn tms570_startup() -> ! {
         }
         sys.pbist_stop();
     }
-    syscore::ram_ecc_enable();
+    cortexr4_asm::ram_ecc_enable();
     let vim = vim::Vim::new();
     vim.parity_enable(true);
 
     sys.init_memory(system::Ram::Internal);
     sys.init_memory(system::Ram::Vim);
-    syscore::irq_vic_enable();
+    cortexr4_asm::irq_vic_enable();
 
     #[cfg(vfp)]
-    syscore::vfp_enable();
+    cortexr4_asm::vfp_enable();
 
     r0::zero_bss(&mut _sbss, &mut _ebss);
     r0::init_data(&mut _sdata, &mut _edata, &_sidata);
