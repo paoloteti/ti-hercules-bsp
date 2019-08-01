@@ -87,8 +87,8 @@ macro_rules! MHz {
 macro_rules! wait_cycle {
     ($n: expr) => {
         for _ in 0..$n {
-            use cortexr4;
-            cortexr4::asm::nop();
+            use cortexr4_asm;
+            cortexr4_asm::asm::nop();
         }
     };
 }
