@@ -22,12 +22,7 @@ extern "C" {
     static mut _sidata: u32;
 }
 
-#[naked]
-pub unsafe extern "C" fn tms570_startup() -> ! {
-    cortexr4_asm::init_core_registers();
-    cortexr4_asm::init_stack_pointers();
-    cortexr4_asm::event_bus_export_enable();
-
+pub unsafe fn tms570_startup() -> ! {
     #[cfg(feature = "errata57")]
     siliconcr4::errata57();
 

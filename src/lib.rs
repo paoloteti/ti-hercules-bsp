@@ -3,7 +3,6 @@
 
 #![crate_name = "tms570"]
 #![crate_type = "rlib"]
-#![feature(asm)]
 #![feature(global_asm)]
 #![feature(naked_functions)]
 #![no_std]
@@ -41,6 +40,8 @@ pub mod system;
 pub mod tcram;
 pub mod vim;
 
+use cortexr4_asm;
+
 extern "C" {
     static mut _heap_start: u32;
     static mut _heapsize: u32;
@@ -49,6 +50,9 @@ extern "C" {
 #[no_mangle]
 #[naked]
 pub unsafe extern "C" fn reset() -> ! {
+    cortexr4_asm::init_core_registers();
+    cortexr4_asm::init_stack_pointers();
+    cortexr4_asm::event_bus_export_enable();
     startup::tms570_startup()
 }
 
