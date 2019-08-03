@@ -2,15 +2,15 @@ use crate::config;
 use vcell::VolatileCell;
 
 /// Read LPO TRIM value from OTP memory
-pub fn lpo_trim_value() -> u8 {
+pub fn lpo_trim_value() -> u16 {
     const LPO_TRIM_ADDR: *const u32 = 0xF008_01B4 as *const u32;
-    unsafe { (::core::ptr::read_volatile(LPO_TRIM_ADDR) >> 16) as u8 }
+    unsafe { (::core::ptr::read_volatile(LPO_TRIM_ADDR) >> 16) as u16 }
 }
 
 /// Check if there is a valid LPO TRIM value in OTP memory
 #[inline]
 pub fn lpo_trim_available() -> bool {
-    lpo_trim_value() != 0xFF
+    lpo_trim_value() != 0xFFFF
 }
 
 /// Retrive device part number as ASCII digit

@@ -12,7 +12,7 @@ pub const VCLK: u32 = MHz!(80);
 /// | 14h 119.01 | 15h 123.75 | 16h 128.62 | 17h 133.31 | 18h 138.03 |
 /// | 19h 142.75 | 1Ah 147.32 | 1Bh 152.02 | 1Ch 156.63 | 1Dh 161.38 |
 /// | 1Eh 165.90 | 1Fh 170.42 |
-pub const LPO: u8 = 0x10;
+pub const LPO: u16 = 0x10;
 
 /// RTI1 Clock Frequency [MHz]
 pub const RTICLK1: u32 = MHz!(80);

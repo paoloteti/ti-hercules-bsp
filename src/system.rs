@@ -383,7 +383,7 @@ impl Sys {
         // clock test (range check). So, disable range check for a while to be sure
         // the sudden change will not cause a fault.
         let clktest_save = self.sys1.clktest.get();
-        self.sys1.clktest.set(clktest_save | (0x1 << 24) & !(0x1 << 25));
+        self.sys1.clktest.set(clktest_save | (0x1 << 24) & 0x01FF_FFFF);
         self.sys1.lpomonctl.set((0x1 << 24) | u32::from(lpo));
         self.sys1.clktest.set(clktest_save);
     }
