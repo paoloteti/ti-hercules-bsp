@@ -348,4 +348,13 @@ impl I2C {
         self.regs.DMACR.set(0x0);
         self
     }
+
+    pub fn loopback(&mut self, enable: bool) -> &mut I2C {
+        if enable {
+            self.regs.MDR.set(self.regs.MDR.get() | flags::DLOOPBACK);
+        } else {
+            self.regs.MDR.set(self.regs.MDR.get() & !flags::DLOOPBACK);
+        }
+        self
+    }
 }
