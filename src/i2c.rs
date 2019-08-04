@@ -208,7 +208,7 @@ impl I2C {
     }
 
     fn reset_mode(&self, mode: u32) {
-        self.regs.MDR.set(self.regs.MDR.get() | mode);
+        self.regs.MDR.set(self.regs.MDR.get() & !mode);
     }
 
     #[inline]
