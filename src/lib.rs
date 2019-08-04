@@ -25,6 +25,7 @@ pub mod flash;
 pub mod gio;
 pub mod het;
 pub mod hwcrc;
+pub mod i2c;
 pub mod intvect;
 pub mod iomm;
 pub mod mibspi;
