@@ -31,7 +31,7 @@ siliconcr4 = { git = "https://github.com/paoloteti/silicon-cr4.git" }
 vcell = "0.1.0"
 r0 = "0.2.2"
 
-[profile.dev.overrides.vcell]
+[profile.dev.package.vcell]
 opt-level = 3
 debug = false
 
