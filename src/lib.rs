@@ -3,7 +3,7 @@
 
 #![crate_name = "tms570"]
 #![crate_type = "rlib"]
-#![feature(asm)]
+#![feature(llvm_asm)]
 #![feature(global_asm)]
 #![feature(naked_functions)]
 #![no_std]
