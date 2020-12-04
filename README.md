@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/paoloteti/ti-hercules-bsp.svg?branch=master)](https://travis-ci.org/paoloteti/ti-hercules-bsp)
+[![Build Status](https://travis-ci.com/paoloteti/ti-hercules-bsp.svg?branch=master)](https://travis-ci.com/paoloteti/ti-hercules-bsp)
 
 # TMS570 BSP
 
