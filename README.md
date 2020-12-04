@@ -12,7 +12,7 @@ The TMS570 family integrates dual Cortex-R4F and Cortex-R5F processors in lock-s
 ## Getting started
 
 * Rust nightly as default toolchain (2018 edition)
-  * Latest tested release: `rustc 1.41.0-nightly (ff15e9670 2019-12-13)`.
+  * Latest tested release: `rustc 1.50.0-nightly (1c389ffef 2020-11-24).
     Any other recent nightly release should work as well.
 * Add an armebv7r target:
   * Hard-float: `rustup target add armebv7r-none-eabihf`
